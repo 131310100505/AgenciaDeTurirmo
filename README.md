@@ -2,65 +2,97 @@
 
 ## Trabajo Práctico Obligatorio — Programación Orientada a Objetos
 
-**Universidad:** UADE  
-**Materia:** Programación Orientada a Objetos  
-**Propuesta elegida:** B — Agencia de Turismo  
-**Lenguaje de programación:** Java 17 o superior
+### 1. Descripción del proyecto
 
-## Descripción del proyecto
+Rumbo Sur es un sistema de gestión para una agencia de turismo receptivo, desarrollado como Trabajo Práctico Obligatorio de la materia Programación Orientada a Objetos.
 
-El proyecto consiste en desarrollar un sistema de gestión para la agencia de turismo receptivo «Rumbo Sur».
+El objetivo del sistema es administrar tours, salidas programadas, clientes, pasajeros, reservas, pagos, servicios adicionales y cancelaciones.
 
-El sistema permitirá administrar tours y salidas programadas, gestionar clientes, pasajeros y reservas, calcular tarifas y promociones, registrar pagos, aplicar políticas de cancelación, asignar guías y vehículos, y generar reportes administrativos.
+También permitirá organizar los recursos de cada salida, como guías y vehículos, realizar liquidaciones y generar reportes administrativos.
 
-El desarrollo se realizara aplicando los conceptos de Programacion Orientada a Objetos, modelado UML, principios SOLID y patrones GRASP.
+El proyecto se desarrolla utilizando Java y aplicando conceptos de Programación Orientada a Objetos, modelado UML, principios SOLID y patrones GRASP.
 
-## Objetivos
+### 2. Integrantes del equipo
 
-- Diseñar un sistema utilizando diagramas UML.
-- Aplicar tres principios SOLID y cuatro patrones GRASP.
-- Implementar el sistema en Java.
-- Utilizar herencia, polimorfismo, encapsulamiento y colecciones.
-- Implementar manejo de excepciones y persistencia de datos.
-- Realizar pruebas unitarias y funcionales.
-- Utilizar GitHub para el trabajo colaborativo.
+- Germán Rocha
+- Francisco Miel
+- Valentín Umbides
 
-## Etapas del proyecto
+### 3. Propuesta seleccionada
 
-### Etapa 1 — Análisis y diseño
+**Propuesta B — Agencia de Turismo**
 
-Entrega: 25/10/2026.
+La agencia Rumbo Sur ofrece tours de aventura, culturales y de naturaleza, con itinerarios, tarifas por temporada y salidas programadas.
 
-Incluye el analisis del enunciado, los requisitos, los casos de uso, los diagramas UML, la aplicacion de SOLID y GRASP, y el diseño final de clases.
+El sistema permitirá gestionar las operaciones comerciales y administrativas de la agencia, respetando las reglas de negocio establecidas en el enunciado.
 
-### Etapa 2 — Implementación y pruebas
+### 4. Funcionalidades principales
 
-Entrega: 04/11/2026.
+- Administración del catálogo de tours, actividades y tarifas.
+- Programación y control de salidas.
+- Registro de clientes y pasajeros.
+- Creación, modificación y cancelación de reservas.
+- Validación de cupos y condiciones de los pasajeros.
+- Cálculo de precios, descuentos y promociones.
+- Contratación de servicios adicionales y seguros.
+- Registro de señas, pagos y ajustes.
+- Asignación de guías y vehículos.
+- Emisión de listas de pasajeros.
+- Liquidación de honorarios de guías.
+- Generación de reportes administrativos.
 
-Incluye el desarrollo del sistema en Java, las pruebas, la persistencia de datos y la documentacion tecnica.
+### 5. Tecnologías y herramientas
 
-### Defensa oral
+- **Lenguaje:** Java 17 o superior.
+- **Modelado:** UML.
+- **Diagramas:** Draw.io.
+- **Control de versiones:** Git y GitHub.
+- **Principios de diseño:** SOLID y GRASP.
 
-Fecha: 11/11/2026.
+### 6. Organización del trabajo
 
-## Herramientas
+El proyecto se divide en dos etapas.
 
-- Java 17 o superior
-- IntelliJ IDEA
-- Git y GitHub
-- draw.io o PlantUML
-- JUnit para pruebas unitarias
+#### Etapa 1 — Modelado y diseño del sistema
 
-## Integrantes
+Incluye:
 
-- Integrante 1: pendiente
-- Integrante 2: pendiente
-- Integrante 3: pendiente
+1. Análisis del enunciado, requisitos y supuestos.
+2. Descripción y diagrama de casos de uso.
+3. Diagrama de clases inicial.
+4. Dos diagramas de secuencia.
+5. Aplicación y justificación de tres principios SOLID.
+6. Aplicación y justificación de cuatro patrones GRASP.
+7. Diagrama de clases final y explicación de las mejoras realizadas.
 
-## Estado del proyecto
+#### Etapa 2 — Implementación y pruebas
 
-En desarrollo — Etapa 1: análisis y modelado.
+Incluye:
 
-## Ejecución
+1. Implementación del sistema en Java.
+2. Desarrollo de las funcionalidades definidas.
+3. Manejo de colecciones, excepciones y persistencia.
+4. Interfaz de usuario.
+5. Pruebas unitarias y funcionales.
+6. Documentación final y preparación de la defensa.
 
-Las instrucciones para ejecutar el programa se incorporaran durante la segunda etapa, una vez implementada la aplicacion.
+### 7. Documentación
+
+La carpeta `docs/` contiene la documentación de análisis y diseño del sistema.
+
+Los archivos de documentación incluyen:
+
+- `enunciado.md`: identificación y descripción de la propuesta seleccionada.
+- `requisitos.md`: requisitos funcionales y reglas de negocio.
+- `supuestos.md`: decisiones adoptadas para resolver aspectos no especificados.
+- Diagramas UML y documentación de diseño correspondientes a la Etapa 1.
+
+### 8. Estado del proyecto
+
+**Etapa actual:** Etapa 1 — Modelado y diseño del sistema.
+
+La implementación en Java y las pruebas se desarrollarán durante la Etapa 2.
+
+### 9. Objetivo académico
+
+Aplicar los conceptos de Programación Orientada a Objetos mediante el análisis, modelado, diseño, implementación y prueba de un sistema de gestión, manteniendo coherencia entre los requisitos, los diagramas UML y el código fuente.
