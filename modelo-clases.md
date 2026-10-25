@@ -1,435 +1,510 @@
-# Modelo de clases — Agencia de Turismo Rumbo Sur
+# Modelo de clases inicial — Agencia de Turismo Rumbo Sur
 
 ## 1. Introducción
 
-Este documento presenta el modelo de clases propuesto para el sistema de gestión de la agencia de turismo receptivo Rumbo Sur.
+Este documento presenta el modelo de clases inicial del sistema Rumbo Sur, elaborado a partir del enunciado, los requisitos funcionales y los supuestos definidos.
 
-El objetivo es identificar las entidades principales, sus atributos, métodos, responsabilidades y relaciones, estableciendo una base consistente para la elaboración de los diagramas UML y la implementación posterior en Java.
+Se identifican las entidades principales, sus atributos, métodos, relaciones y multiplicidades.
 
-El modelo contempla la administración de tours, salidas programadas, clientes, pasajeros, reservas, tarifas, promociones, pagos, servicios adicionales, guías, vehículos y liquidaciones.
+Este modelo representa las responsabilidades del negocio antes de aplicar las mejoras de diseño mediante principios SOLID y patrones GRASP. Posteriormente se elaborará un modelo de clases final.
 
-## 2. Clases principales del sistema
+## 2. Convenciones UML
 
-### 2.1. Clase Tour
+- `+` Público.
+- `-` Privado.
+- `#` Protegido.
+- `0..1` Cero o uno.
+- `0..*` Cero o muchos.
+- `1..*` Uno o muchos.
+- `1` Exactamente uno.
 
-**Responsabilidad:** representar un producto turístico ofrecido por la agencia.
+Se utilizarán asociaciones, composiciones, agregaciones y herencia según la dependencia entre los objetos.
 
-**Atributos:**
-- `idTour: int`
-- `nombre: String`
-- `descripcion: String`
-- `categoria: CategoriaTour`
-- `duracionDias: int`
-- `edadMinima: int`
-- `dificultad: Dificultad`
-- `itinerario: List<Actividad>`
+Los atributos se consideran privados, salvo que se indique expresamente otra visibilidad.
 
-**Métodos:**
-- `agregarActividad(actividad: Actividad): void`
-- `obtenerItinerario(): List<Actividad>`
-- `requiereSeguro(): boolean`
-- `validarEdad(edad: int): boolean`
+## 3. Clases del sistema
 
-**Relaciones:**
-- Un Tour contiene una o varias Actividades.
-- Un Tour puede tener múltiples Salidas.
-- Un Tour puede disponer de varias Tarifas.
+### 3.1. Tour (clase abstracta)
 
-### 2.2. Clase Actividad
-
-**Responsabilidad:** representar una actividad que forma parte del itinerario de un tour.
+Representa un producto turístico ofrecido por la agencia.
 
 **Atributos:**
-- `idActividad: int`
-- `nombre: String`
-- `descripcion: String`
-- `dia: int`
-- `orden: int`
+- `-codigo: int`
+- `-nombre: String`
+- `-descripcion: String`
+- `-duracionDias: int`
+- `-cupoMinimo: int`
+- `-cupoMaximo: int`
 
 **Métodos:**
-- `obtenerDescripcion(): String`
+- `+obtenerCategoria(): CategoriaTour`
+- `+validarPasajero(pasajero: Pasajero, fechaSalida: LocalDate): boolean`
+- `+agregarActividad(actividad: Actividad): void`
+- `+agregarTarifa(tarifa: Tarifa): void`
 
-**Relaciones:**
-- Cada Actividad pertenece al itinerario de un Tour.
+`obtenerCategoria()` y `validarPasajero()` serán sobrescritos por las subclases cuando corresponda.
 
-### 2.3. Clase Salida
+### 3.2. TourAventura
 
-**Responsabilidad:** representar una salida programada de un tour.
+Hereda de `Tour`.
 
 **Atributos:**
-- `idSalida: int`
-- `fechaInicio: LocalDate`
-- `fechaFin: LocalDate`
-- `cupoMinimo: int`
-- `cupoMaximo: int`
-- `estado: EstadoSalida`
-- `tour: Tour`
-- `guia: Guia`
-- `vehiculo: Vehiculo`
-- `reservas: List<Reserva>`
-- `listaPasajerosGenerada: boolean`
+- `-edadMinima: int`
+- `-dificultad: String`
 
 **Métodos:**
-- `calcularCuposDisponibles(): int`
-- `agregarReserva(reserva: Reserva): void`
-- `alcanzoCupoMinimo(): boolean`
-- `confirmarSalida(): void`
-- `cancelarSalida(): void`
-- `asignarGuia(guia: Guia): void`
-- `asignarVehiculo(vehiculo: Vehiculo): void`
-- `generarListaPasajeros(): List<Pasajero>`
-- `puedeIniciarse(): boolean`
+- `+obtenerCategoria(): CategoriaTour`
+- `+validarPasajero(pasajero: Pasajero, fechaSalida: LocalDate): boolean`
 
-**Relaciones:**
-- Cada Salida corresponde a un Tour.
-- Una Salida puede tener múltiples Reservas.
-- Una Salida puede tener un Guía asignado.
-- Una Salida puede tener un Vehículo asignado.
+La validación debe verificar la edad mínima del pasajero. El seguro obligatorio se controlará durante la contratación.
 
-### 2.4. Clase Cliente
+### 3.3. TourCultural
 
-**Responsabilidad:** representar a la persona que contrata los servicios de la agencia.
+Hereda de `Tour`.
+
+**Métodos:**
+- `+obtenerCategoria(): CategoriaTour`
+- `+validarPasajero(pasajero: Pasajero, fechaSalida: LocalDate): boolean`
+
+### 3.4. TourNaturaleza
+
+Hereda de `Tour`.
+
+**Métodos:**
+- `+obtenerCategoria(): CategoriaTour`
+- `+validarPasajero(pasajero: Pasajero, fechaSalida: LocalDate): boolean`
+
+### 3.5. Actividad
+
+Representa una actividad incluida en el itinerario de un tour.
 
 **Atributos:**
-- `idCliente: int`
-- `nombre: String`
-- `apellido: String`
-- `dni: String`
-- `email: String`
-- `telefono: String`
-- `reservas: List<Reserva>`
+- `-codigo: int`
+- `-dia: int`
+- `-orden: int`
+- `-horario: LocalTime`
+- `-descripcion: String`
+- `-lugar: String`
+- `-tipo: TipoActividad`
 
 **Métodos:**
-- `obtenerNombreCompleto(): String`
-- `agregarReserva(reserva: Reserva): void`
-- `consultarReservas(): List<Reserva>`
+- `+modificarHorario(horario: LocalTime): void`
+- `+asignarProveedor(proveedor: Proveedor): void`
 
-**Relaciones:**
-- Un Cliente puede realizar múltiples Reservas.
-- Cada Reserva corresponde a un Cliente.
+### 3.6. Proveedor
 
-### 2.5. Clase Pasajero
-
-**Responsabilidad:** representar a una persona que participa de una salida turística.
+Representa un proveedor externo de servicios turísticos.
 
 **Atributos:**
-- `idPasajero: int`
-- `nombre: String`
-- `apellido: String`
-- `dni: String`
-- `fechaNacimiento: LocalDate`
-- `jubilado: boolean`
+- `-codigo: int`
+- `-nombre: String`
+- `-cuit: String`
+- `-contacto: String`
+- `-tipoServicio: String`
 
 **Métodos:**
-- `calcularEdad(fechaReferencia: LocalDate): int`
-- `esMenorDeTres(fechaReferencia: LocalDate): boolean`
-- `esMenorDeDoce(fechaReferencia: LocalDate): boolean`
-- `cumpleEdadMinima(tour: Tour, fechaSalida: LocalDate): boolean`
+- `+actualizarContacto(contacto: String): void`
 
-**Relaciones:**
-- Un Pasajero puede participar en distintas Reservas.
-- Una Reserva incluye uno o varios Pasajeros.
+### 3.7. Tarifa
 
-### 2.6. Clase Reserva
-
-**Responsabilidad:** administrar la contratación de una salida por parte de un cliente.
+Representa una tarifa de un tour para una temporada determinada.
 
 **Atributos:**
-- `idReserva: int`
-- `fechaReserva: LocalDate`
-- `estado: EstadoReserva`
-- `cliente: Cliente`
-- `salida: Salida`
-- `pasajeros: List<Pasajero>`
-- `pagos: List<Pago>`
-- `contrataciones: List<AdicionalContratado>`
-- `importeTotal: BigDecimal`
+- `-codigo: int`
+- `-temporada: Temporada`
+- `-fechaInicioVigencia: LocalDate`
+- `-fechaFinVigencia: LocalDate`
+- `-precioBase: double`
 
 **Métodos:**
-- `agregarPasajero(pasajero: Pasajero): void`
-- `reemplazarPasajero(anterior: Pasajero, nuevo: Pasajero): void`
-- `calcularImporteTotal(): BigDecimal`
-- `calcularTotalPagado(): BigDecimal`
-- `calcularSaldoPendiente(): BigDecimal`
-- `registrarPago(pago: Pago): void`
-- `confirmarReserva(): void`
-- `cancelarReserva(): void`
+- `+estaVigente(fecha: LocalDate): boolean`
+- `+obtenerPrecioBase(): double`
 
-**Relaciones:**
-- Cada Reserva pertenece a un Cliente.
-- Cada Reserva corresponde a una Salida.
-- Una Reserva contiene uno o varios Pasajeros.
-- Una Reserva puede registrar múltiples Pagos.
-- Una Reserva puede incluir múltiples AdicionalesContratados.
+### 3.8. Salida
 
-### 2.7. Clase Tarifa
-
-**Responsabilidad:** establecer el precio base de un tour según su temporada.
+Representa una realización programada de un tour.
 
 **Atributos:**
-- `idTarifa: int`
-- `fechaDesde: LocalDate`
-- `fechaHasta: LocalDate`
-- `precioBase: BigDecimal`
-- `tour: Tour`
+- `-codigo: int`
+- `-fechaInicio: LocalDate`
+- `-fechaFin: LocalDate`
+- `-cupoMinimo: int`
+- `-cupoMaximo: int`
+- `-estado: EstadoSalida`
+- `-listaPasajerosGenerada: boolean`
 
 **Métodos:**
-- `estaVigente(fecha: LocalDate): boolean`
-- `obtenerPrecioBase(): BigDecimal`
+- `+calcularOcupacion(): int`
+- `+verificarCupo(cantidad: int): boolean`
+- `+actualizarEstado(): void`
+- `+asignarGuia(guia: Guia): void`
+- `+asignarVehiculo(vehiculo: Vehiculo): void`
+- `+generarListaPasajeros(): void`
+- `+iniciarSalida(): void`
+- `+finalizarSalida(): void`
+- `+cancelarSalida(motivo: String): void`
 
-**Relaciones:**
-- Cada Tarifa corresponde a un Tour.
-- Un Tour puede tener varias Tarifas.
+La ocupación considera las reservas pendientes y confirmadas que conservan lugares asignados.
 
-### 2.8. Clase Promocion
-
-**Responsabilidad:** representar una promoción aplicable a la tarifa turística.
+### 3.9. Vehiculo
 
 **Atributos:**
-- `idPromocion: int`
-- `nombre: String`
-- `porcentajeDescuento: BigDecimal`
-- `tipo: TipoPromocion`
+- `-patente: String`
+- `-capacidad: int`
+- `-tipo: TipoVehiculo`
 
 **Métodos:**
-- `esAplicable(reserva: Reserva): boolean`
-- `calcularDescuento(importe: BigDecimal): BigDecimal`
+- `+tieneCapacidad(cupoRequerido: int): boolean`
 
-**Relaciones:**
-- Las promociones se evalúan para una Reserva.
-- Solo se aplica la promoción válida más conveniente.
-
-### 2.9. Clase Pago
-
-**Responsabilidad:** representar un pago efectuado por una reserva.
+### 3.10. Empleado (clase abstracta)
 
 **Atributos:**
-- `idPago: int`
-- `fecha: LocalDate`
-- `importe: BigDecimal`
-- `medioPago: MedioPago`
-- `enCuotas: boolean`
-- `recargo: BigDecimal`
+- `-legajo: int`
+- `-nombre: String`
+- `-documento: String`
+- `-telefono: String`
 
 **Métodos:**
-- `calcularRecargo(): BigDecimal`
-- `calcularImporteFinal(): BigDecimal`
+- `+obtenerDatos(): String`
 
-**Relaciones:**
-- Cada Pago corresponde a una Reserva.
-- Una Reserva puede registrar múltiples Pagos.
+### 3.11. Vendedor
 
-### 2.10. Clase AjustePago
-
-**Responsabilidad:** registrar correcciones de pagos sin eliminar el historial.
+Hereda de `Empleado`.
 
 **Atributos:**
-- `idAjuste: int`
-- `fecha: LocalDate`
-- `importeAjuste: BigDecimal`
-- `motivo: String`
-- `pagoOriginal: Pago`
+- `-porcentajeComision: double`
 
 **Métodos:**
-- `obtenerImporteAjuste(): BigDecimal`
+- `+registrarCliente(cliente: Cliente): void`
+- `+crearReserva(cliente: Cliente, salida: Salida): Reserva`
 
-**Relaciones:**
-- Cada AjustePago referencia un Pago original.
-- Un Pago puede tener múltiples ajustes.
+### 3.12. Guia
 
-### 2.11. Clase ServicioAdicional
-
-**Responsabilidad:** representar un servicio complementario ofrecido por la agencia.
+Hereda de `Empleado`.
 
 **Atributos:**
-- `idServicio: int`
-- `nombre: String`
-- `descripcion: String`
-- `precio: BigDecimal`
-- `tipo: TipoServicio`
+- `-idiomas: List<String>`
+- `-categoriasHabilitadas: Set<CategoriaTour>`
+- `-honorarioPorDia: double`
 
 **Métodos:**
-- `obtenerPrecio(): BigDecimal`
-- `esSeguro(): boolean`
+- `+estaHabilitado(categoria: CategoriaTour): boolean`
+- `+estaDisponible(inicio: LocalDate, fin: LocalDate): boolean`
+- `+calcularHonorarios(salida: Salida): double`
 
-**Relaciones:**
-- Un ServicioAdicional puede contratarse en distintas Reservas.
+### 3.13. Coordinador
 
-### 2.12. Clase AdicionalContratado
+Hereda de `Empleado`.
 
-**Responsabilidad:** registrar un servicio adicional contratado para una reserva.
+**Métodos:**
+- `+programarSalida(tour: Tour, inicio: LocalDate, fin: LocalDate): Salida`
+- `+asignarRecursos(salida: Salida, guia: Guia, vehiculo: Vehiculo): void`
+- `+cerrarSalida(salida: Salida): void`
+
+### 3.14. Administrador
+
+Hereda de `Empleado`.
+
+**Métodos:**
+- `+registrarTour(tour: Tour): void`
+- `+actualizarTarifa(tarifa: Tarifa): void`
+- `+generarReporte(tipo: TipoReporte): String`
+
+### 3.15. Cliente
 
 **Atributos:**
-- `idContratacion: int`
-- `servicio: ServicioAdicional`
-- `pasajero: Pasajero`
-- `precioAplicado: BigDecimal`
+- `-codigo: int`
+- `-nombre: String`
+- `-apellido: String`
+- `-documento: String`
+- `-telefono: String`
+- `-correo: String`
+- `-paisResidencia: String`
 
 **Métodos:**
-- `calcularSubtotal(): BigDecimal`
+- `+actualizarContacto(telefono: String, correo: String): void`
 
-**Relaciones:**
-- Cada AdicionalContratado pertenece a una Reserva.
-- Cada AdicionalContratado corresponde a un ServicioAdicional.
-- Cada AdicionalContratado se asigna a un Pasajero.
+### 3.16. Pasajero
 
-### 2.13. Clase Guia
-
-**Responsabilidad:** representar a un guía turístico habilitado.
+Representa una persona que participa en una o varias reservas.
 
 **Atributos:**
-- `idGuia: int`
-- `nombre: String`
-- `apellido: String`
-- `dni: String`
-- `categoriasHabilitadas: Set<CategoriaTour>`
-- `honorarioDiario: BigDecimal`
+- `-codigo: int`
+- `-nombre: String`
+- `-documento: String`
+- `-fechaNacimiento: LocalDate`
+- `-tipo: TipoPasajero`
+- `-contactoEmergencia: String`
+- `-restricciones: String`
 
 **Métodos:**
-- `estaHabilitado(categoria: CategoriaTour): boolean`
-- `estaDisponible(inicio: LocalDate, fin: LocalDate): boolean`
-- `calcularHonorario(dias: int, ventasAdicionales: BigDecimal): BigDecimal`
+- `+calcularEdad(fecha: LocalDate): int`
+- `+cumpleEdadMinima(edadMinima: int, fecha: LocalDate): boolean`
 
-**Relaciones:**
-- Un Guia puede estar asignado a múltiples Salidas, siempre que sus fechas no se superpongan.
-- Un Guia puede tener múltiples Liquidaciones.
-
-### 2.14. Clase Vehiculo
-
-**Responsabilidad:** representar un vehículo utilizado para las excursiones.
+### 3.17. Reserva
 
 **Atributos:**
-- `idVehiculo: int`
-- `patente: String`
-- `descripcion: String`
-- `capacidad: int`
-- `habilitado: boolean`
+- `-numero: int`
+- `-fechaCreacion: LocalDate`
+- `-estado: EstadoReserva`
+- `-total: double`
 
 **Métodos:**
-- `tieneCapacidad(cantidadPasajeros: int): boolean`
-- `estaDisponible(inicio: LocalDate, fin: LocalDate): boolean`
+- `+agregarPasajero(pasajero: Pasajero): void`
+- `+reemplazarPasajero(actual: Pasajero, nuevo: Pasajero): void`
+- `+calcularTotal(): double`
+- `+calcularTotalPagado(): double`
+- `+registrarPago(pago: Pago): void`
+- `+confirmar(): void`
+- `+anular(motivo: String): void`
 
-**Relaciones:**
-- Un Vehiculo puede utilizarse en múltiples Salidas, siempre que no existan superposiciones.
+La reserva pertenece a un cliente, a una salida y al vendedor que la gestionó.
 
-### 2.15. Clase Liquidacion
-
-**Responsabilidad:** registrar la liquidación de honorarios de un guía correspondiente a una salida.
+### 3.18. ServicioAdicional
 
 **Atributos:**
-- `idLiquidacion: int`
-- `fecha: LocalDate`
-- `guia: Guia`
-- `salida: Salida`
-- `importeFijo: BigDecimal`
-- `comisionAdicionales: BigDecimal`
-- `importeTotal: BigDecimal`
+- `-codigo: int`
+- `-nombre: String`
+- `-precio: double`
+- `-tipo: TipoAdicional`
 
 **Métodos:**
-- `calcularImporteTotal(): BigDecimal`
-- `obtenerDetalle(): String`
+- `+obtenerPrecio(): double`
 
-**Relaciones:**
-- Cada Liquidacion corresponde a un Guia y una Salida.
+La obligatoriedad del servicio se determinará según las condiciones del tour.
 
-## 3. Enumeraciones
+### 3.19. AdicionalContratado
 
-Se utilizarán enumeraciones para representar valores predefinidos.
+Representa la contratación de un servicio adicional para un pasajero de una reserva.
 
-**CategoriaTour**
-- AVENTURA
-- CULTURAL
-- NATURALEZA
+**Atributos:**
+- `-codigo: int`
+- `-cantidad: int`
+- `-precioUnitarioAplicado: double`
 
-**Dificultad**
-- BAJA
-- MEDIA
-- ALTA
+**Métodos:**
+- `+calcularSubtotal(): double`
 
-**EstadoSalida**
-- PROGRAMADA
-- CONFIRMADA
-- CANCELADA
-- EN_CURSO
-- FINALIZADA
+### 3.20. Promocion
 
-**EstadoReserva**
-- PENDIENTE
-- CONFIRMADA
-- CANCELADA
+**Atributos:**
+- `-codigo: int`
+- `-nombre: String`
+- `-tipo: TipoPromocion`
+- `-porcentajeDescuento: double`
 
-**MedioPago**
-- EFECTIVO
-- TRANSFERENCIA
-- TARJETA
+**Métodos:**
+- `+esAplicable(reserva: Reserva, pasajero: Pasajero): boolean`
+- `+calcularDescuento(importeBase: double): double`
 
-**TipoPromocion**
-- ANTICIPADA
-- GRUPAL
+### 3.21. Pago
 
-**TipoServicio**
-- SEGURO
-- TRANSPORTE
-- EQUIPAMIENTO
-- OTRO
+**Atributos:**
+- `-codigo: int`
+- `-fecha: LocalDate`
+- `-importe: double`
+- `-medio: MedioPago`
+- `-cantidadCuotas: int`
+- `-recargo: double`
 
-## 4. Relaciones UML y multiplicidades
+**Métodos:**
+- `+calcularRecargo(): double`
+- `+obtenerImporteTotal(): double`
 
-| Clase origen | Clase destino | Relación | Multiplicidad |
+Los pagos registrados se conservan y no se eliminan físicamente.
+
+### 3.22. AjustePago
+
+Representa una corrección de un pago registrado.
+
+**Atributos:**
+- `-codigo: int`
+- `-fecha: LocalDate`
+- `-importeAjuste: double`
+- `-motivo: String`
+
+**Métodos:**
+- `+obtenerImporteAjuste(): double`
+
+### 3.23. Cancelacion
+
+Representa la cancelación de una reserva y la devolución correspondiente.
+
+**Atributos:**
+- `-codigo: int`
+- `-fecha: LocalDate`
+- `-motivo: String`
+- `-origen: OrigenCancelacion`
+- `-diasAnticipacion: int`
+- `-porcentajeDevolucion: double`
+- `-importeDevuelto: double`
+
+**Métodos:**
+- `+calcularDevolucion(importePagado: double): double`
+- `+registrarDevolucion(): void`
+
+El cálculo deberá respetar los porcentajes definidos en `requisitos.md`.
+
+### 3.24. Liquidacion
+
+Representa la liquidación de honorarios de un guía por una salida finalizada.
+
+**Atributos:**
+- `-codigo: int`
+- `-fecha: LocalDate`
+- `-diasTrabajados: int`
+- `-importeFijo: double`
+- `-comisionAdicionales: double`
+- `-total: double`
+
+**Métodos:**
+- `+calcularTotal(): double`
+
+El total corresponde al honorario diario multiplicado por los días trabajados, más el 5 % de las ventas de servicios adicionales de la salida.
+
+## 4. Enumeraciones
+
+### CategoriaTour
+- `AVENTURA`
+- `CULTURAL`
+- `NATURALEZA`
+
+### Temporada
+- `BAJA`
+- `MEDIA`
+- `ALTA`
+
+### TipoActividad
+- `VISITA`
+- `TRASLADO`
+- `COMIDA`
+- `ALOJAMIENTO`
+- `OTRA`
+
+### TipoVehiculo
+- `MICRO`
+- `COMBI`
+- `CAMIONETA`
+
+### TipoPasajero
+- `ADULTO`
+- `MENOR`
+- `JUBILADO`
+
+### EstadoSalida
+- `PROGRAMADA`
+- `CONFIRMADA`
+- `COMPLETA`
+- `EN_CURSO`
+- `FINALIZADA`
+- `CANCELADA`
+
+### EstadoReserva
+- `PENDIENTE`
+- `CONFIRMADA`
+- `ANULADA`
+- `FINALIZADA`
+
+### MedioPago
+- `EFECTIVO`
+- `TRANSFERENCIA`
+- `TARJETA`
+
+### TipoAdicional
+- `EXCURSION`
+- `TRASLADO`
+- `SEGURO`
+- `OTRO`
+
+### TipoPromocion
+- `ANTICIPADA`
+- `GRUPO`
+- `JUBILADO`
+
+### OrigenCancelacion
+- `CLIENTE`
+- `AGENCIA`
+
+### TipoReporte
+- `OCUPACION`
+- `VENTAS`
+- `INGRESOS`
+- `CANCELACIONES`
+
+## 5. Relaciones y multiplicidades UML
+
+Las multiplicidades expresan cuántas instancias de una clase pueden vincularse con una instancia de la otra.
+
+| Clase A | Clase B | Relación | Cantidad de B por cada A |
 |---|---|---|---|
-| Tour | Actividad | Composición | 1 a 1..* |
-| Tour | Salida | Asociación | 1 a 0..* |
-| Tour | Tarifa | Composición | 1 a 0..* |
-| Cliente | Reserva | Asociación | 1 a 0..* |
-| Salida | Reserva | Asociación | 1 a 0..* |
-| Reserva | Pasajero | Asociación | 1..* a 0..* |
-| Reserva | Pago | Composición | 1 a 0..* |
-| Pago | AjustePago | Composición | 1 a 0..* |
-| Reserva | AdicionalContratado | Composición | 1 a 0..* |
-| AdicionalContratado | ServicioAdicional | Asociación | 0..* a 1 |
-| AdicionalContratado | Pasajero | Asociación | 0..* a 1 |
-| Salida | Guia | Asociación | 0..* a 0..1 |
-| Salida | Vehiculo | Asociación | 0..* a 0..1 |
-| Guia | Liquidacion | Asociación | 1 a 0..* |
-| Salida | Liquidacion | Asociación | 1 a 0..1 |
+| Tour | TourAventura, TourCultural, TourNaturaleza | Herencia | No aplica |
+| Empleado | Vendedor, Guia, Coordinador, Administrador | Herencia | No aplica |
+| Tour | Actividad | Composición | 1..* |
+| Tour | Tarifa | Composición | 1..* |
+| Tour | Salida | Asociación | 0..* |
+| Actividad | Proveedor | Asociación | 0..1 |
+| Proveedor | Actividad | Asociación | 0..* |
+| Salida | Reserva | Asociación | 0..* |
+| Salida | Guia | Asociación | 0..1 |
+| Guia | Salida | Asociación | 0..* |
+| Salida | Vehiculo | Asociación | 0..1 |
+| Vehiculo | Salida | Asociación | 0..* |
+| Cliente | Reserva | Asociación | 0..* |
+| Vendedor | Reserva | Asociación | 0..* |
+| Reserva | Pasajero | Asociación | 1..* |
+| Pasajero | Reserva | Asociación | 0..* |
+| Reserva | Pago | Composición | 0..* |
+| Pago | AjustePago | Composición | 0..* |
+| Reserva | AdicionalContratado | Composición | 0..* |
+| Pasajero | AdicionalContratado | Asociación | 0..* |
+| ServicioAdicional | AdicionalContratado | Asociación | 0..* |
+| Reserva | Cancelacion | Composición | 0..1 |
+| Salida | Liquidacion | Asociación | 0..1 |
+| Guia | Liquidacion | Asociación | 0..* |
 
-**Interpretación:** una salida tiene como máximo un guía y un vehículo asignados en este diseño inicial. Cada reserva corresponde a una única salida y a un único cliente.
+**Aclaraciones de multiplicidad:**
 
-## 5. Reglas principales que debe respetar el modelo
+- Cada reserva pertenece exactamente a un cliente, un vendedor y una salida.
+- Cada pago pertenece exactamente a una reserva.
+- Cada ajuste corresponde a un pago.
+- Cada contratación de adicional corresponde a una reserva, un pasajero de esa reserva y un servicio adicional.
+- Cada cancelación corresponde a una reserva.
+- Cada liquidación corresponde a una salida y un guía.
+- Una misma persona registrada como pasajero puede participar en diferentes reservas.
+- Las salidas pueden programarse antes de asignar guía o vehículo, pero no pueden comenzar sin cumplir las condiciones operativas establecidas.
+- La composición de actividades y tarifas supone que sus registros forman parte del tour al que pertenecen, sin impedir que otros tours tengan actividades o tarifas con valores equivalentes.
 
-- No se pueden registrar reservas que excedan el cupo máximo.
-- Todos los pasajeros ocupan un lugar, independientemente de su tarifa.
-- La edad del pasajero se calcula a la fecha de inicio de la salida.
-- Los menores de tres años tienen tarifa cero.
-- Los menores de doce años pagan el 60 % de la tarifa base.
-- Los jubilados reciben un descuento del 10 %.
-- Las promociones por anticipación y grupo no se acumulan entre sí.
-- Se aplica la promoción válida más conveniente.
-- El seguro es obligatorio para los tours de aventura.
-- La reserva requiere una seña mínima del 30 % para confirmarse.
-- Los pagos deben conservar su historial mediante ajustes.
-- Los guías deben estar habilitados y disponibles.
-- Los vehículos deben tener capacidad suficiente.
-- Las cancelaciones deben respetar los plazos y porcentajes establecidos.
-- Una salida no puede iniciarse sin guía asignado ni lista de pasajeros.
-- Los honorarios se calculan según los días trabajados y las ventas de adicionales.
+## 6. Reglas que deberán implementarse
 
-## 6. Consideraciones de diseño
+El modelo debe permitir controlar:
 
-El modelo inicial identifica principalmente entidades del dominio y sus responsabilidades.
+1. Cupos mínimos y máximos.
+2. Validaciones de edad y restricciones.
+3. Seguro obligatorio para tours de aventura.
+4. Tarifas por temporada y categoría.
+5. Descuentos no acumulables.
+6. Seña mínima del 30 %.
+7. Anulación por saldo impago.
+8. Recargo por tarjeta en cuotas.
+9. Cancelaciones y devoluciones.
+10. Reemplazo de pasajeros.
+11. Disponibilidad y habilitación de guías.
+12. Capacidad de vehículos.
+13. Generación de listas de pasajeros.
+14. Liquidación de honorarios.
+15. Conservación del historial de pagos y ajustes.
 
-En una etapa posterior se incorporarán servicios y componentes de coordinación para separar las reglas de negocio de las operaciones del sistema.
+## 7. Consideraciones de diseño
 
-Se evaluará la aplicación de principios SOLID, especialmente responsabilidad única, abierto/cerrado e inversión de dependencias.
+Este documento representa el modelo inicial del sistema.
 
-También se analizará la aplicación de patrones GRASP, como Experto en Información, Creador, Controlador y Bajo Acoplamiento.
+En la siguiente etapa del diseño se aplicarán tres principios SOLID y cuatro patrones GRASP para mejorar la distribución de responsabilidades, reducir el acoplamiento y facilitar la extensión del sistema.
 
-El diseño definitivo deberá conservar la coherencia con los requisitos funcionales, las reglas de negocio y los diagramas UML.
+Entre los aspectos a revisar se encuentran:
 
-## 7. Conclusión
+- Separar el cálculo de precios de la entidad Reserva.
+- Separar la política de cancelación de su registro.
+- Incorporar controladores para coordinar los casos de uso.
+- Mejorar la distribución de responsabilidades entre entidades y servicios.
 
-El modelo propuesto constituye una base para representar el funcionamiento de la agencia Rumbo Sur.
-
-Las clases identificadas permiten administrar los principales procesos del negocio, desde la programación de tours hasta la reserva, el pago, la ejecución de salidas y la liquidación de honorarios.
-
-Este documento servirá como referencia para elaborar el diagrama de clases inicial, los diagramas de secuencia y el modelo final.
+Las modificaciones se reflejarán en el diagrama de clases final y se documentarán indicando el problema detectado, la decisión tomada y la ventaja obtenida.
