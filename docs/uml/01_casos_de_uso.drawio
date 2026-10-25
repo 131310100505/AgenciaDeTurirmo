@@ -1,0 +1,260 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT">
+  <diagram id="uc-v2" name="01 - Casos de uso corregido">
+    <mxGraphModel dx="3335" dy="1435" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sys" parent="1" style="swimlane;html=1;startSize=45;horizontal=1;rounded=0;fillColor=#e8effb;swimlaneFillColor=#ffffff;strokeColor=#3b5374;fontSize=21;fontStyle=1;" value="Sistema de gestión Rumbo Sur" vertex="1">
+          <mxGeometry height="1530" width="1330" x="275" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="CU01" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU01 — Administrar tours" vertex="1">
+          <mxGeometry height="76" width="285" x="115" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="CU03" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU03 — Programar salida" vertex="1">
+          <mxGeometry height="76" width="285" x="85" y="1035" as="geometry" />
+        </mxCell>
+        <mxCell id="CU14" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU14 — Asignar guía y vehículo" vertex="1">
+          <mxGeometry height="76" width="285" x="532" y="1025" as="geometry" />
+        </mxCell>
+        <mxCell id="CU15" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU15 — Generar lista de pasajeros" vertex="1">
+          <mxGeometry height="76" width="285" x="1005" y="1035" as="geometry" />
+        </mxCell>
+        <mxCell id="HREC" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9e9;strokeColor=#b78b35;strokeWidth=1.4;fontSize=13;align=center;verticalAlign=middle;" value="Verificar disponibilidad y capacidad" vertex="1">
+          <mxGeometry height="63" width="215" x="567" y="885" as="geometry" />
+        </mxCell>
+        <mxCell id="inc_CU14_HREC" edge="1" parent="sys" source="CU14" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;" target="HREC" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G5mBS1gj5z39FM9EERj5-1" edge="1" parent="sys" source="HREC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;defaultLabelBackgroundColor=page;" target="HREC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HHON" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9e9;strokeColor=#b78b35;strokeWidth=1.4;fontSize=13;align=center;verticalAlign=middle;" value="Calcular honorarios" vertex="1">
+          <mxGeometry height="63" width="220" x="520" y="1395" as="geometry" />
+        </mxCell>
+        <mxCell id="CU19" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU19 — Registrar ajuste de pago" vertex="1">
+          <mxGeometry height="76" width="285" x="85" y="872" as="geometry" />
+        </mxCell>
+        <mxCell id="CU10" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU10 — Modificar reserva" vertex="1">
+          <mxGeometry height="76" width="285" x="85" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="CU11" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU11 — Reemplazar pasajero" vertex="1">
+          <mxGeometry height="76" width="285" x="487.5" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="G5mBS1gj5z39FM9EERj5-2" edge="1" parent="sys" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU10" value="">
+          <mxGeometry relative="1" x="-0.0395" as="geometry">
+            <Array as="points">
+              <mxPoint x="-75" y="745" />
+            </Array>
+            <mxPoint x="-75" y="685" as="sourcePoint" />
+            <mxPoint x="618" y="765" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CU12" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU12 — Cancelar reserva" vertex="1">
+          <mxGeometry height="76" width="285" x="845" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="HDEV" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9e9;strokeColor=#b78b35;strokeWidth=1.4;fontSize=13;align=center;verticalAlign=middle;" value="Calcular devolución" vertex="1">
+          <mxGeometry height="63" width="215" x="880" y="885" as="geometry" />
+        </mxCell>
+        <mxCell id="inc_CU12_HDEV" edge="1" parent="sys" source="CU12" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;" target="HDEV" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HCUPO" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9e9;strokeColor=#b78b35;strokeWidth=1.4;fontSize=13;align=center;verticalAlign=middle;" value="Validar cupos y restricciones" vertex="1">
+          <mxGeometry height="63" width="215" x="1075" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="CU05" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU05 — Crear reserva" vertex="1">
+          <mxGeometry height="76" width="285" x="965" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="inc_CU05_HCUPO" edge="1" parent="sys" source="CU05" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;" target="HCUPO" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CU06" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU06 — Calcular precio y promociones" vertex="1">
+          <mxGeometry height="76" width="285" x="465" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="inc_CU05_CU06" edge="1" parent="sys" source="CU05" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;" target="CU06" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HSENA" parent="sys" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9e9;strokeColor=#b78b35;strokeWidth=1.4;fontSize=13;align=center;verticalAlign=middle;" value="Verificar seña mínima" vertex="1">
+          <mxGeometry height="63" width="215" x="1015" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#304761;fontSize=15;" value="Administrador" vertex="1">
+          <mxGeometry height="110" width="100" x="80" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="vend" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#304761;fontSize=15;" value="Vendedor" vertex="1">
+          <mxGeometry height="110" width="100" x="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="coord" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#304761;fontSize=15;" value="Coordinador de operaciones" vertex="1">
+          <mxGeometry height="110" width="100" x="80" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="CU02" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU02 — Administrar itinerarios y tarifas" vertex="1">
+          <mxGeometry height="76" width="285" x="760" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="CU18" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU18 — Generar reportes" vertex="1">
+          <mxGeometry height="76" width="285" x="1160" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="CU04" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU04 — Registrar cliente y pasajero" vertex="1">
+          <mxGeometry height="76" width="285" x="360" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="CU07" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU07 — Contratar servicios adicionales" vertex="1">
+          <mxGeometry height="76" width="285" x="360" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="CU08" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU08 — Registrar pago" vertex="1">
+          <mxGeometry height="76" width="285" x="760" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="CU09" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU09 — Confirmar reserva" vertex="1">
+          <mxGeometry height="76" width="285" x="1160" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="CU16" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU16 — Gestionar estado de salida" vertex="1">
+          <mxGeometry height="76" width="285" x="360" y="1280" as="geometry" />
+        </mxCell>
+        <mxCell id="CU17" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU17 — Cerrar salida y liquidar guía" vertex="1">
+          <mxGeometry height="76" width="285" x="760" y="1280" as="geometry" />
+        </mxCell>
+        <mxCell id="CU13" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8fbff;strokeColor=#426b9c;strokeWidth=1.5;fontSize=14;align=center;verticalAlign=middle;" value="CU13 — Controlar vencimientos de pago" vertex="1">
+          <mxGeometry height="76" width="285" x="1160" y="1280" as="geometry" />
+        </mxCell>
+        <mxCell id="a_CU01" edge="1" parent="1" source="admin" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU01" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="163" />
+              <mxPoint x="350" y="163" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_CU02" edge="1" parent="1" source="admin" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU02" value="">
+          <mxGeometry relative="1" x="-0.0519" as="geometry">
+            <Array as="points">
+              <mxPoint x="902.5" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_CU18" edge="1" parent="1" source="admin" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU18" value="">
+          <mxGeometry relative="1" x="-0.034" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="260" />
+              <mxPoint x="1302.5" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU04" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU04" value="">
+          <mxGeometry relative="1" x="-0.095" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="430" />
+            </Array>
+            <mxPoint x="180" y="570" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU05" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU05" value="">
+          <mxGeometry relative="1" x="-0.2187" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="510" />
+              <mxPoint x="1382.5" y="510" />
+            </Array>
+            <mxPoint x="220" y="570" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU06" edge="1" parent="1" source="vend" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU06" value="">
+          <mxGeometry relative="1" x="0.7337" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="360" />
+              <mxPoint x="882.5" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU07" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU07" value="">
+          <mxGeometry relative="1" x="-0.475" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="593" />
+            </Array>
+            <mxPoint x="200" y="593" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU08" edge="1" parent="1" source="vend" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU08" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="902.5" y="655" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU09" edge="1" parent="1" source="vend" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU09" value="">
+          <mxGeometry relative="1" x="-0.0146" as="geometry">
+            <Array as="points">
+              <mxPoint x="1302.5" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU11" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU11" value="">
+          <mxGeometry relative="1" x="-0.0671" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="760" />
+              <mxPoint x="902.5" y="760" />
+            </Array>
+            <mxPoint x="220" y="720" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU12" edge="1" parent="1" source="vend" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU12" value="">
+          <mxGeometry relative="1" x="0.0984" as="geometry">
+            <Array as="points">
+              <mxPoint x="1190" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v_CU19" edge="1" parent="1" source="vend" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU19" value="">
+          <mxGeometry relative="1" x="-0.1015" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="880" />
+              <mxPoint x="502.5" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU03" edge="1" parent="1" source="coord" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU03" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="1120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU14" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU14" value="">
+          <mxGeometry relative="1" x="-0.0616" as="geometry">
+            <mxPoint x="170" y="1170" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU15" edge="1" parent="1" source="coord" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU15" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1422.5" y="1200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU16" edge="1" parent="1" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU16" value="">
+          <mxGeometry relative="1" x="-0.0832" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="1400" />
+              <mxPoint x="502.5" y="1400" />
+            </Array>
+            <mxPoint x="140" y="1320" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU17" edge="1" parent="1" source="coord" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU17" value="">
+          <mxGeometry relative="1" x="-0.0216" as="geometry">
+            <Array as="points">
+              <mxPoint x="902.5" y="1260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_CU13" edge="1" parent="1" source="coord" style="endArrow=none;strokeWidth=1.2;strokeColor=#7b8a9a;html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;" target="CU13" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1302.5" y="1230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="inc_CU09_HSENA" edge="1" parent="1" source="CU09" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;exitX=1;exitY=1;exitDx=0;exitDy=0;" target="HSENA" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inc_CU17_HHON" edge="1" parent="1" source="CU17" style="endArrow=block;endFill=0;dashed=1;dashPattern=6 4;strokeWidth=1.5;strokeColor=#53677d;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=13;" target="HHON" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
