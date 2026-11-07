@@ -9,7 +9,10 @@ import java.time.LocalDate;
  * un movimiento aparte, para conservar el historial (supuesto S23).
  *
  * El importe tiene signo: negativo descuenta del pago y positivo lo aumenta.
- * También es inmutable: un ajuste registrado no se cambia.
+ *
+ * Clase completamente inmutable: es final, todos sus atributos son final, no tiene
+ * setters y ninguno de sus atributos se puede cambiar desde afuera (LocalDate y
+ * String también son inmutables). Un ajuste registrado no se cambia nunca.
  */
 public final class AjustePago implements Serializable {
 

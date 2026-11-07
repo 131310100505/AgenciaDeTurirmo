@@ -9,13 +9,15 @@ import java.util.List;
 /**
  * Pago registrado sobre una reserva (seña, pago parcial o saldo).
  *
- * Clase inmutable: es final (nadie puede heredarla y cambiarle el comportamiento),
- * sus datos son final y no tiene setters. Encaja con la regla de negocio de que
- * un pago registrado no se modifica ni se borra (supuesto S23).
+ * Los datos del pago (importe, fecha, medio, cuotas y recargo) no se modifican:
+ * son final y no tienen setters, y la clase es final para que nadie la herede y
+ * cambie ese comportamiento. Encaja con la regla de negocio de que un pago
+ * registrado no se modifica ni se borra (supuesto S23).
  *
- * Las correcciones no tocan estos datos: se agregan como AjustePago, que también
- * es inmutable. La lista de ajustes solo admite agregar, así queda el historial
+ * La clase no es inmutable del todo: las correcciones se agregan como ajustes con
+ * agregarAjuste(), y la lista de ajustes solo admite agregar, así queda el historial
  * completo de movimientos (composición: los ajustes pertenecen al pago).
+ * El ejemplo de clase completamente inmutable es AjustePago.
  */
 public final class Pago implements Serializable {
 
@@ -94,7 +96,7 @@ public final class Pago implements Serializable {
         ajustes.add(ajuste);
     }
 
-    // ---------- Getters (sin setters: la clase es inmutable) ----------
+    // ---------- Getters (sin setters: los datos del pago no se modifican) ----------
 
     public int getCodigo() {
         return codigo;
