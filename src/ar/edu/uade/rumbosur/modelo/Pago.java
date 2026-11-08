@@ -1,5 +1,7 @@
 package ar.edu.uade.rumbosur.modelo;
 
+import ar.edu.uade.rumbosur.excepciones.PagoInvalidoException;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -83,15 +85,19 @@ public final class Pago implements Serializable {
         return neto;
     }
 
-    // ---------- Día 2 ----------
-
     /**
      * Agrega una nota de ajuste sin modificar los datos originales del pago (CU19).
-     * El día 2 se agrega la validación con PagoInvalidoException.
+     * Rechaza los ajustes sin importe y los que dejarían el pago en negativo.
      */
-    public void agregarAjuste(AjustePago ajuste) {
+    public void agregarAjuste(AjustePago ajuste) throws PagoInvalidoException {
         if (ajuste == null) {
-            throw new IllegalArgumentException("El ajuste no puede ser nulo.");
+            throw new PagoInvalidoException("El ajuste no puede ser nulo.");
+        }
+        if (ajuste.obtenerImporteAjuste() == 0) {
+            throw new PagoInvalidoException("El importe del ajuste no puede ser cero.");
+        }
+        if (getImporteNeto() + ajuste.obtenerImporteAjuste() < 0) {
+            throw new PagoInvalidoException("El ajuste no puede dejar el pago " + codigo + " en negativo.");
         }
         ajustes.add(ajuste);
     }

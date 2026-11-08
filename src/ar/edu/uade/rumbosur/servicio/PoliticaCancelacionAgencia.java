@@ -11,10 +11,8 @@ import java.time.LocalDate;
  */
 public class PoliticaCancelacionAgencia implements PoliticaCancelacion {
 
-    // ---------- Día 2 ----------
-
     @Override
     public double calcularDevolucion(Reserva reserva, LocalDate fechaCancelacion) {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+        return reserva.calcularTotalPagado();
     }
 }
