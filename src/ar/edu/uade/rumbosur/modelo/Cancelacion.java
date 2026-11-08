@@ -35,11 +35,12 @@ public class Cancelacion implements Serializable {
         this.importeDevuelto = 0;
     }
 
-    // ---------- Día 2 ----------
-
-    /** Registra el importe que devuelve la política de cancelación. */
+    /** Registra el importe que devuelve la política de cancelación. Puede ser cero. */
     public void registrarDevolucion(double importe) {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+        if (importe < 0) {
+            throw new IllegalArgumentException("El importe devuelto no puede ser negativo.");
+        }
+        this.importeDevuelto = importe;
     }
 
     // ---------- Getters ----------
