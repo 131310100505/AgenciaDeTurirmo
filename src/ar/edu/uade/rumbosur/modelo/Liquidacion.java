@@ -2,6 +2,7 @@ package ar.edu.uade.rumbosur.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Liquidación de honorarios del guía al cerrar una salida (CU17).
@@ -41,14 +42,30 @@ public class Liquidacion implements Serializable {
         this.total = 0;
     }
 
-    // ---------- Día 2 ----------
-
     /**
      * Calcula los días trabajados, el importe fijo (honorario por día del guía),
      * la comisión del 5 % sobre los adicionales vendidos en la salida y el total.
      */
     public double calcularTotal() {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+        // Se suma 1 porque se trabajan el día de inicio y el de fin (supuesto S04).
+        diasTrabajados = (int) ChronoUnit.DAYS.between(salida.getFechaInicio(), salida.getFechaFin()) + 1;
+        importeFijo = diasTrabajados * guia.getHonorarioPorDia();
+        comisionAdicionales = calcularVentasAdicionales() * PORCENTAJE_COMISION_ADICIONALES;
+        total = importeFijo + comisionAdicionales;
+        return total;
+    }
+
+    /** Suma los adicionales de la salida. Los de reservas anuladas no cuentan como vendidos. */
+    private double calcularVentasAdicionales() {
+        double ventas = 0;
+        for (Reserva reserva : salida.getReservas()) {
+            if (reserva.getEstado() != EstadoReserva.ANULADA) {
+                for (AdicionalContratado adicional : reserva.getAdicionales()) {
+                    ventas += adicional.calcularSubtotal();
+                }
+            }
+        }
+        return ventas;
     }
 
     // ---------- Getters ----------

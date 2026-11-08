@@ -2,8 +2,10 @@ package ar.edu.uade.rumbosur.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,6 +17,11 @@ public class Reserva implements Serializable {
     // Versión de la clase para la serialización: así el archivo guardado se puede volver a leer.
     private static final long serialVersionUID = 1L;
 
+    // Constantes de las reglas de negocio (static final: una sola copia, no cambia).
+    private static final double PORCENTAJE_SENA = 0.30;        // supuesto S17
+    private static final int DIAS_MINIMOS_REEMPLAZO = 3;       // supuesto S10
+    private static final double MARGEN = 0.01;                 // un centavo, por el redondeo de double
+
     // static: es un contador compartido por todas las reservas, no un dato de cada una.
     private static int siguienteNumero = 1;
 
@@ -22,6 +29,7 @@ public class Reserva implements Serializable {
     private LocalDate fechaCreacion;
     private EstadoReserva estado;
     private double total;
+    private String motivoAnulacion;
 
     // Asociaciones: cada reserva tiene exactamente un cliente, una salida y un vendedor.
     private Cliente cliente;
@@ -32,6 +40,7 @@ public class Reserva implements Serializable {
     private List<Pasajero> pasajeros;
     private List<Pago> pagos;                       // composición: los pagos pertenecen a la reserva
     private List<AdicionalContratado> adicionales;  // composición
+    private List<String> historial;                 // registro de cambios (supuesto S10)
 
     /** Constructor del mensaje «create» Reserva(cliente, salida, vendedor) del diagrama CU05. */
     public Reserva(Cliente cliente, Salida salida, Vendedor vendedor) {
@@ -48,6 +57,8 @@ public class Reserva implements Serializable {
         this.pasajeros = new ArrayList<>();
         this.pagos = new ArrayList<>();
         this.adicionales = new ArrayList<>();
+        this.historial = new ArrayList<>();
+        registrarEnHistorial("Reserva creada en estado " + estado);
     }
 
     public void agregarPasajero(Pasajero pasajero) {
@@ -59,11 +70,15 @@ public class Reserva implements Serializable {
                     + " ya está en la reserva.");
         }
         pasajeros.add(pasajero);
+        registrarEnHistorial("Se agrega el pasajero " + pasajero.getNombre());
     }
 
     public void agregarAdicional(AdicionalContratado adicional) {
         if (adicional == null) {
             throw new IllegalArgumentException("El adicional no puede ser nulo.");
+        }
+        if (!pasajeros.contains(adicional.getPasajero())) {
+            throw new IllegalArgumentException("El pasajero del adicional no está en la reserva.");
         }
         adicionales.add(adicional);
     }
@@ -85,6 +100,16 @@ public class Reserva implements Serializable {
         return totalPagado;
     }
 
+    /** Seña mínima para confirmar: 30 % del total exigible (supuesto S17). */
+    public double calcularSenaMinima() {
+        return total * PORCENTAJE_SENA;
+    }
+
+    /** Lo que falta pagar. Nunca es negativo. */
+    public double calcularSaldo() {
+        return Math.max(0, total - calcularTotalPagado());
+    }
+
     /**
      * Indica si la reserva ocupa lugares en la salida.
      * Pendientes y confirmadas ocupan cupo (supuesto S07); anuladas no.
@@ -98,21 +123,81 @@ public class Reserva implements Serializable {
         return pasajeros.size();
     }
 
-    // ---------- Día 2 ----------
-
-    /** Confirma la reserva si los pagos alcanzan la seña del 30 %. */
-    public void confirmar() {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+    /**
+     * CU09: confirma la reserva si los pagos netos alcanzan la seña del 30 %.
+     * Devuelve true si quedó confirmada y false si sigue pendiente.
+     *
+     * Que no alcance la seña es una situación previsible, por eso se resuelve
+     * con una validación y no con una excepción (material "Excepciones en Java":
+     * no usar excepciones como control de flujo).
+     */
+    public boolean confirmar() {
+        if (estado != EstadoReserva.PENDIENTE) {
+            return false;
+        }
+        if (calcularTotalPagado() + MARGEN < calcularSenaMinima()) {
+            return false;
+        }
+        estado = EstadoReserva.CONFIRMADA;
+        registrarEnHistorial("Reserva confirmada con $" + calcularTotalPagado() + " pagados");
+        return true;
     }
 
-    /** Reemplaza un pasajero hasta 3 días antes de la salida. */
-    public void reemplazarPasajero(Pasajero actual, Pasajero nuevo) {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+    /**
+     * CU11: reemplaza un pasajero hasta 3 días antes de la salida (supuesto S10).
+     * Las restricciones del tour sobre el nuevo pasajero las valida antes el controlador.
+     * Los adicionales del pasajero reemplazado se quitan; el controlador vuelve a
+     * contratar el seguro obligatorio si el tour es de aventura.
+     */
+    public void reemplazarPasajero(Pasajero actual, Pasajero nuevo, LocalDate fecha) {
+        if (!ocupaCupo()) {
+            throw new IllegalArgumentException("La reserva " + numero + " está " + estado
+                    + " y no admite cambios.");
+        }
+        int posicion = pasajeros.indexOf(actual);
+        if (posicion == -1) {
+            throw new IllegalArgumentException("El pasajero a reemplazar no está en la reserva.");
+        }
+        if (pasajeros.contains(nuevo)) {
+            throw new IllegalArgumentException("El nuevo pasajero ya está en la reserva.");
+        }
+        long diasHastaSalida = ChronoUnit.DAYS.between(fecha, salida.getFechaInicio());
+        if (diasHastaSalida < DIAS_MINIMOS_REEMPLAZO) {
+            throw new IllegalArgumentException("Solo se puede reemplazar un pasajero hasta "
+                    + DIAS_MINIMOS_REEMPLAZO + " días antes de la salida.");
+        }
+        pasajeros.set(posicion, nuevo);
+        quitarAdicionalesDe(actual);
+        registrarEnHistorial("Se reemplaza a " + actual.getNombre() + " por " + nuevo.getNombre());
     }
 
-    /** Anula la reserva y libera sus lugares (deja de ocupar cupo). */
+    /**
+     * Anula la reserva y libera sus lugares: al quedar ANULADA deja de ocupar cupo.
+     * La usan la cancelación (CU12) y el control de vencimientos (CU13).
+     */
     public void anular(String motivo) {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+        if (!ocupaCupo()) {
+            throw new IllegalArgumentException("La reserva " + numero + " ya está " + estado + ".");
+        }
+        estado = EstadoReserva.ANULADA;
+        motivoAnulacion = motivo;
+        registrarEnHistorial("Reserva anulada: " + motivo);
+    }
+
+    // Recorre con Iterator porque elimina mientras recorre
+    // (con for-each daría ConcurrentModificationException).
+    private void quitarAdicionalesDe(Pasajero pasajero) {
+        Iterator<AdicionalContratado> iterador = adicionales.iterator();
+        while (iterador.hasNext()) {
+            AdicionalContratado adicional = iterador.next();
+            if (adicional.getPasajero().equals(pasajero)) {
+                iterador.remove();
+            }
+        }
+    }
+
+    private void registrarEnHistorial(String descripcion) {
+        historial.add(LocalDate.now() + " - " + descripcion);
     }
 
     // ---------- Getters y setters ----------
@@ -135,7 +220,14 @@ public class Reserva implements Serializable {
 
     /** Lo usa el controlador con el total que calcula CalculadoraPrecio. */
     public void setTotal(double total) {
+        if (total < 0) {
+            throw new IllegalArgumentException("El total no puede ser negativo.");
+        }
         this.total = total;
+    }
+
+    public String getMotivoAnulacion() {
+        return motivoAnulacion;
     }
 
     public Cliente getCliente() {
@@ -162,6 +254,10 @@ public class Reserva implements Serializable {
         return Collections.unmodifiableList(adicionales);
     }
 
+    public List<String> getHistorial() {
+        return Collections.unmodifiableList(historial);
+    }
+
     /**
      * Los atributos static no se guardan al serializar. Después de cargar los datos
      * del archivo, el Repositorio llama a este método para que el contador siga
@@ -174,6 +270,6 @@ public class Reserva implements Serializable {
     @Override
     public String toString() {
         return "Reserva " + numero + " - " + cliente.getApellido() + " - "
-                + pasajeros.size() + " pasajero(s) - " + estado + " - $" + total;
+                + pasajeros.size() + " pasajero(s) - " + estado + " - $" + String.format("%.2f", total);
     }
 }

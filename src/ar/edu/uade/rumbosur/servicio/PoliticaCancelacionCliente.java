@@ -3,6 +3,7 @@ package ar.edu.uade.rumbosur.servicio;
 import ar.edu.uade.rumbosur.modelo.Reserva;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Cancelación pedida por el cliente: el porcentaje depende de los días de
@@ -11,10 +12,22 @@ import java.time.LocalDate;
  */
 public class PoliticaCancelacionCliente implements PoliticaCancelacion {
 
-    // ---------- Día 2 ----------
-
     @Override
     public double calcularDevolucion(Reserva reserva, LocalDate fechaCancelacion) {
-        throw new UnsupportedOperationException("Pendiente: se implementa el día 2.");
+        long diasAnticipacion = ChronoUnit.DAYS.between(fechaCancelacion, reserva.getSalida().getFechaInicio());
+        return reserva.calcularTotalPagado() * obtenerPorcentaje(diasAnticipacion);
+    }
+
+    private double obtenerPorcentaje(long diasAnticipacion) {
+        if (diasAnticipacion >= 30) {
+            return 0.90;
+        }
+        if (diasAnticipacion >= 15) {
+            return 0.50;
+        }
+        if (diasAnticipacion >= 7) {
+            return 0.20;
+        }
+        return 0;
     }
 }
