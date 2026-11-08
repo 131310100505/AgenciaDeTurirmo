@@ -90,11 +90,16 @@ public class ControladorReservas {
      */
     public Cancelacion cancelarReserva(Reserva reserva, String motivo, OrigenCancelacion origen)
             throws ReservaNoCancelableException {
-        LocalDate hoy = LocalDate.now();
-        validarCancelable(reserva, hoy);
+        return cancelarReserva(reserva, motivo, origen, LocalDate.now());
+    }
 
-        Cancelacion cancelacion = new Cancelacion(reserva.getNumero(), hoy, motivo, origen);
-        double importeDevuelto = obtenerPolitica(origen).calcularDevolucion(reserva, hoy);
+    /** Sobrecarga que recibe la fecha de cancelación, para poder probar con fechas fijas. */
+    public Cancelacion cancelarReserva(Reserva reserva, String motivo, OrigenCancelacion origen, LocalDate fecha)
+            throws ReservaNoCancelableException {
+        validarCancelable(reserva, fecha);
+
+        Cancelacion cancelacion = new Cancelacion(reserva.getNumero(), fecha, motivo, origen);
+        double importeDevuelto = obtenerPolitica(origen).calcularDevolucion(reserva, fecha);
         reserva.anular(motivo);
         cancelacion.registrarDevolucion(importeDevuelto);
 
@@ -153,13 +158,17 @@ public class ControladorReservas {
      * Las reservas no se sacan del Map: quedan anuladas para conservar el historial.
      */
     public void controlarVencimientos() {
-        LocalDate hoy = LocalDate.now();
+        controlarVencimientos(LocalDate.now());
+    }
+
+    /** Sobrecarga que recibe la fecha del control, para poder probar con fechas fijas. */
+    public void controlarVencimientos(LocalDate fecha) {
         Iterator<Reserva> iterador = reservas.values().iterator();
         while (iterador.hasNext()) {
             Reserva reserva = iterador.next();
             LocalDate fechaLimite = reserva.getSalida().getFechaInicio().minusDays(DIAS_LIMITE_SALDO);
             double saldo = reserva.getTotal() - reserva.calcularTotalPagado();
-            if (reserva.ocupaCupo() && hoy.isAfter(fechaLimite) && saldo > MARGEN_SALDO) {
+            if (reserva.ocupaCupo() && fecha.isAfter(fechaLimite) && saldo > MARGEN_SALDO) {
                 reserva.anular("Saldo no abonado " + DIAS_LIMITE_SALDO + " días antes de la salida.");
             }
         }
