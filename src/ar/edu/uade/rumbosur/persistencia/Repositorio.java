@@ -11,21 +11,39 @@ import ar.edu.uade.rumbosur.modelo.Tour;
 import ar.edu.uade.rumbosur.modelo.Vehiculo;
 import ar.edu.uade.rumbosur.modelo.Vendedor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Guarda los datos del sistema mientras el programa está en ejecución.
+ * Guarda los datos del sistema en memoria y en un archivo.
  *
  * GRASP Fabricación pura: no representa nada del negocio de la agencia. Existe
  * para que las clases del modelo no tengan que encargarse de guardar sus datos.
  *
  * Los Map permiten buscar rápido por código. La clave se declara Integer (la clase
  * envoltorio) porque las colecciones no admiten tipos primitivos como int.
+ *
+ * Se serializa el repositorio entero en un solo archivo: así Java mantiene las
+ * referencias y, al cargar, la salida de una reserva sigue siendo el mismo objeto
+ * que la salida guardada en el Map de salidas.
  */
-public class Repositorio {
+public class Repositorio implements Serializable {
+
+    // Versión de la clase para la serialización: así el archivo guardado se puede volver a leer.
+    private static final long serialVersionUID = 1L;
+
+    private static final String RUTA_POR_DEFECTO = "rumbosur.dat";
+
+    private String rutaArchivo;
 
     private Map<Integer, Reserva> reservas;
     private Map<Integer, Salida> salidas;
@@ -41,6 +59,11 @@ public class Repositorio {
     private Map<String, Vehiculo> vehiculos;
 
     public Repositorio() {
+        this(RUTA_POR_DEFECTO);
+    }
+
+    public Repositorio(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
         this.reservas = new HashMap<>();
         this.salidas = new HashMap<>();
         this.clientes = new HashMap<>();
@@ -51,6 +74,51 @@ public class Repositorio {
         this.cancelaciones = new HashMap<>();
         this.liquidaciones = new HashMap<>();
         this.vehiculos = new HashMap<>();
+    }
+
+    // ---------- Archivo ----------
+
+    /** Guarda todos los datos en el archivo. try-with-resources lo cierra aunque falle. */
+    public void guardarDatos() {
+        try (FileOutputStream archivo = new FileOutputStream(rutaArchivo);
+             ObjectOutputStream archivoSalida = new ObjectOutputStream(archivo)) {
+            archivoSalida.writeObject(this);
+        } catch (IOException e) {
+            System.out.println("No se pudieron guardar los datos: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Carga los datos del archivo. Devuelve false si no había datos para cargar:
+     * la primera vez que se usa el programa o si el archivo no se pudo leer.
+     */
+    public boolean cargarDatos() {
+        if (!new File(rutaArchivo).exists()) {
+            return false;
+        }
+        // Se declaran los dos: si el archivo está dañado, falla el ObjectInputStream
+        // y el FileInputStream igual se cierra.
+        try (FileInputStream archivo = new FileInputStream(rutaArchivo);
+             ObjectInputStream archivoEntrada = new ObjectInputStream(archivo)) {
+            copiarDatosDe((Repositorio) archivoEntrada.readObject());
+            return true;
+        } catch (IOException | ClassNotFoundException e) { // multi-catch: mismo tratamiento para las dos
+            System.out.println("No se pudieron cargar los datos: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private void copiarDatosDe(Repositorio guardado) {
+        this.reservas = guardado.reservas;
+        this.salidas = guardado.salidas;
+        this.clientes = guardado.clientes;
+        this.pasajeros = guardado.pasajeros;
+        this.tours = guardado.tours;
+        this.guias = guardado.guias;
+        this.vendedores = guardado.vendedores;
+        this.cancelaciones = guardado.cancelaciones;
+        this.liquidaciones = guardado.liquidaciones;
+        this.vehiculos = guardado.vehiculos;
     }
 
     // ---------- Reservas ----------
