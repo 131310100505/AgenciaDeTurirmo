@@ -1,4 +1,3 @@
-
 package ar.edu.uade.rumbosur.controlador;
 
 import ar.edu.uade.rumbosur.excepciones.TransicionEstadoInvalidaException;
@@ -7,6 +6,7 @@ import ar.edu.uade.rumbosur.modelo.EstadoSalida;
 import ar.edu.uade.rumbosur.modelo.Guia;
 import ar.edu.uade.rumbosur.modelo.Liquidacion;
 import ar.edu.uade.rumbosur.modelo.OrigenCancelacion;
+import ar.edu.uade.rumbosur.modelo.Pasajero;
 import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.Tour;
@@ -14,6 +14,11 @@ import ar.edu.uade.rumbosur.modelo.Vehiculo;
 import ar.edu.uade.rumbosur.persistencia.Repositorio;
 import ar.edu.uade.rumbosur.servicio.PoliticaCancelacionAgencia;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -229,6 +234,49 @@ public class ControladorSalidas {
         Salida salida = obtenerSalidaObligatoria(codigoSalida);
 
         salida.generarListaPasajeros();
+    }
+
+    // Exporta la lista operativa de pasajeros a un archivo de texto
+    public void exportarListaPasajeros(int codigoSalida, Path rutaArchivo) throws IOException {
+
+        if (rutaArchivo == null) {
+            throw new IllegalArgumentException("La ruta del archivo es obligatoria");
+        }
+
+        Salida salida = obtenerSalidaObligatoria(codigoSalida);
+
+        if (!salida.isListaPasajerosGenerada()) {
+            throw new IllegalStateException("Primero debe generarse la lista de pasajeros");
+        }
+
+        // Se exporta la lista ya generada, sin modificar las reservas.
+        try (BufferedWriter escritor = Files.newBufferedWriter(
+                rutaArchivo, StandardCharsets.UTF_8)) {
+
+            escritor.write("RUMBO SUR - LISTA DE PASAJEROS");
+            escritor.newLine();
+            escritor.write("Salida: " + salida.getCodigo());
+            escritor.newLine();
+            escritor.write("Fecha de inicio: " + salida.getFechaInicio());
+            escritor.newLine();
+            escritor.write("Fecha de fin: " + salida.getFechaFin());
+            escritor.newLine();
+            escritor.write("Cantidad de pasajeros: " + salida.getListaPasajeros().size());
+            escritor.newLine();
+            escritor.newLine();
+
+            int numero = 1;
+            for (Pasajero pasajero : salida.getListaPasajeros()) {
+                escritor.write(numero + ". " + pasajero.getNombre());
+                escritor.newLine();
+                escritor.write("   Documento: " + pasajero.getDocumento());
+                escritor.newLine();
+                escritor.write("   Contacto de emergencia: " + pasajero.getContactoEmergencia());
+                escritor.newLine();
+                escritor.newLine();
+                numero++;
+            }
+        }
     }
 
     // Inicia una salida

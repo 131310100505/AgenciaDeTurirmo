@@ -47,8 +47,8 @@ public class MenuPrincipal {
                     ingresarComoVendedor();
                     break;
                 case 2:
-                    // Germán: new VistaCoordinador(entrada, controladorSalidas, ...).mostrarMenu();
-                    System.out.println("Menú del coordinador: próximamente.");
+                    new VistaCoordinador(entrada, controladorSalidas)
+                            .mostrarMenu();
                     break;
                 case 3:
                     // Usa el mismo Scanner de todo el programa (no se crea otro).
