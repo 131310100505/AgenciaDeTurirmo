@@ -48,8 +48,27 @@ El sistema permitirá gestionar las operaciones comerciales y administrativas de
 - **Diagramas:** Draw.io.
 - **Control de versiones:** Git y GitHub.
 - **Principios de diseño:** SOLID y GRASP.
+- **Pruebas unitarias:** JUnit 5, configurado con Maven en `pom.xml`.
 
-### 6. Organización del trabajo
+### 6. Cómo abrir el proyecto y correr las pruebas
+
+El código está en `src/` y las pruebas en `test/`, con los mismos paquetes. Maven descarga JUnit solo la primera vez que se abre el proyecto (hace falta internet). Se necesita un JDK 17 o superior.
+
+**IntelliJ IDEA**
+
+1. *File > Open* y elegir la carpeta del repositorio (la que tiene el `pom.xml`). Si pregunta, abrirlo como proyecto Maven.
+2. Si el proyecto ya estaba abierto sin Maven: clic derecho sobre `pom.xml` > *Add as Maven Project*.
+3. Para correr las pruebas: clic derecho sobre la carpeta `test` > *Run 'All Tests'*. Para una sola clase, el triángulo verde al lado de su nombre.
+
+**VS Code**
+
+1. Instalar la extensión *Extension Pack for Java* (incluye el soporte de Maven y el panel de pruebas).
+2. *File > Open Folder* y elegir la carpeta del repositorio. La extensión detecta el `pom.xml` y carga el proyecto (puede tardar un poco la primera vez).
+3. Para correr las pruebas: abrir el panel *Testing* (ícono del matraz en la barra lateral) y tocar *Run Tests*. También se puede correr una clase con el botón *Run Test* que aparece arriba de cada clase de prueba.
+
+**Consola** (si Maven está instalado): `mvn test` desde la carpeta del repositorio.
+
+### 7. Organización del trabajo
 
 El proyecto se divide en dos etapas.
 
@@ -76,7 +95,7 @@ Incluye:
 5. Pruebas unitarias y funcionales.
 6. Documentación final y preparación de la defensa.
 
-### 7. Documentación
+### 8. Documentación
 
 La carpeta `docs/` contiene la documentación de análisis y diseño del sistema.
 
@@ -87,12 +106,12 @@ Los archivos de documentación incluyen:
 - `supuestos.md`: decisiones adoptadas para resolver aspectos no especificados.
 - Diagramas UML y documentación de diseño correspondientes a la Etapa 1.
 
-### 8. Estado del proyecto
+### 9. Estado del proyecto
 
 **Etapa actual:** Etapa 1 — Modelado y diseño del sistema.
 
 La implementación en Java y las pruebas se desarrollarán durante la Etapa 2.
 
-### 9. Objetivo académico
+### 10. Objetivo académico
 
 Aplicar los conceptos de Programación Orientada a Objetos mediante el análisis, modelado, diseño, implementación y prueba de un sistema de gestión, manteniendo coherencia entre los requisitos, los diagramas UML y el código fuente.

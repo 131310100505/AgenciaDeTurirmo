@@ -44,13 +44,11 @@ public class Cliente implements Serializable {
     /**
      * GRASP Creador: el cliente agrupa y registra sus reservas,
      * por eso es quien las crea. Las validaciones (cupo, edad mínima)
-     * las hace antes ControladorReservas.
+     * las hace antes ControladorReservas, y los pasajeros los agrega
+     * el controlador uno por uno (loop del diagrama de secuencia CU05).
      */
-    public Reserva crearReserva(Salida salida, Vendedor vendedor, List<Pasajero> pasajeros) {
+    public Reserva crearReserva(Salida salida, Vendedor vendedor) {
         Reserva reserva = new Reserva(this, salida, vendedor);
-        for (Pasajero pasajero : pasajeros) {
-            reserva.agregarPasajero(pasajero);
-        }
         reservas.add(reserva);
         return reserva;
     }
