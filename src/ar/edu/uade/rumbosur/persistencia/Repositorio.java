@@ -101,11 +101,26 @@ public class Repositorio implements Serializable {
         try (FileInputStream archivo = new FileInputStream(rutaArchivo);
              ObjectInputStream archivoEntrada = new ObjectInputStream(archivo)) {
             copiarDatosDe((Repositorio) archivoEntrada.readObject());
+            actualizarContadorDeReservas();
             return true;
         } catch (IOException | ClassNotFoundException e) { // multi-catch: mismo tratamiento para las dos
             System.out.println("No se pudieron cargar los datos: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * El contador de Reserva es static y lo static no se serializa: al abrir el
+     * programa volvería a 1 y se repetirían los números de reserva.
+     */
+    private void actualizarContadorDeReservas() {
+        int ultimoNumero = 0;
+        for (int numero : reservas.keySet()) {
+            if (numero > ultimoNumero) {
+                ultimoNumero = numero;
+            }
+        }
+        Reserva.actualizarSiguienteNumero(ultimoNumero);
     }
 
     private void copiarDatosDe(Repositorio guardado) {
