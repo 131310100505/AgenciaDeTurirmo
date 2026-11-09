@@ -101,6 +101,14 @@ public class ControladorReservas {
         return pasajeros.get(documento);
     }
 
+    public List<Cliente> listarClientes() {
+        return new ArrayList<>(clientes.values());
+    }
+
+    public List<Pasajero> listarPasajeros() {
+        return new ArrayList<>(pasajeros.values());
+    }
+
     // ---------- CU05 Crear reserva (sigue el diagrama de secuencia) ----------
 
     /**
