@@ -1,8 +1,10 @@
 
 package ar.edu.uade.rumbosur.controlador;
 
+import ar.edu.uade.rumbosur.excepciones.TransicionEstadoInvalidaException;
 import ar.edu.uade.rumbosur.modelo.EstadoSalida;
 import ar.edu.uade.rumbosur.modelo.Guia;
+import ar.edu.uade.rumbosur.modelo.Liquidacion;
 import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.Tour;
@@ -26,6 +28,9 @@ public class ControladorSalidas {
     // Politica de devolucion por cancelacion de la agencia
     private final PoliticaCancelacionAgencia politicaCancelacion;
 
+    // Liquidaciones de guias: como maximo una por salida, se buscan por codigo de salida
+    private final Map<Integer, Liquidacion> liquidaciones = new LinkedHashMap<>();
+
     // Constructor
     public ControladorSalidas() {
         this.salidas = new ArrayList<>();
@@ -36,6 +41,10 @@ public class ControladorSalidas {
     public void cargarDesde(Repositorio repositorio) {
         salidas.clear();
         salidas.addAll(repositorio.listarSalidas());
+        liquidaciones.clear();
+        for (Liquidacion liquidacion : repositorio.listarLiquidaciones()) {
+            liquidaciones.put(liquidacion.getCodigo(), liquidacion);
+        }
     }
 
     // Le pasa al repositorio las salidas, antes de guardar el archivo
@@ -43,6 +52,37 @@ public class ControladorSalidas {
         for (Salida salida : salidas) {
             repositorio.agregarSalida(salida);
         }
+        for (Liquidacion liquidacion : liquidaciones.values()) {
+            repositorio.agregarLiquidacion(liquidacion);
+        }
+    }
+
+    // CU17: cierra una salida finalizada y liquida los honorarios del guia
+    public Liquidacion cerrarSalida(int codigoSalida) throws TransicionEstadoInvalidaException {
+
+        Salida salida = obtenerSalidaObligatoria(codigoSalida);
+
+        if (salida.getEstado() != EstadoSalida.FINALIZADA) {
+            throw new TransicionEstadoInvalidaException(
+                    "La salida " + codigoSalida + " todavia no finalizo");
+        }
+
+        if (liquidaciones.containsKey(codigoSalida)) {
+            throw new TransicionEstadoInvalidaException(
+                    "La salida " + codigoSalida + " ya fue liquidada");
+        }
+
+        // La liquidacion usa el codigo de la salida: hay una como maximo por salida
+        Liquidacion liquidacion = new Liquidacion(
+                codigoSalida, LocalDate.now(), salida, salida.getGuia());
+        liquidacion.calcularTotal();
+        liquidaciones.put(codigoSalida, liquidacion);
+
+        return liquidacion;
+    }
+
+    public List<Liquidacion> listarLiquidaciones() {
+        return new ArrayList<>(liquidaciones.values());
     }
 
     // Crea y registra una nueva salida
