@@ -1,9 +1,12 @@
 package ar.edu.uade.rumbosur.controlador;
 
+import ar.edu.uade.rumbosur.modelo.Cancelacion;
 import ar.edu.uade.rumbosur.modelo.EstadoReserva;
+import ar.edu.uade.rumbosur.modelo.Pago;
 import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.TipoReporte;
+import ar.edu.uade.rumbosur.modelo.Tour;
 import ar.edu.uade.rumbosur.modelo.Vendedor;
 
 import java.time.LocalDate;
@@ -46,6 +49,8 @@ public class ControladorReportes {
                 return generarReporteOcupacion(desde, hasta);
             case VENTAS:
                 return generarReporteVentas(desde, hasta);
+            case INGRESOS:
+                return generarReporteIngresos(desde, hasta);
             default:
                 throw new UnsupportedOperationException("Reporte pendiente: " + tipo);
         }
@@ -83,17 +88,51 @@ public class ControladorReportes {
             if (reserva.getEstado() != EstadoReserva.ANULADA
                     && estaEnPeriodo(reserva.getFechaCreacion(), desde, hasta)) {
                 Vendedor vendedor = reserva.getVendedor();
-                FilaReporte fila = filasPorLegajo.get(vendedor.getLegajo());
-                if (fila == null) {
-                    fila = new FilaReporte(vendedor.getNombre() + " (legajo " + vendedor.getLegajo() + ")");
-                    filasPorLegajo.put(vendedor.getLegajo(), fila);
-                }
-                fila.sumar(reserva.getTotal());
+                String nombre = vendedor.getNombre() + " (legajo " + vendedor.getLegajo() + ")";
+                obtenerFila(filasPorLegajo, vendedor.getLegajo(), nombre).sumar(reserva.getTotal());
             }
         }
 
         String titulo = "Ventas por vendedor (" + desde + " a " + hasta + ")\n";
         return armarReporteOrdenado(titulo, filasPorLegajo);
+    }
+
+    private String generarReporteIngresos(LocalDate desde, LocalDate hasta) {
+        Map<Integer, FilaReporte> filasPorTour = new HashMap<>();
+        for (Reserva reserva : controladorReservas.listarReservas()) {
+            double ingreso = calcularIngreso(reserva, desde, hasta);
+            if (ingreso != 0) {
+                Tour tour = reserva.getSalida().getTour();
+                obtenerFila(filasPorTour, tour.getCodigo(), tour.getNombre()).sumar(ingreso);
+            }
+        }
+
+        String titulo = "Ingresos por tour (" + desde + " a " + hasta + ")\n";
+        return armarReporteOrdenado(titulo, filasPorTour);
+    }
+
+    /** Lo cobrado por la reserva en el período, menos lo devuelto en el período. */
+    private double calcularIngreso(Reserva reserva, LocalDate desde, LocalDate hasta) {
+        double ingreso = 0;
+        for (Pago pago : reserva.getPagos()) {
+            if (estaEnPeriodo(pago.getFecha(), desde, hasta)) {
+                ingreso += pago.getImporteNeto();
+            }
+        }
+        Cancelacion cancelacion = controladorReservas.getCancelaciones().get(reserva.getNumero());
+        if (cancelacion != null && estaEnPeriodo(cancelacion.getFecha(), desde, hasta)) {
+            ingreso -= cancelacion.getImporteDevuelto();
+        }
+        return ingreso;
+    }
+
+    private FilaReporte obtenerFila(Map<Integer, FilaReporte> filas, int codigo, String nombre) {
+        FilaReporte fila = filas.get(codigo);
+        if (fila == null) {
+            fila = new FilaReporte(nombre);
+            filas.put(codigo, fila);
+        }
+        return fila;
     }
 
     /** Ordena las filas de mayor a menor importe y arma el texto del reporte. */
