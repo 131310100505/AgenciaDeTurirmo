@@ -1,5 +1,6 @@
 package ar.edu.uade.rumbosur.vista;
 
+import ar.edu.uade.rumbosur.controlador.ControladorReportes;
 import ar.edu.uade.rumbosur.controlador.ControladorReservas;
 import ar.edu.uade.rumbosur.controlador.ControladorSalidas;
 import ar.edu.uade.rumbosur.modelo.ServicioAdicional;
@@ -50,11 +51,10 @@ public class MenuPrincipal {
                     System.out.println("Menú del coordinador: próximamente.");
                     break;
                 case 3:
-                    // Cuando Fran suba ControladorReportes y VistaAdministrador, reemplazar
-                    // la línea del println por estas dos (y agregar los dos imports):
-                    // ControladorReportes controladorReportes = new ControladorReportes(controladorReservas, controladorSalidas);
-                    // new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
-                    System.out.println("Menú del administrador: próximamente.");
+                    // Usa el mismo Scanner de todo el programa (no se crea otro).
+                    ControladorReportes controladorReportes =
+                            new ControladorReportes(controladorReservas, controladorSalidas);
+                    new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
                     break;
                 case 4:
                     abrirVentanaReserva();
