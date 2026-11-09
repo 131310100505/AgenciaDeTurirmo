@@ -14,15 +14,39 @@ public class Vehiculo implements Serializable {
 
     // Constructor
     public Vehiculo(String patente, int capacidad, TipoVehiculo tipo) {
+
+        if (patente == null || patente.isBlank()) {
+            throw new IllegalArgumentException(
+                    "La patente no puede estar vacía"
+            );
+        }
+
+        if (capacidad <= 0) {
+            throw new IllegalArgumentException(
+                    "La capacidad debe ser mayor a cero"
+            );
+        }
+
+        if (tipo == null) {
+            throw new IllegalArgumentException(
+                    "El tipo de vehículo es obligatorio"
+            );
+        }
+
         this.patente = patente;
         this.capacidad = capacidad;
         this.tipo = tipo;
     }
 
-    // Verifica si el vehículo tiene capacidad suficiente
+    // Verifica si el vehículo puede transportar
+    // la cantidad de pasajeros indicada
     public boolean tieneCapacidad(int cantidadPasajeros) {
-        // La lógica se implementa el domingo
-        return false;
+
+        if (cantidadPasajeros <= 0) {
+            return false;
+        }
+
+        return cantidadPasajeros <= capacidad;
     }
 
     // Getters

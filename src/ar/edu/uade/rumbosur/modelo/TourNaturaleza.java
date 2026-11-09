@@ -15,16 +15,32 @@ public class TourNaturaleza extends Tour {
                 duracionDias, cupoMinimo, cupoMaximo);
     }
 
-    // Devuelve la categoría del tour
+    // Devuelve la categoria del tour
     @Override
     public CategoriaTour obtenerCategoria() {
         return CategoriaTour.NATURALEZA;
     }
 
     // Valida si el pasajero puede participar del tour
+    // No tiene restricciones de edad
     @Override
-    public boolean validarPasajero(Pasajero pasajero, LocalDate fechaSalida) {
-        // La lógica se implementa el domingo
-        return false;
+    public boolean validarPasajero(
+            Pasajero pasajero, LocalDate fechaSalida) {
+
+        if (pasajero == null || fechaSalida == null) {
+            return false;
+        }
+
+        LocalDate fechaNacimiento =
+                pasajero.getFechaNacimiento();
+
+        // Rechaza fechas de nacimiento inexistentes
+        // o posteriores a la fecha de salida
+        if (fechaNacimiento == null ||
+                fechaNacimiento.isAfter(fechaSalida)) {
+            return false;
+        }
+
+        return true;
     }
 }

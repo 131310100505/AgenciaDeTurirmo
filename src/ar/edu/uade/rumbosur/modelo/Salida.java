@@ -4,6 +4,7 @@ package ar.edu.uade.rumbosur.modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Salida implements Serializable, Comparable<Salida> {
@@ -25,10 +26,29 @@ public class Salida implements Serializable, Comparable<Salida> {
     private Vehiculo vehiculo;
     private List<Reserva> reservas;
 
+    // Lista operativa de pasajeros
+    private List<Pasajero> listaPasajeros;
+
     // Constructor
     public Salida(int codigo, LocalDate fechaInicio,
                   LocalDate fechaFin, int cupoMinimo,
                   int cupoMaximo, Tour tour) {
+
+        if (fechaInicio == null || fechaFin == null ||
+                fechaFin.isBefore(fechaInicio)) {
+            throw new IllegalArgumentException(
+                    "Las fechas de la salida son invalidas");
+        }
+
+        if (tour == null) {
+            throw new IllegalArgumentException(
+                    "El tour es obligatorio");
+        }
+
+        if (cupoMinimo <= 0 || cupoMaximo < cupoMinimo) {
+            throw new IllegalArgumentException(
+                    "Los cupos son invalidos");
+        }
 
         this.codigo = codigo;
         this.fechaInicio = fechaInicio;
@@ -39,7 +59,9 @@ public class Salida implements Serializable, Comparable<Salida> {
 
         this.estado = EstadoSalida.PROGRAMADA;
         this.listaPasajerosGenerada = false;
+
         this.reservas = new ArrayList<>();
+        this.listaPasajeros = new ArrayList<>();
 
         this.guia = null;
         this.vehiculo = null;
@@ -51,43 +73,229 @@ public class Salida implements Serializable, Comparable<Salida> {
         return this.fechaInicio.compareTo(otraSalida.fechaInicio);
     }
 
-    // Métodos pendientes de implementación
+    // Agrega una reserva a la salida
+    public void agregarReserva(Reserva reserva) {
+
+        if (reserva == null) {
+            throw new IllegalArgumentException(
+                    "La reserva no puede ser nula");
+        }
+
+        if (reserva.getSalida() != this) {
+            throw new IllegalArgumentException(
+                    "La reserva no pertenece a esta salida");
+        }
+
+        if (estado == EstadoSalida.CANCELADA ||
+                estado == EstadoSalida.FINALIZADA ||
+                estado == EstadoSalida.EN_CURSO) {
+            throw new IllegalStateException(
+                    "No se pueden agregar reservas a esta salida");
+        }
+
+        if (reservas.contains(reserva)) {
+            return;
+        }
+
+        if (reserva.ocupaCupo() &&
+                !verificarCupo(reserva.getCantidadPasajeros())) {
+            throw new IllegalArgumentException(
+                    "No hay cupo suficiente para esta reserva");
+        }
+
+        reservas.add(reserva);
+
+        // Una reserva nueva invalida la lista anterior
+        listaPasajerosGenerada = false;
+        listaPasajeros.clear();
+
+        actualizarEstado();
+    }
+
+    // Calcula la ocupacion de reservas pendientes y confirmadas
     public int calcularOcupacion() {
-        // Se implementa el domingo
-        return 0;
+
+        int ocupacion = 0;
+
+        for (Reserva reserva : reservas) {
+            if (reserva.ocupaCupo()) {
+                ocupacion += reserva.getCantidadPasajeros();
+            }
+        }
+
+        return ocupacion;
     }
 
+    // Verifica si hay cupo para nuevos pasajeros
     public boolean verificarCupo(int cantidadPasajeros) {
-        // Se implementa el domingo
-        return false;
+
+        if (cantidadPasajeros <= 0) {
+            return false;
+        }
+
+        if (estado == EstadoSalida.CANCELADA ||
+                estado == EstadoSalida.FINALIZADA ||
+                estado == EstadoSalida.EN_CURSO) {
+            return false;
+        }
+
+        return calcularOcupacion() + cantidadPasajeros <= cupoMaximo;
     }
 
+    // Actualiza el estado segun la ocupacion
     public void actualizarEstado() {
-        // Se implementa el domingo
+
+        if (estado == EstadoSalida.CANCELADA ||
+                estado == EstadoSalida.FINALIZADA ||
+                estado == EstadoSalida.EN_CURSO) {
+            return;
+        }
+
+        int ocupacion = calcularOcupacion();
+
+        if (ocupacion >= cupoMaximo) {
+            estado = EstadoSalida.COMPLETA;
+        } else if (ocupacion >= cupoMinimo) {
+            estado = EstadoSalida.CONFIRMADA;
+        } else {
+            estado = EstadoSalida.PROGRAMADA;
+        }
     }
 
-    public void asignarGuia(Guia guia) {
-        // Se implementa el domingo
+    // Asigna un guia habilitado y disponible
+    public void asignarGuia(Guia nuevoGuia) {
+
+        if (nuevoGuia == null) {
+            throw new IllegalArgumentException(
+                    "El guia no puede ser nulo");
+        }
+
+        if (estado == EstadoSalida.EN_CURSO ||
+                estado == EstadoSalida.FINALIZADA ||
+                estado == EstadoSalida.CANCELADA) {
+            throw new IllegalStateException(
+                    "No se puede asignar un guia a esta salida");
+        }
+
+        if (!nuevoGuia.estaHabilitado(tour.obtenerCategoria())) {
+            throw new IllegalArgumentException(
+                    "El guia no esta habilitado para este tour");
+        }
+
+        if (this.guia == nuevoGuia) {
+            return;
+        }
+
+        if (!nuevoGuia.estaDisponible(this)) {
+            throw new IllegalArgumentException(
+                    "El guia ya tiene una salida en esas fechas");
+        }
+
+        nuevoGuia.agregarSalida(this);
+
+        if (this.guia != null) {
+            this.guia.quitarSalida(this);
+        }
+
+        this.guia = nuevoGuia;
     }
 
-    public void asignarVehiculo(Vehiculo vehiculo) {
-        // Se implementa el domingo
+    // Asigna un vehiculo con capacidad suficiente
+    public void asignarVehiculo(Vehiculo nuevoVehiculo) {
+
+        if (nuevoVehiculo == null) {
+            throw new IllegalArgumentException(
+                    "El vehiculo no puede ser nulo");
+        }
+
+        if (estado == EstadoSalida.EN_CURSO ||
+                estado == EstadoSalida.FINALIZADA ||
+                estado == EstadoSalida.CANCELADA) {
+            throw new IllegalStateException(
+                    "No se puede asignar un vehiculo a esta salida");
+        }
+
+        if (!nuevoVehiculo.tieneCapacidad(cupoMaximo)) {
+            throw new IllegalArgumentException(
+                    "El vehiculo no tiene capacidad suficiente");
+        }
+
+        this.vehiculo = nuevoVehiculo;
     }
 
+    // Genera la lista operativa con pasajeros de reservas confirmadas
     public void generarListaPasajeros() {
-        // Se implementa más adelante
+
+        actualizarEstado();
+
+        if (estado != EstadoSalida.CONFIRMADA &&
+                estado != EstadoSalida.COMPLETA) {
+            throw new IllegalStateException(
+                    "La salida debe estar confirmada");
+        }
+
+        List<Pasajero> nuevaLista = new ArrayList<>();
+
+        for (Reserva reserva : reservas) {
+            if (reserva.getEstado() == EstadoReserva.CONFIRMADA) {
+                nuevaLista.addAll(reserva.getPasajeros());
+            }
+        }
+
+        listaPasajeros = nuevaLista;
+        listaPasajerosGenerada = true;
     }
 
+    // Inicia una salida confirmada y preparada
     public void iniciarSalida() {
-        // Se implementa el domingo
+
+        actualizarEstado();
+
+        if (estado != EstadoSalida.CONFIRMADA &&
+                estado != EstadoSalida.COMPLETA) {
+            throw new IllegalStateException(
+                    "La salida no esta confirmada");
+        }
+
+        if (guia == null || vehiculo == null) {
+            throw new IllegalStateException(
+                    "Falta asignar guia o vehiculo");
+        }
+
+        if (!listaPasajerosGenerada) {
+            throw new IllegalStateException(
+                    "Falta generar la lista de pasajeros");
+        }
+
+        estado = EstadoSalida.EN_CURSO;
     }
 
+    // Finaliza una salida en curso
     public void finalizarSalida() {
-        // Se implementa el domingo
+
+        if (estado != EstadoSalida.EN_CURSO) {
+            throw new IllegalStateException(
+                    "Solo se puede finalizar una salida en curso");
+        }
+
+        estado = EstadoSalida.FINALIZADA;
     }
 
+    // Cancela una salida que no comenzo
     public void cancelarSalida() {
-        // Se implementa el domingo
+
+        if (estado == EstadoSalida.EN_CURSO ||
+                estado == EstadoSalida.FINALIZADA) {
+            throw new IllegalStateException(
+                    "No se puede cancelar una salida iniciada");
+        }
+
+        if (estado == EstadoSalida.CANCELADA) {
+            throw new IllegalStateException(
+                    "La salida ya esta cancelada");
+        }
+
+        estado = EstadoSalida.CANCELADA;
     }
 
     // Getters
@@ -112,6 +320,7 @@ public class Salida implements Serializable, Comparable<Salida> {
     }
 
     public EstadoSalida getEstado() {
+        actualizarEstado();
         return estado;
     }
 
@@ -131,7 +340,13 @@ public class Salida implements Serializable, Comparable<Salida> {
         return vehiculo;
     }
 
+    // Devuelve las reservas sin permitir modificaciones externas
     public List<Reserva> getReservas() {
-        return reservas;
+        return Collections.unmodifiableList(reservas);
+    }
+
+    // Devuelve la lista operativa sin permitir modificaciones externas
+    public List<Pasajero> getListaPasajeros() {
+        return Collections.unmodifiableList(listaPasajeros);
     }
 }
