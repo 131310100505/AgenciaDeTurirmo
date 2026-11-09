@@ -154,21 +154,25 @@ public class Salida implements Serializable, Comparable<Salida> {
                     "No se puede asignar un guia a esta salida");
         }
 
+        // Comprueba la categoria del tour
         if (!nuevoGuia.estaHabilitado(tour.obtenerCategoria())) {
             throw new IllegalArgumentException(
                     "El guia no esta habilitado para este tour");
         }
 
+        // Comprueba que no tenga fechas superpuestas
         if (!nuevoGuia.estaDisponible(this)) {
             throw new IllegalArgumentException(
                     "El guia ya tiene una salida en esas fechas");
         }
-
+        // Registra la salida en el guía
         nuevoGuia.agregarSalida(this);
+
+        // Asigna el guía a la salida
         this.guia = nuevoGuia;
     }
 
-    // Asigna un vehiculo con capacidad suficiente
+    // Asigna un vehículo con capacidad suficiente
     public void asignarVehiculo(Vehiculo nuevoVehiculo) {
 
         if (nuevoVehiculo == null) {
@@ -191,7 +195,6 @@ public class Salida implements Serializable, Comparable<Salida> {
         this.vehiculo = nuevoVehiculo;
     }
 
-    // Marca la lista de pasajeros como generada
     public void generarListaPasajeros() {
 
         if (estado != EstadoSalida.CONFIRMADA &&
