@@ -51,8 +51,10 @@ public class ControladorReportes {
                 return generarReporteVentas(desde, hasta);
             case INGRESOS:
                 return generarReporteIngresos(desde, hasta);
+            case CANCELACIONES:
+                return generarReporteCancelaciones(desde, hasta);
             default:
-                throw new UnsupportedOperationException("Reporte pendiente: " + tipo);
+                throw new IllegalArgumentException("Tipo de reporte desconocido: " + tipo);
         }
     }
 
@@ -99,8 +101,9 @@ public class ControladorReportes {
 
     private String generarReporteIngresos(LocalDate desde, LocalDate hasta) {
         Map<Integer, FilaReporte> filasPorTour = new HashMap<>();
+        Map<Integer, Cancelacion> cancelaciones = obtenerCancelaciones();
         for (Reserva reserva : controladorReservas.listarReservas()) {
-            double ingreso = calcularIngreso(reserva, desde, hasta);
+            double ingreso = calcularIngreso(reserva, cancelaciones.get(reserva.getNumero()), desde, hasta);
             if (ingreso != 0) {
                 Tour tour = reserva.getSalida().getTour();
                 obtenerFila(filasPorTour, tour.getCodigo(), tour.getNombre()).sumar(ingreso);
@@ -112,18 +115,58 @@ public class ControladorReportes {
     }
 
     /** Lo cobrado por la reserva en el período, menos lo devuelto en el período. */
-    private double calcularIngreso(Reserva reserva, LocalDate desde, LocalDate hasta) {
+    private double calcularIngreso(Reserva reserva, Cancelacion cancelacion, LocalDate desde, LocalDate hasta) {
         double ingreso = 0;
         for (Pago pago : reserva.getPagos()) {
             if (estaEnPeriodo(pago.getFecha(), desde, hasta)) {
                 ingreso += pago.getImporteNeto();
             }
         }
-        Cancelacion cancelacion = controladorReservas.getCancelaciones().get(reserva.getNumero());
         if (cancelacion != null && estaEnPeriodo(cancelacion.getFecha(), desde, hasta)) {
             ingreso -= cancelacion.getImporteDevuelto();
         }
         return ingreso;
+    }
+
+    private String generarReporteCancelaciones(LocalDate desde, LocalDate hasta) {
+        List<Cancelacion> cancelaciones = new ArrayList<>();
+        for (Cancelacion cancelacion : obtenerCancelaciones().values()) {
+            if (estaEnPeriodo(cancelacion.getFecha(), desde, hasta)) {
+                cancelaciones.add(cancelacion);
+            }
+        }
+
+        StringBuilder reporte = new StringBuilder("Cancelaciones (" + desde + " a " + hasta + ")\n");
+        if (cancelaciones.isEmpty()) {
+            return reporte.append(SIN_RESULTADOS).toString();
+        }
+        cancelaciones.sort(Comparator.comparing(Cancelacion::getFecha));
+        double totalDevuelto = 0;
+        for (Cancelacion cancelacion : cancelaciones) {
+            totalDevuelto += cancelacion.getImporteDevuelto();
+            reporte.append("Reserva ").append(cancelacion.getCodigo())
+                    .append(" - ").append(cancelacion.getFecha())
+                    .append(" - ").append(cancelacion.getOrigen())
+                    .append(" - ").append(cancelacion.getMotivo())
+                    .append(" - devuelto ").append(formatearImporte(cancelacion.getImporteDevuelto()))
+                    .append("\n");
+        }
+        reporte.append("Total: ").append(cancelaciones.size()).append(" cancelación(es) - devuelto ")
+                .append(formatearImporte(totalDevuelto)).append("\n");
+        return reporte.toString();
+    }
+
+    /** Junta las cancelaciones de reservas con las que hizo la agencia al cancelar salidas. */
+    private Map<Integer, Cancelacion> obtenerCancelaciones() {
+        Map<Integer, Cancelacion> cancelaciones = new HashMap<>(controladorReservas.getCancelaciones());
+        for (Cancelacion cancelacion : controladorSalidas.listarCancelaciones()) {
+            cancelaciones.put(cancelacion.getCodigo(), cancelacion);
+        }
+        return cancelaciones;
+    }
+
+    private static String formatearImporte(double importe) {
+        return "$" + String.format(Locale.ROOT, "%.2f", importe);
     }
 
     private FilaReporte obtenerFila(Map<Integer, FilaReporte> filas, int codigo, String nombre) {
@@ -176,7 +219,7 @@ public class ControladorReportes {
 
         @Override
         public String toString() {
-            return nombre + " - " + cantidad + " reserva(s) - $" + String.format(Locale.ROOT, "%.2f", importe);
+            return nombre + " - " + cantidad + " reserva(s) - " + formatearImporte(importe);
         }
     }
 }
