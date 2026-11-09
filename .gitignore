@@ -38,3 +38,4 @@ target/
 
 # Datos guardados por el programa
 rumbosur.dat
+*.txt
