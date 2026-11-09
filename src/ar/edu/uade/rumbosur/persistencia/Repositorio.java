@@ -47,8 +47,9 @@ public class Repositorio implements Serializable {
 
     private Map<Integer, Reserva> reservas;
     private Map<Integer, Salida> salidas;
-    private Map<Integer, Cliente> clientes;
-    private Map<Integer, Pasajero> pasajeros;
+    // Clave String: clientes y pasajeros se identifican por su documento (como en sus equals).
+    private Map<String, Cliente> clientes;
+    private Map<String, Pasajero> pasajeros;
     private Map<Integer, Tour> tours;
     private Map<Integer, Guia> guias;
     private Map<Integer, Vendedor> vendedores;
@@ -167,11 +168,11 @@ public class Repositorio implements Serializable {
     // ---------- Clientes ----------
 
     public void agregarCliente(Cliente cliente) {
-        clientes.put(cliente.getCodigo(), cliente);
+        clientes.put(cliente.getDocumento(), cliente);
     }
 
-    public Cliente buscarCliente(int codigo) {
-        return clientes.get(codigo);
+    public Cliente buscarCliente(String documento) {
+        return clientes.get(documento);
     }
 
     public List<Cliente> listarClientes() {
@@ -181,11 +182,11 @@ public class Repositorio implements Serializable {
     // ---------- Pasajeros ----------
 
     public void agregarPasajero(Pasajero pasajero) {
-        pasajeros.put(pasajero.getCodigo(), pasajero);
+        pasajeros.put(pasajero.getDocumento(), pasajero);
     }
 
-    public Pasajero buscarPasajero(int codigo) {
-        return pasajeros.get(codigo);
+    public Pasajero buscarPasajero(String documento) {
+        return pasajeros.get(documento);
     }
 
     public List<Pasajero> listarPasajeros() {
