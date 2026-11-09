@@ -26,6 +26,9 @@ public class Salida implements Serializable, Comparable<Salida> {
     private Vehiculo vehiculo;
     private List<Reserva> reservas;
 
+    // Lista operativa de pasajeros
+    private List<Pasajero> listaPasajeros;
+
     // Constructor
     public Salida(int codigo, LocalDate fechaInicio,
                   LocalDate fechaFin, int cupoMinimo,
@@ -56,7 +59,9 @@ public class Salida implements Serializable, Comparable<Salida> {
 
         this.estado = EstadoSalida.PROGRAMADA;
         this.listaPasajerosGenerada = false;
+
         this.reservas = new ArrayList<>();
+        this.listaPasajeros = new ArrayList<>();
 
         this.guia = null;
         this.vehiculo = null;
@@ -76,6 +81,11 @@ public class Salida implements Serializable, Comparable<Salida> {
                     "La reserva no puede ser nula");
         }
 
+        if (reserva.getSalida() != this) {
+            throw new IllegalArgumentException(
+                    "La reserva no pertenece a esta salida");
+        }
+
         if (estado == EstadoSalida.CANCELADA ||
                 estado == EstadoSalida.FINALIZADA ||
                 estado == EstadoSalida.EN_CURSO) {
@@ -83,20 +93,33 @@ public class Salida implements Serializable, Comparable<Salida> {
                     "No se pueden agregar reservas a esta salida");
         }
 
-        if (!reservas.contains(reserva)) {
-            reservas.add(reserva);
-            actualizarEstado();
+        if (reservas.contains(reserva)) {
+            return;
         }
+
+        if (reserva.ocupaCupo() &&
+                !verificarCupo(reserva.getCantidadPasajeros())) {
+            throw new IllegalArgumentException(
+                    "No hay cupo suficiente para esta reserva");
+        }
+
+        reservas.add(reserva);
+
+        // Una reserva nueva invalida la lista anterior
+        listaPasajerosGenerada = false;
+        listaPasajeros.clear();
+
+        actualizarEstado();
     }
 
-    // Calcula la ocupacion de reservas confirmadas
+    // Calcula la ocupacion de reservas pendientes y confirmadas
     public int calcularOcupacion() {
 
         int ocupacion = 0;
 
         for (Reserva reserva : reservas) {
-            if (reserva.getEstado() == EstadoReserva.CONFIRMADA) {
-                ocupacion += reserva.getPasajeros().size();
+            if (reserva.ocupaCupo()) {
+                ocupacion += reserva.getCantidadPasajeros();
             }
         }
 
@@ -154,25 +177,30 @@ public class Salida implements Serializable, Comparable<Salida> {
                     "No se puede asignar un guia a esta salida");
         }
 
-        // Comprueba la categoria del tour
         if (!nuevoGuia.estaHabilitado(tour.obtenerCategoria())) {
             throw new IllegalArgumentException(
                     "El guia no esta habilitado para este tour");
         }
 
-        // Comprueba que no tenga fechas superpuestas
+        if (this.guia == nuevoGuia) {
+            return;
+        }
+
         if (!nuevoGuia.estaDisponible(this)) {
             throw new IllegalArgumentException(
                     "El guia ya tiene una salida en esas fechas");
         }
-        // Registra la salida en el guía
+
         nuevoGuia.agregarSalida(this);
 
-        // Asigna el guía a la salida
+        if (this.guia != null) {
+            this.guia.quitarSalida(this);
+        }
+
         this.guia = nuevoGuia;
     }
 
-    // Asigna un vehículo con capacidad suficiente
+    // Asigna un vehiculo con capacidad suficiente
     public void asignarVehiculo(Vehiculo nuevoVehiculo) {
 
         if (nuevoVehiculo == null) {
@@ -195,7 +223,10 @@ public class Salida implements Serializable, Comparable<Salida> {
         this.vehiculo = nuevoVehiculo;
     }
 
+    // Genera la lista operativa con pasajeros de reservas confirmadas
     public void generarListaPasajeros() {
+
+        actualizarEstado();
 
         if (estado != EstadoSalida.CONFIRMADA &&
                 estado != EstadoSalida.COMPLETA) {
@@ -203,11 +234,22 @@ public class Salida implements Serializable, Comparable<Salida> {
                     "La salida debe estar confirmada");
         }
 
+        List<Pasajero> nuevaLista = new ArrayList<>();
+
+        for (Reserva reserva : reservas) {
+            if (reserva.getEstado() == EstadoReserva.CONFIRMADA) {
+                nuevaLista.addAll(reserva.getPasajeros());
+            }
+        }
+
+        listaPasajeros = nuevaLista;
         listaPasajerosGenerada = true;
     }
 
     // Inicia una salida confirmada y preparada
     public void iniciarSalida() {
+
+        actualizarEstado();
 
         if (estado != EstadoSalida.CONFIRMADA &&
                 estado != EstadoSalida.COMPLETA) {
@@ -278,6 +320,7 @@ public class Salida implements Serializable, Comparable<Salida> {
     }
 
     public EstadoSalida getEstado() {
+        actualizarEstado();
         return estado;
     }
 
@@ -300,5 +343,10 @@ public class Salida implements Serializable, Comparable<Salida> {
     // Devuelve las reservas sin permitir modificaciones externas
     public List<Reserva> getReservas() {
         return Collections.unmodifiableList(reservas);
+    }
+
+    // Devuelve la lista operativa sin permitir modificaciones externas
+    public List<Pasajero> getListaPasajeros() {
+        return Collections.unmodifiableList(listaPasajeros);
     }
 }

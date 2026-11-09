@@ -74,7 +74,7 @@ public abstract class Tour implements Serializable {
         return Collections.unmodifiableList(tarifas);
     }
 
-    // Cada tipo de tour define su categoría
+    // Cada tipo de tour define su categoria
     public abstract CategoriaTour obtenerCategoria();
 
     // Cada tipo de tour valida si un pasajero puede participar
@@ -83,17 +83,62 @@ public abstract class Tour implements Serializable {
 
     // Agrega una actividad al tour
     public void agregarActividad(Actividad actividad) {
-        // Se implementa el día 2
+
+        if (actividad == null) {
+            throw new IllegalArgumentException(
+                    "La actividad no puede ser nula");
+        }
+
+        actividades.add(actividad);
     }
 
     // Agrega una tarifa al tour
     public void agregarTarifa(Tarifa tarifa) {
-        // Se implementa el día 2
+
+        if (tarifa == null) {
+            throw new IllegalArgumentException(
+                    "La tarifa no puede ser nula");
+        }
+
+        // Evita registrar dos tarifas con el mismo codigo
+        for (Tarifa existente : tarifas) {
+            if (existente.getCodigo() == tarifa.getCodigo()) {
+                throw new IllegalArgumentException(
+                        "Ya existe una tarifa con ese codigo");
+            }
+        }
+
+        tarifas.add(tarifa);
     }
 
     // Busca la tarifa vigente para una fecha
     public Tarifa obtenerTarifaVigente(LocalDate fecha) {
-        // Se implementa el día 2
+
+        if (fecha == null) {
+            throw new IllegalArgumentException(
+                    "La fecha no puede ser nula");
+        }
+
+        for (Tarifa tarifa : tarifas) {
+
+            LocalDate inicio =
+                    tarifa.getFechaInicioVigencia();
+
+            LocalDate fin =
+                    tarifa.getFechaFinVigencia();
+
+            boolean despuesDelInicio =
+                    !fecha.isBefore(inicio);
+
+            boolean antesDelFin =
+                    !fecha.isAfter(fin);
+
+            if (despuesDelInicio && antesDelFin) {
+                return tarifa;
+            }
+        }
+
+        // No existe una tarifa vigente para esa fecha
         return null;
     }
 }

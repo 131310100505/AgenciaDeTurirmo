@@ -11,12 +11,12 @@ public class Guia extends Empleado {
 
     private static final long serialVersionUID = 1L;
 
-    // Atributos propios del guía
+    // Atributos propios del guia
     private List<String> idiomas;
     private Set<CategoriaTour> categoriasHabilitadas;
     private double honorarioPorDia;
 
-    // Salidas asignadas al guía
+    // Salidas asignadas al guia
     private List<Salida> salidasAsignadas;
 
     // Constructor
@@ -27,19 +27,29 @@ public class Guia extends Empleado {
 
         super(legajo, nombre, documento, telefono);
 
+        if (idiomas == null || categoriasHabilitadas == null) {
+            throw new IllegalArgumentException(
+                    "Los idiomas y categorias no pueden ser nulos");
+        }
+
+        if (honorarioPorDia < 0) {
+            throw new IllegalArgumentException(
+                    "El honorario no puede ser negativo");
+        }
+
         this.idiomas = new ArrayList<>(idiomas);
         this.categoriasHabilitadas = new HashSet<>(categoriasHabilitadas);
         this.honorarioPorDia = honorarioPorDia;
         this.salidasAsignadas = new ArrayList<>();
     }
 
-    // Verifica si el guía está habilitado para una categoría
+    // Verifica si el guia esta habilitado para una categoria
     public boolean estaHabilitado(CategoriaTour categoria) {
         return categoria != null &&
                 categoriasHabilitadas.contains(categoria);
     }
 
-    // Verifica si el guía está disponible para una salida
+    // Verifica si el guia esta disponible para una salida
     public boolean estaDisponible(Salida salida) {
 
         if (salida == null) {
@@ -60,7 +70,7 @@ public class Guia extends Empleado {
                 continue;
             }
 
-            // Una salida cancelada no ocupa al guía
+            // Una salida cancelada no ocupa al guia
             if (asignada.getEstado() == EstadoSalida.CANCELADA) {
                 continue;
             }
@@ -81,24 +91,33 @@ public class Guia extends Empleado {
         return true;
     }
 
-    // Registra una salida asignada al guía
+    // Registra una salida asignada al guia
     public void agregarSalida(Salida salida) {
 
         if (salida == null) {
             throw new IllegalArgumentException(
-                    "La salida no puede ser nula"
-            );
+                    "La salida no puede ser nula");
         }
 
         if (!estaDisponible(salida)) {
             throw new IllegalArgumentException(
-                    "El guía no está disponible para esas fechas"
-            );
+                    "El guia no esta disponible para esas fechas");
         }
 
         if (!salidasAsignadas.contains(salida)) {
             salidasAsignadas.add(salida);
         }
+    }
+
+    // Elimina una salida cuando se reasigna a otro guia
+    public void quitarSalida(Salida salida) {
+
+        if (salida == null) {
+            throw new IllegalArgumentException(
+                    "La salida no puede ser nula");
+        }
+
+        salidasAsignadas.remove(salida);
     }
 
     // Getters
