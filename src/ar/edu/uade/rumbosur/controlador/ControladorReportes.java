@@ -1,11 +1,18 @@
 package ar.edu.uade.rumbosur.controlador;
 
+import ar.edu.uade.rumbosur.modelo.EstadoReserva;
+import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.TipoReporte;
+import ar.edu.uade.rumbosur.modelo.Vendedor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * CU18 Generar reportes.
@@ -37,6 +44,8 @@ public class ControladorReportes {
         switch (tipo) {
             case OCUPACION:
                 return generarReporteOcupacion(desde, hasta);
+            case VENTAS:
+                return generarReporteVentas(desde, hasta);
             default:
                 throw new UnsupportedOperationException("Reporte pendiente: " + tipo);
         }
@@ -67,7 +76,68 @@ public class ControladorReportes {
         return reporte.toString();
     }
 
+    /** Una venta es una reserva creada en el período que no fue anulada. */
+    private String generarReporteVentas(LocalDate desde, LocalDate hasta) {
+        Map<Integer, FilaReporte> filasPorLegajo = new HashMap<>();
+        for (Reserva reserva : controladorReservas.listarReservas()) {
+            if (reserva.getEstado() != EstadoReserva.ANULADA
+                    && estaEnPeriodo(reserva.getFechaCreacion(), desde, hasta)) {
+                Vendedor vendedor = reserva.getVendedor();
+                FilaReporte fila = filasPorLegajo.get(vendedor.getLegajo());
+                if (fila == null) {
+                    fila = new FilaReporte(vendedor.getNombre() + " (legajo " + vendedor.getLegajo() + ")");
+                    filasPorLegajo.put(vendedor.getLegajo(), fila);
+                }
+                fila.sumar(reserva.getTotal());
+            }
+        }
+
+        String titulo = "Ventas por vendedor (" + desde + " a " + hasta + ")\n";
+        return armarReporteOrdenado(titulo, filasPorLegajo);
+    }
+
+    /** Ordena las filas de mayor a menor importe y arma el texto del reporte. */
+    private String armarReporteOrdenado(String titulo, Map<Integer, FilaReporte> filasPorCodigo) {
+        StringBuilder reporte = new StringBuilder(titulo);
+        if (filasPorCodigo.isEmpty()) {
+            return reporte.append(SIN_RESULTADOS).toString();
+        }
+        List<FilaReporte> filas = new ArrayList<>(filasPorCodigo.values());
+        // Comparator: orden por importe; reversed() lo invierte para que quede de mayor a menor.
+        filas.sort(Comparator.comparingDouble(FilaReporte::getImporte).reversed());
+        for (FilaReporte fila : filas) {
+            reporte.append(fila).append("\n");
+        }
+        return reporte.toString();
+    }
+
     private boolean estaEnPeriodo(LocalDate fecha, LocalDate desde, LocalDate hasta) {
         return !fecha.isBefore(desde) && !fecha.isAfter(hasta);
+    }
+
+    /** Una línea de un reporte: un nombre con su cantidad de reservas y su importe acumulado. */
+    private static class FilaReporte {
+
+        private String nombre;
+        private int cantidad;
+        private double importe;
+
+        FilaReporte(String nombre) {
+            this.nombre = nombre;
+        }
+
+        void sumar(double importeReserva) {
+            cantidad++;
+            importe += importeReserva;
+        }
+
+        double getImporte() {
+            return importe;
+        }
+
+        @Override
+        public String toString() {
+            return nombre + " - " + cantidad + " reserva(s) - $" + String.format(Locale.ROOT, "%.2f", importe);
+        }
     }
 }
