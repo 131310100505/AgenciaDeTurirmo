@@ -35,3 +35,6 @@ replay_pid*
 bin/
 out/
 target/
+
+# Datos guardados por el programa
+rumbosur.dat

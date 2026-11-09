@@ -17,6 +17,7 @@ import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.ServicioAdicional;
 import ar.edu.uade.rumbosur.modelo.Vendedor;
+import ar.edu.uade.rumbosur.persistencia.Repositorio;
 import ar.edu.uade.rumbosur.servicio.CalculadoraPrecio;
 import ar.edu.uade.rumbosur.servicio.PoliticaCancelacion;
 import ar.edu.uade.rumbosur.servicio.PoliticaCancelacionAgencia;
@@ -271,6 +272,54 @@ public class ControladorReservas {
 
     public Map<Integer, Cancelacion> getCancelaciones() {
         return Collections.unmodifiableMap(cancelaciones);
+    }
+
+    // ---------- Persistencia ----------
+
+    /** Reemplaza los datos del controlador por los que tiene el repositorio. */
+    public void cargarDesde(Repositorio repositorio) {
+        reservas.clear();
+        clientes.clear();
+        pasajeros.clear();
+        cancelaciones.clear();
+        for (Reserva reserva : repositorio.listarReservas()) {
+            reservas.put(reserva.getNumero(), reserva);
+            actualizarCodigoDeAdicionales(reserva);
+        }
+        for (Cliente cliente : repositorio.listarClientes()) {
+            clientes.put(cliente.getDocumento(), cliente);
+        }
+        for (Pasajero pasajero : repositorio.listarPasajeros()) {
+            pasajeros.put(pasajero.getDocumento(), pasajero);
+        }
+        for (Cancelacion cancelacion : repositorio.listarCancelaciones()) {
+            cancelaciones.put(cancelacion.getCodigo(), cancelacion);
+        }
+    }
+
+    /** El próximo código de adicional tiene que seguir después de los ya cargados. */
+    private void actualizarCodigoDeAdicionales(Reserva reserva) {
+        for (AdicionalContratado adicional : reserva.getAdicionales()) {
+            if (adicional.getCodigo() >= siguienteCodigoAdicional) {
+                siguienteCodigoAdicional = adicional.getCodigo() + 1;
+            }
+        }
+    }
+
+    /** Le pasa al repositorio los datos del controlador, antes de guardar el archivo. */
+    public void guardarEn(Repositorio repositorio) {
+        for (Reserva reserva : reservas.values()) {
+            repositorio.agregarReserva(reserva);
+        }
+        for (Cliente cliente : clientes.values()) {
+            repositorio.agregarCliente(cliente);
+        }
+        for (Pasajero pasajero : pasajeros.values()) {
+            repositorio.agregarPasajero(pasajero);
+        }
+        for (Cancelacion cancelacion : cancelaciones.values()) {
+            repositorio.agregarCancelacion(cancelacion);
+        }
     }
 
     /** CU08 Registrar pago. El recargo ya lo calcula el propio Pago al crearse. */

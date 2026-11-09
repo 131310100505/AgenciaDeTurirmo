@@ -7,6 +7,7 @@ import ar.edu.uade.rumbosur.modelo.Reserva;
 import ar.edu.uade.rumbosur.modelo.Salida;
 import ar.edu.uade.rumbosur.modelo.Tour;
 import ar.edu.uade.rumbosur.modelo.Vehiculo;
+import ar.edu.uade.rumbosur.persistencia.Repositorio;
 import ar.edu.uade.rumbosur.servicio.PoliticaCancelacionAgencia;
 
 import java.time.LocalDate;
@@ -29,6 +30,19 @@ public class ControladorSalidas {
     public ControladorSalidas() {
         this.salidas = new ArrayList<>();
         this.politicaCancelacion = new PoliticaCancelacionAgencia();
+    }
+
+    // Reemplaza las salidas por las que tiene el repositorio
+    public void cargarDesde(Repositorio repositorio) {
+        salidas.clear();
+        salidas.addAll(repositorio.listarSalidas());
+    }
+
+    // Le pasa al repositorio las salidas, antes de guardar el archivo
+    public void guardarEn(Repositorio repositorio) {
+        for (Salida salida : salidas) {
+            repositorio.agregarSalida(salida);
+        }
     }
 
     // Crea y registra una nueva salida
