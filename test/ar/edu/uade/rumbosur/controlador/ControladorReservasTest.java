@@ -85,4 +85,14 @@ class ControladorReservasTest {
         controlador.registrarCliente(cliente);
         assertThrows(IllegalArgumentException.class, () -> controlador.registrarCliente(cliente));
     }
+
+    @Test
+    void unPasajeroRepetidoNoDejaUnaReservaAMedioArmar() {
+        // Error detectado en el plan de pruebas (caso C4): antes quedaba una reserva en el cliente.
+        Pasajero repetido = pasajero("1", 30);
+        assertThrows(IllegalArgumentException.class, () -> controlador.solicitarCrearReserva(cliente, salida,
+                vendedor, List.of(repetido, repetido)));
+        assertTrue(cliente.getReservas().isEmpty());
+        assertEquals(0, salida.calcularOcupacion());
+    }
 }

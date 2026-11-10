@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -131,6 +132,11 @@ public class ControladorReservas {
         if (cliente == null || salida == null || vendedor == null
                 || pasajerosReserva == null || pasajerosReserva.isEmpty()) {
             throw new IllegalArgumentException("Faltan datos: cliente, salida, vendedor y al menos un pasajero.");
+        }
+        // Un Set no admite repetidos (usa equals y hashCode de Pasajero, por documento):
+        // si tiene menos elementos que la lista, hay un pasajero cargado dos veces.
+        if (new HashSet<>(pasajerosReserva).size() < pasajerosReserva.size()) {
+            throw new IllegalArgumentException("Hay un pasajero cargado más de una vez en la reserva.");
         }
         if (!salida.verificarCupo(pasajerosReserva.size())) {
             throw new CupoInsuficienteException("La salida no tiene lugar para "
