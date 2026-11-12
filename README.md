@@ -8,9 +8,9 @@ Rumbo Sur es un sistema de gestión para una agencia de turismo receptivo, desar
 
 El objetivo del sistema es administrar tours, salidas programadas, clientes, pasajeros, reservas, pagos, servicios adicionales y cancelaciones.
 
-También permitirá organizar los recursos de cada salida, como guías y vehículos, realizar liquidaciones y generar reportes administrativos.
+También permite organizar los recursos de cada salida, como guías y vehículos, realizar liquidaciones y generar reportes administrativos.
 
-El proyecto se desarrolla utilizando Java y aplicando conceptos de Programación Orientada a Objetos, modelado UML, principios SOLID y patrones GRASP.
+El proyecto está desarrollado en Java, aplicando conceptos de Programación Orientada a Objetos, modelado UML, principios SOLID y patrones GRASP.
 
 ### 2. Integrantes del equipo
 
@@ -24,7 +24,7 @@ El proyecto se desarrolla utilizando Java y aplicando conceptos de Programación
 
 La agencia Rumbo Sur ofrece tours de aventura, culturales y de naturaleza, con itinerarios, tarifas por temporada y salidas programadas.
 
-El sistema permitirá gestionar las operaciones comerciales y administrativas de la agencia, respetando las reglas de negocio establecidas en el enunciado.
+El sistema gestiona las operaciones comerciales, operativas y administrativas de la agencia, respetando las reglas de negocio establecidas en el enunciado.
 
 ### 4. Funcionalidades principales
 
@@ -37,38 +37,163 @@ El sistema permitirá gestionar las operaciones comerciales y administrativas de
 - Contratación de servicios adicionales y seguros.
 - Registro de señas, pagos y ajustes.
 - Asignación de guías y vehículos.
-- Emisión de listas de pasajeros.
+- Generación y exportación de listas de pasajeros.
+- Inicio y finalización de salidas.
+- Control de cupo mínimo.
 - Liquidación de honorarios de guías.
 - Generación de reportes administrativos.
+- Persistencia de información mediante archivos.
 
 ### 5. Tecnologías y herramientas
 
 - **Lenguaje:** Java 17 o superior.
+- **Entorno de desarrollo:** IntelliJ IDEA o Visual Studio Code.
 - **Modelado:** UML.
 - **Diagramas:** Draw.io.
 - **Control de versiones:** Git y GitHub.
 - **Principios de diseño:** SOLID y GRASP.
 - **Pruebas unitarias:** JUnit 5, configurado con Maven en `pom.xml`.
+- **Interfaz de usuario:** consola y ventana gráfica con Java Swing.
+- **Persistencia:** serialización de objetos en archivos.
 
-### 6. Cómo abrir el proyecto y correr las pruebas
+### 6. Cómo abrir y ejecutar el proyecto
 
-El código está en `src/` y las pruebas en `test/`, con los mismos paquetes. Maven descarga JUnit solo la primera vez que se abre el proyecto (hace falta internet). Se necesita un JDK 17 o superior.
+#### Requisitos
 
-**IntelliJ IDEA**
+- Tener instalado Java JDK 17 o superior.
+- Contar con IntelliJ IDEA o Visual Studio Code.
+- Tener acceso al repositorio del proyecto.
 
-1. *File > Open* y elegir la carpeta del repositorio (la que tiene el `pom.xml`). Si pregunta, abrirlo como proyecto Maven.
-2. Si el proyecto ya estaba abierto sin Maven: clic derecho sobre `pom.xml` > *Add as Maven Project*.
-3. Para correr las pruebas: clic derecho sobre la carpeta `test` > *Run 'All Tests'*. Para una sola clase, el triángulo verde al lado de su nombre.
+#### Ejecutar el programa en IntelliJ IDEA
 
-**VS Code**
+1. Abrir IntelliJ IDEA.
+2. Seleccionar **File > Open**.
+3. Elegir la carpeta del proyecto que contiene `pom.xml`.
+4. Esperar a que IntelliJ cargue las dependencias.
+5. Abrir la carpeta `src/ar/edu/uade/rumbosur/`.
+6. Buscar el archivo `Principal.java`.
+7. Ejecutar el método `main` utilizando el triángulo verde.
 
-1. Instalar la extensión *Extension Pack for Java* (incluye el soporte de Maven y el panel de pruebas).
-2. *File > Open Folder* y elegir la carpeta del repositorio. La extensión detecta el `pom.xml` y carga el proyecto (puede tardar un poco la primera vez).
-3. Para correr las pruebas: abrir el panel *Testing* (ícono del matraz en la barra lateral) y tocar *Run Tests*. También se puede correr una clase con el botón *Run Test* que aparece arriba de cada clase de prueba.
+Al iniciar el programa se muestra el menú principal:
 
-**Consola** (si Maven está instalado): `mvn test` desde la carpeta del repositorio.
+```text
+========== RUMBO SUR - Agencia de Turismo ==========
 
-### 7. Organización del trabajo
+1. Vendedor
+2. Coordinador de operaciones
+3. Administrador
+4. Crear reserva con ventana (interfaz gráfica)
+0. Guardar y salir
+```
+
+Cada opción permite acceder a las funcionalidades correspondientes al rol seleccionado.
+
+Para finalizar correctamente, seleccionar la opción `0`, que permite guardar los datos antes de cerrar la aplicación.
+
+#### Persistencia de datos
+
+El sistema utiliza un archivo denominado `rumbosur.dat` para conservar la información.
+
+Al iniciar, intenta recuperar los datos previamente guardados. Si no existen, se utilizan los datos iniciales preparados para facilitar las pruebas.
+
+Al cerrar correctamente la aplicación, se guardan los cambios realizados.
+
+### 7. Datos iniciales de prueba
+
+El proyecto incluye la clase `DatosIniciales.java`, que prepara información de ejemplo para probar las funcionalidades.
+
+#### Tours y salidas programadas
+
+| Código de salida | Tour | Cupo mínimo | Cupo máximo |
+|---|---|---|---|
+| 101 | Lagos de Bariloche | 2 | 20 |
+| 102 | Trekking en la Patagonia | 2 | 15 |
+| 103 | Historia de Bariloche | 2 | 25 |
+
+Las fechas se establecen al generar inicialmente los datos y se conservan mediante la persistencia.
+
+#### Vendedores
+
+| Legajo | Nombre |
+|---|---|
+| 401 | Sofía Martínez |
+| 402 | Diego Ramírez |
+
+#### Guías y vehículos
+
+| Salida | Guía asignado | Vehículo |
+|---|---|---|
+| 101 | Martín López | AB123CD |
+| 102 | Lucía Fernández | AC456EF |
+| 103 | Carlos Gómez | AD789GH |
+
+#### Clientes
+
+Se incluyen tres clientes de ejemplo:
+
+- Ana Pérez.
+- Pedro García.
+- María Rodríguez.
+
+#### Reserva de prueba
+
+Se preparó una reserva de prueba identificada con el número `1`, correspondiente a la salida `101`, con dos pasajeros:
+
+- Juan Pérez.
+- Lucía Gómez.
+
+Esta reserva se utilizó para comprobar las funcionalidades de ocupación, generación de listas de pasajeros e inicio y finalización de salidas.
+
+Los datos iniciales están destinados a facilitar las pruebas y demostraciones del sistema.
+
+### 8. Pruebas del proyecto
+
+El proyecto utiliza JUnit 5 para las pruebas unitarias y también contempla pruebas funcionales mediante la ejecución del programa.
+
+#### Ejecutar pruebas en IntelliJ IDEA
+
+1. Abrir el proyecto.
+2. Buscar la carpeta `test`.
+3. Hacer clic derecho sobre la carpeta.
+4. Seleccionar **Run 'All Tests'**.
+
+Para ejecutar una sola clase de prueba, utilizar el triángulo verde que aparece junto a su nombre.
+
+#### Ejecutar pruebas en Visual Studio Code
+
+1. Instalar la extensión **Extension Pack for Java**.
+2. Abrir la carpeta del repositorio.
+3. Esperar a que se cargue el proyecto Maven.
+4. Abrir el panel **Testing**.
+5. Seleccionar **Run Tests**.
+
+#### Ejecutar pruebas desde la consola
+
+Si Maven está instalado, ejecutar desde la carpeta del proyecto:
+
+```bash
+mvn test
+```
+
+#### Pruebas funcionales realizadas
+
+Se verificaron las siguientes operaciones:
+
+- Consulta de salidas programadas.
+- Consulta de ocupación de una salida.
+- Creación y confirmación de una reserva de prueba con dos pasajeros.
+- Generación de la lista de pasajeros.
+- Exportación de la lista al archivo `pasajeros_salida_101.txt`.
+- Inicio de una salida.
+- Finalización de una salida.
+- Control de cupo mínimo fuera del plazo de cancelación.
+- Recuperación de información previamente guardada.
+
+Las pruebas funcionales mencionadas finalizaron satisfactoriamente.
+
+Queda pendiente verificar el caso positivo de cancelación automática por incumplimiento del cupo mínimo.
+
+### 9. Organización del trabajo
 
 El proyecto se divide en dos etapas.
 
@@ -91,27 +216,36 @@ Incluye:
 1. Implementación del sistema en Java.
 2. Desarrollo de las funcionalidades definidas.
 3. Manejo de colecciones, excepciones y persistencia.
-4. Interfaz de usuario.
+4. Interfaz de usuario por consola y Java Swing.
 5. Pruebas unitarias y funcionales.
-6. Documentación final y preparación de la defensa.
+6. Actualización de diagramas UML según la implementación.
+7. Documentación final y preparación de la defensa.
 
-### 8. Documentación
+### 10. Documentación
 
-La carpeta `docs/` contiene la documentación de análisis y diseño del sistema.
+La carpeta `docs/` contiene la documentación de análisis, diseño e implementación del sistema.
 
 Los archivos de documentación incluyen:
 
 - `enunciado.md`: identificación y descripción de la propuesta seleccionada.
 - `requisitos.md`: requisitos funcionales y reglas de negocio.
 - `supuestos.md`: decisiones adoptadas para resolver aspectos no especificados.
-- Diagramas UML y documentación de diseño correspondientes a la Etapa 1.
+- Diagramas UML correspondientes a la Etapa 1.
+- Diagramas y documentación de la Etapa 2.
+- Planes de pruebas funcionales.
 
-### 9. Estado del proyecto
+Los diagramas de la Etapa 2 reflejan las modificaciones realizadas durante la implementación en Java.
 
-**Etapa actual:** Etapa 1 — Modelado y diseño del sistema.
+### 11. Estado del proyecto
 
-La implementación en Java y las pruebas se desarrollarán durante la Etapa 2.
+**Etapa actual: Etapa 2 — Implementación, integración y documentación final.**
 
-### 10. Objetivo académico
+Se implementaron las funcionalidades principales del sistema y se realizaron pruebas unitarias y funcionales.
 
-Aplicar los conceptos de Programación Orientada a Objetos mediante el análisis, modelado, diseño, implementación y prueba de un sistema de gestión, manteniendo coherencia entre los requisitos, los diagramas UML y el código fuente.
+El módulo de operaciones se encuentra integrado con el menú principal y permite gestionar las salidas programadas.
+
+Se continúa trabajando en la integración final de los módulos, la actualización de los diagramas UML y la documentación de la entrega.
+
+### 12. Objetivo académico
+
+Aplicar los conceptos de Program
