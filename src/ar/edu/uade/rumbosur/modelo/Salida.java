@@ -113,12 +113,14 @@ public class Salida implements Serializable, Comparable<Salida> {
     }
 
     // Calcula la ocupacion de reservas pendientes y confirmadas
+    // (las finalizadas tambien cuentan: ocuparon su lugar en la salida)
     public int calcularOcupacion() {
 
         int ocupacion = 0;
 
         for (Reserva reserva : reservas) {
-            if (reserva.ocupaCupo()) {
+            if (reserva.ocupaCupo()
+                    || reserva.getEstado() == EstadoReserva.FINALIZADA) {
                 ocupacion += reserva.getCantidadPasajeros();
             }
         }
@@ -279,6 +281,11 @@ public class Salida implements Serializable, Comparable<Salida> {
         }
 
         estado = EstadoSalida.FINALIZADA;
+
+        // Las reservas confirmadas de la salida tambien terminan
+        for (Reserva reserva : reservas) {
+            reserva.finalizar();
+        }
     }
 
     // Cancela una salida que no comenzo

@@ -1,6 +1,7 @@
 
 package ar.edu.uade.rumbosur;
 
+import ar.edu.uade.rumbosur.controlador.ControladorCatalogo;
 import ar.edu.uade.rumbosur.controlador.ControladorReservas;
 import ar.edu.uade.rumbosur.controlador.ControladorSalidas;
 import ar.edu.uade.rumbosur.modelo.Promocion;
@@ -12,7 +13,9 @@ import ar.edu.uade.rumbosur.servicio.CalculadoraPrecio;
 import ar.edu.uade.rumbosur.vista.EntradaConsola;
 import ar.edu.uade.rumbosur.vista.MenuPrincipal;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -46,9 +49,13 @@ public class Principal {
         ControladorSalidas controladorSalidas =
                 new ControladorSalidas();
 
+        ControladorCatalogo controladorCatalogo =
+                new ControladorCatalogo();
+
         // Recuperar datos guardados.
         controladorReservas.cargarDesde(repositorio);
         controladorSalidas.cargarDesde(repositorio);
+        controladorCatalogo.cargarDesde(repositorio);
 
         // Crear una sola vez la reserva de prueba de la salida 101.
         DatosIniciales.cargarReservaPrueba(
@@ -59,6 +66,10 @@ public class Principal {
         // CU13: controlar vencimientos al iniciar.
         controladorReservas.controlarVencimientos();
 
+        // Cupo minimo: se cancelan las salidas que a 7 dias o menos no lo alcanzan.
+        informarCancelacionesPorCupoMinimo(
+                controladorSalidas.controlarCupoMinimo(LocalDate.now()));
+
         EntradaConsola entrada =
                 new EntradaConsola(new Scanner(System.in));
 
@@ -66,6 +77,7 @@ public class Principal {
                 entrada,
                 controladorReservas,
                 controladorSalidas,
+                controladorCatalogo,
                 repositorio.listarVendedores(),
                 catalogoAdicionales
         );
@@ -77,6 +89,7 @@ public class Principal {
             // Guardar los datos al terminar.
             controladorReservas.guardarEn(repositorio);
             controladorSalidas.guardarEn(repositorio);
+            controladorCatalogo.guardarEn(repositorio);
 
             repositorio.guardarDatos();
 
@@ -85,6 +98,16 @@ public class Principal {
             System.out.println("Datos guardados. ¡Hasta luego!");
 
             System.exit(0);
+        }
+    }
+
+    private static void informarCancelacionesPorCupoMinimo(
+            Map<Integer, Map<Integer, Double>> canceladas) {
+
+        for (Map.Entry<Integer, Map<Integer, Double>> salida : canceladas.entrySet()) {
+            System.out.println("Salida " + salida.getKey()
+                    + " cancelada por no alcanzar el cupo minimo. Reservas a reintegrar (100 %): "
+                    + salida.getValue());
         }
     }
 

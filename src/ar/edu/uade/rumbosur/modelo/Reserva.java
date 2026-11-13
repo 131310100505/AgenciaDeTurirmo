@@ -172,6 +172,19 @@ public class Reserva implements Serializable {
     }
 
     /**
+     * CU16: cuando la salida termina, la reserva confirmada pasa a FINALIZADA.
+     * Devuelve false si la reserva no estaba confirmada (por ejemplo, si estaba anulada).
+     */
+    public boolean finalizar() {
+        if (estado != EstadoReserva.CONFIRMADA) {
+            return false;
+        }
+        estado = EstadoReserva.FINALIZADA;
+        registrarEnHistorial("Reserva finalizada: la salida terminó");
+        return true;
+    }
+
+    /**
      * Anula la reserva y libera sus lugares: al quedar ANULADA deja de ocupar cupo.
      * La usan la cancelación (CU12) y el control de vencimientos (CU13).
      */

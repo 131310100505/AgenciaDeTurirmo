@@ -41,6 +41,13 @@ public class ControladorSalidas {
     // Cancelaciones hechas por la agencia, por numero de reserva
     private final Map<Integer, Cancelacion> cancelaciones = new LinkedHashMap<>();
 
+    // Guias (por legajo) y vehiculos (por patente) disponibles para asignar (CU14)
+    private final Map<Integer, Guia> guias = new LinkedHashMap<>();
+    private final Map<String, Vehiculo> vehiculos = new LinkedHashMap<>();
+
+    // Cantidad de dias antes de la salida en que se controla el cupo minimo
+    private static final int DIAS_CONTROL_CUPO_MINIMO = 7;
+
     // Constructor
     public ControladorSalidas() {
         this.salidas = new ArrayList<>();
@@ -54,6 +61,14 @@ public class ControladorSalidas {
         liquidaciones.clear();
         for (Liquidacion liquidacion : repositorio.listarLiquidaciones()) {
             liquidaciones.put(liquidacion.getCodigo(), liquidacion);
+        }
+        guias.clear();
+        for (Guia guia : repositorio.listarGuias()) {
+            guias.put(guia.getLegajo(), guia);
+        }
+        vehiculos.clear();
+        for (Vehiculo vehiculo : repositorio.listarVehiculos()) {
+            vehiculos.put(vehiculo.getPatente(), vehiculo);
         }
     }
 
@@ -69,6 +84,94 @@ public class ControladorSalidas {
         for (Cancelacion cancelacion : cancelaciones.values()) {
             repositorio.agregarCancelacion(cancelacion);
         }
+        for (Guia guia : guias.values()) {
+            repositorio.agregarGuia(guia);
+        }
+        for (Vehiculo vehiculo : vehiculos.values()) {
+            repositorio.agregarVehiculo(vehiculo);
+        }
+    }
+
+    // ---------- CU14: guias y vehiculos ----------
+
+    public void registrarGuia(Guia guia) {
+        if (guia == null) {
+            throw new IllegalArgumentException("El guia no puede ser nulo");
+        }
+        guias.put(guia.getLegajo(), guia);
+    }
+
+    public void registrarVehiculo(Vehiculo vehiculo) {
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("El vehiculo no puede ser nulo");
+        }
+        vehiculos.put(vehiculo.getPatente(), vehiculo);
+    }
+
+    public Guia buscarGuia(int legajo) {
+        return guias.get(legajo);
+    }
+
+    public Vehiculo buscarVehiculo(String patente) {
+        if (patente == null) {
+            return null;
+        }
+        // La patente se busca sin importar mayusculas o espacios
+        for (Vehiculo vehiculo : vehiculos.values()) {
+            if (vehiculo.getPatente().equalsIgnoreCase(patente.trim())) {
+                return vehiculo;
+            }
+        }
+        return null;
+    }
+
+    public List<Guia> listarGuias() {
+        return new ArrayList<>(guias.values());
+    }
+
+    public List<Vehiculo> listarVehiculos() {
+        return new ArrayList<>(vehiculos.values());
+    }
+
+    // Asigna un guia buscandolo por legajo
+    public void asignarGuia(int codigoSalida, int legajoGuia) {
+        Guia guia = buscarGuia(legajoGuia);
+        if (guia == null) {
+            throw new IllegalArgumentException("No existe un guia con ese legajo");
+        }
+        asignarGuia(codigoSalida, guia);
+    }
+
+    // Asigna un vehiculo buscandolo por patente
+    public void asignarVehiculo(int codigoSalida, String patente) {
+        Vehiculo vehiculo = buscarVehiculo(patente);
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("No existe un vehiculo con esa patente");
+        }
+        asignarVehiculo(codigoSalida, vehiculo);
+    }
+
+    // ---------- CU03: programar salida ----------
+
+    /**
+     * Programa una salida de un tour: el codigo es el siguiente libre, la fecha de fin
+     * sale de la duracion del tour y los cupos son los del tour.
+     */
+    public Salida programarSalida(Tour tour, LocalDate fechaInicio) {
+        if (tour == null || fechaInicio == null) {
+            throw new IllegalArgumentException("El tour y la fecha de inicio son obligatorios");
+        }
+        LocalDate fechaFin = fechaInicio.plusDays(tour.getDuracionDias() - 1);
+        return crearSalida(siguienteCodigoSalida(), fechaInicio, fechaFin,
+                tour.getCupoMinimo(), tour.getCupoMaximo(), tour);
+    }
+
+    private int siguienteCodigoSalida() {
+        int mayor = 100;
+        for (Salida salida : salidas) {
+            mayor = Math.max(mayor, salida.getCodigo());
+        }
+        return mayor + 1;
     }
 
     // CU17: cierra una salida finalizada y liquida los honorarios del guia
@@ -312,7 +415,8 @@ public class ControladorSalidas {
     }
 
     // Comprueba si corresponde cancelar por cupo minimo
-    // El control se realiza exactamente 7 dias antes del inicio
+    // Se cancela si faltan 7 dias o menos y no se llego al cupo minimo
+    // (asi no depende de que el control se ejecute justo ese dia)
     public boolean debeCancelarPorCupoMinimo(
             int codigoSalida, LocalDate fechaControl) {
 
@@ -334,7 +438,7 @@ public class ControladorSalidas {
         long diasRestantes = ChronoUnit.DAYS.between(
                 fechaControl, salida.getFechaInicio());
 
-        return diasRestantes == 7 &&
+        return diasRestantes <= DIAS_CONTROL_CUPO_MINIMO &&
                 salida.calcularOcupacion() < salida.getCupoMinimo();
     }
 
@@ -384,7 +488,7 @@ public class ControladorSalidas {
     }
 
     // Revisa todas las salidas y cancela las que no alcanzaron
-    // el cupo minimo exactamente 7 dias antes del inicio
+    // el cupo minimo cuando faltan 7 dias o menos para el inicio
     // Devuelve: codigo de salida -> devoluciones por reserva
     public Map<Integer, Map<Integer, Double>>
     controlarCupoMinimo(LocalDate fechaControl) {
