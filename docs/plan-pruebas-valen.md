@@ -1,4 +1,4 @@
-# Plan de pruebas funcionales: CU04, CU05, CU06, CU07, CU09, CU10 y CU11
+# Plan de pruebas funcionales: CU04, CU05, CU06, CU07, CU09 y CU11
 
 Responsable: Valentín. Ejecutado el 10/11/2026 sobre `main`.
 
@@ -56,15 +56,6 @@ Responsable: Valentín. Ejecutado el 10/11/2026 sobre `main`.
 | F2 | Se paga $1 más: $72.000 | Se confirma | `confirmar()` = true, CONFIRMADA, saldo $168.000 |
 | F3 | Confirmar otra vez la misma reserva | No cambia | `confirmar()` = false, sigue CONFIRMADA |
 | F4 | Reserva anulada con $50.000 pagados | No se puede confirmar | `confirmar()` = false, sigue ANULADA |
-
-## CU10: Modificar reserva (agregar pasajero)
-
-| Caso | Entrada | Resultado esperado | Resultado obtenido |
-|---|---|---|---|
-| M1 | Agregar un adulto a la reserva de P3 | Se agrega y se recalcula el total | Pasajeros 1 → 2, total $127.500 → $255.000 |
-| M2 | Agregar un pasajero en la salida B3, que está llena (4/4) | Se rechaza por cupo | `CupoInsuficienteException`: "La salida no tiene lugar para otro pasajero." |
-| M3 | Agregar un menor de 14 años a la reserva de aventura C1 | Se rechaza por la edad mínima | `PasajeroNoHabilitadoException` |
-| M4 | Agregar un pasajero a una reserva anulada | Se rechaza | `IllegalArgumentException`: "La reserva no existe o no está vigente." |
 
 ## CU11: Reemplazar pasajero
 

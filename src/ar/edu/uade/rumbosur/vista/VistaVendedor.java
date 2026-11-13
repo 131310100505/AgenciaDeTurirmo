@@ -64,12 +64,11 @@ public class VistaVendedor {
             System.out.println(" 6. Contratar servicio adicional");
             System.out.println(" 7. Registrar pago");
             System.out.println(" 8. Confirmar reserva");
-            System.out.println(" 9. Agregar pasajero a una reserva");
-            System.out.println("10. Reemplazar pasajero");
-            System.out.println("11. Cancelar reserva");
-            System.out.println("12. Registrar ajuste de un pago");
+            System.out.println(" 9. Reemplazar pasajero");
+            System.out.println("10. Cancelar reserva");
+            System.out.println("11. Registrar ajuste de un pago");
             System.out.println(" 0. Volver al menú principal");
-            opcion = entrada.leerOpcion("Opción: ", 0, 12);
+            opcion = entrada.leerOpcion("Opción: ", 0, 11);
             ejecutar(opcion);
         } while (opcion != 0);
     }
@@ -101,15 +100,12 @@ public class VistaVendedor {
                 confirmarReserva();
                 break;
             case 9:
-                agregarPasajero();
-                break;
-            case 10:
                 reemplazarPasajero();
                 break;
-            case 11:
+            case 10:
                 cancelarReserva();
                 break;
-            case 12:
+            case 11:
                 registrarAjuste();
                 break;
             default:
@@ -259,10 +255,6 @@ public class VistaVendedor {
         }
         System.out.println("Total: " + importe(reserva.getTotal()) + " | Pagado: "
                 + importe(reserva.calcularTotalPagado()) + " | Saldo: " + importe(reserva.calcularSaldo()));
-        System.out.println("Historial:");
-        for (String cambio : reserva.getHistorial()) {
-            System.out.println("  " + cambio);
-        }
     }
 
     // ---------- CU07 Contratar servicio adicional ----------
@@ -340,27 +332,6 @@ public class VistaVendedor {
             System.out.println("No se pudo confirmar. Estado actual: " + reserva.getEstado()
                     + ". Pagado: " + importe(reserva.calcularTotalPagado())
                     + " | Seña mínima: " + importe(reserva.calcularSenaMinima()));
-        }
-    }
-
-    // ---------- CU10 Agregar pasajero ----------
-
-    private void agregarPasajero() {
-        Reserva reserva = pedirReserva();
-        if (reserva == null) {
-            return;
-        }
-        Pasajero pasajero = pedirPasajero("Documento del nuevo pasajero: ");
-        if (pasajero == null) {
-            return;
-        }
-        try {
-            controladorReservas.agregarPasajeroAReserva(reserva, pasajero);
-            System.out.println("Pasajero agregado. Nuevo total: " + importe(reserva.getTotal()));
-        } catch (CupoInsuficienteException | PasajeroNoHabilitadoException e) {
-            System.out.println("No se pudo agregar: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
         }
     }
 

@@ -40,7 +40,6 @@ public class Reserva implements Serializable {
     private List<Pasajero> pasajeros;
     private List<Pago> pagos;                       // composición: los pagos pertenecen a la reserva
     private List<AdicionalContratado> adicionales;  // composición
-    private List<String> historial;                 // registro de cambios (supuesto S10)
 
     /** Constructor del mensaje «create» Reserva(cliente, salida, vendedor) del diagrama CU05. */
     public Reserva(Cliente cliente, Salida salida, Vendedor vendedor) {
@@ -57,8 +56,6 @@ public class Reserva implements Serializable {
         this.pasajeros = new ArrayList<>();
         this.pagos = new ArrayList<>();
         this.adicionales = new ArrayList<>();
-        this.historial = new ArrayList<>();
-        registrarEnHistorial("Reserva creada en estado " + estado);
     }
 
     public void agregarPasajero(Pasajero pasajero) {
@@ -70,7 +67,6 @@ public class Reserva implements Serializable {
                     + " ya está en la reserva.");
         }
         pasajeros.add(pasajero);
-        registrarEnHistorial("Se agrega el pasajero " + pasajero.getNombre());
     }
 
     public void agregarAdicional(AdicionalContratado adicional) {
@@ -139,7 +135,6 @@ public class Reserva implements Serializable {
             return false;
         }
         estado = EstadoReserva.CONFIRMADA;
-        registrarEnHistorial("Reserva confirmada con $" + calcularTotalPagado() + " pagados");
         return true;
     }
 
@@ -168,7 +163,6 @@ public class Reserva implements Serializable {
         }
         pasajeros.set(posicion, nuevo);
         quitarAdicionalesDe(actual);
-        registrarEnHistorial("Se reemplaza a " + actual.getNombre() + " por " + nuevo.getNombre());
     }
 
     /**
@@ -180,7 +174,6 @@ public class Reserva implements Serializable {
             return false;
         }
         estado = EstadoReserva.FINALIZADA;
-        registrarEnHistorial("Reserva finalizada: la salida terminó");
         return true;
     }
 
@@ -194,7 +187,6 @@ public class Reserva implements Serializable {
         }
         estado = EstadoReserva.ANULADA;
         motivoAnulacion = motivo;
-        registrarEnHistorial("Reserva anulada: " + motivo);
     }
 
     // Recorre con Iterator porque elimina mientras recorre
@@ -207,10 +199,6 @@ public class Reserva implements Serializable {
                 iterador.remove();
             }
         }
-    }
-
-    private void registrarEnHistorial(String descripcion) {
-        historial.add(LocalDate.now() + " - " + descripcion);
     }
 
     // ---------- Getters y setters ----------
@@ -265,10 +253,6 @@ public class Reserva implements Serializable {
 
     public List<AdicionalContratado> getAdicionales() {
         return Collections.unmodifiableList(adicionales);
-    }
-
-    public List<String> getHistorial() {
-        return Collections.unmodifiableList(historial);
     }
 
     /**

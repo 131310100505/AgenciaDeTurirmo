@@ -88,8 +88,8 @@ Al iniciar el programa se muestra el menú principal:
 
 Cada opción permite acceder a las funcionalidades correspondientes al rol seleccionado.
 
-- **Vendedor:** clientes y pasajeros, reservas, adicionales, pagos, confirmación, modificaciones, reemplazos, cancelaciones y ajustes (CU04 a CU12 y CU19).
-- **Coordinador de operaciones:** salidas, ocupación, lista de pasajeros, inicio y fin de salidas, control de cupo mínimo, programación de salidas, asignación de guía y vehículo, y cierre de la salida con la liquidación del guía (CU03 y CU14 a CU17).
+- **Vendedor:** clientes y pasajeros, reservas, adicionales, pagos, confirmación, reemplazo de pasajeros, cancelaciones y ajustes (CU04 a CU09, CU11, CU12 y CU19).
+- **Coordinador de operaciones:** salidas con su ocupación, programación de salidas, asignación de guía y vehículo, lista de pasajeros, inicio y fin de salidas, y cierre de la salida con la liquidación del guía (CU03 y CU14 a CU17).
 - **Administrador:** reportes (CU18) y catálogo de tours, con sus itinerarios y tarifas por temporada (CU01 y CU02).
 
 Al iniciar, el sistema anula las reservas con el saldo vencido (CU13) y cancela las salidas que, faltando 7 días o menos, no alcanzaron el cupo mínimo, con devolución del 100 % de lo pagado.

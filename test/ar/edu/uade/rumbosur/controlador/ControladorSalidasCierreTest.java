@@ -66,8 +66,10 @@ class ControladorSalidasCierreTest {
     }
 
     private void llevarSalidaHastaFinalizada() {
-        controlador.asignarGuia(CODIGO_SALIDA, guia);
-        controlador.asignarVehiculo(CODIGO_SALIDA, new Vehiculo("AB123CD", 20, TipoVehiculo.COMBI));
+        controlador.registrarGuia(guia);
+        controlador.registrarVehiculo(new Vehiculo("AB123CD", 20, TipoVehiculo.COMBI));
+        controlador.asignarGuia(CODIGO_SALIDA, guia.getLegajo());
+        controlador.asignarVehiculo(CODIGO_SALIDA, "AB123CD");
         controlador.generarListaPasajeros(CODIGO_SALIDA);
         controlador.iniciarSalida(CODIGO_SALIDA);
         controlador.finalizarSalida(CODIGO_SALIDA);

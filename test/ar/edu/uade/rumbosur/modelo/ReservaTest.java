@@ -112,11 +112,4 @@ class ReservaTest {
         reserva.anular("Cancelada");
         assertFalse(reserva.confirmar());
     }
-
-    @Test
-    void losCambiosQuedanEnElHistorial() {
-        reserva.reemplazarPasajero(ana, luis, HOY);
-        reserva.anular("Cancelada");
-        assertEquals(4, reserva.getHistorial().size()); // creación, alta de Ana, reemplazo, anulación
-    }
 }

@@ -33,21 +33,14 @@ Se creó una reserva con dos pasajeros, se registró un pago mediante transferen
 | S1 | Seleccionar opción 1 del coordinador | Mostrar las salidas registradas | Se mostraron las salidas 101, 102 y 103 |
 | S2 | Consultar salidas con guía y vehículo asignados | Mostrar las salidas disponibles | Se listaron correctamente las salidas registradas |
 
-## 2. Consultar ocupación
-
-| **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
-|---|---|---|---|
-| O1 | Consultar salida 101 sin reservas | Ocupación 0 | Ocupación actual: 0 |
-| O2 | Consultar salida 101 con reserva de 2 pasajeros | Ocupación 2 | Ocupación actual: 2 |
-
-## 3. Generar lista de pasajeros
+## 2. Generar lista de pasajeros
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
 | P1 | Generar lista de salida 101 sin confirmar | Rechazar la operación | `Error: La salida debe estar confirmada` |
 | P2 | Generar lista de salida 101 con reserva confirmada y condiciones cumplidas | Generar lista correctamente | `Lista de pasajeros generada.` |
 
-## 4. Exportar lista de pasajeros
+## 3. Exportar lista de pasajeros
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
@@ -55,26 +48,28 @@ Se creó una reserva con dos pasajeros, se registró un pago mediante transferen
 | E2 | Exportar lista generada de salida 101 | Crear archivo de texto | `Archivo generado: pasajeros_salida_101.txt` |
 | E3 | Abrir el archivo exportado | Mostrar los datos de la salida y sus pasajeros | Se verificaron los datos de Juan Pérez y Lucía Gómez, documentos y contactos de emergencia |
 
-## 5. Iniciar salida
+## 4. Iniciar salida
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
 | I1 | Iniciar salida 101 con guía, vehículo y lista generada | Iniciar la salida correctamente | `Salida iniciada correctamente.` |
 
-## 6. Finalizar salida
+## 5. Finalizar salida
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
 | F1 | Finalizar salida 101 previamente iniciada | Finalizar la salida correctamente | `Salida finalizada correctamente.` |
 
-## 7. Controlar cupo mínimo
+## 6. Control de cupo mínimo
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
-| C1 | Ejecutar control de cupo mínimo con salidas fuera del plazo de cancelación | No cancelar ninguna salida | `No hay salidas para cancelar por cupo mínimo.` |
-| C2 | Ejecutar control dentro del plazo establecido con ocupación inferior al mínimo | Cancelar la salida correspondiente | Pendiente de ejecutar |
+| C1 | Iniciar el programa con todas las salidas a más de 7 días | No cancelar ninguna salida | No se canceló ninguna salida y el menú abrió normalmente |
+| C2 | Salida a 7 días o menos con ocupación inferior al mínimo | Cancelar la salida y devolver el 100 % | Verificado con las pruebas unitarias de `ControladorSalidasTest` y `ControladorSalidasOperacionTest` |
 
-## 8. Persistencia de datos
+El control de cupo mínimo se hace automáticamente al iniciar el programa (ya no es una opción del menú).
+
+## 7. Persistencia de datos
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
@@ -86,11 +81,10 @@ Se creó una reserva con dos pasajeros, se registró un pago mediante transferen
 
 Se realizaron **13 comprobaciones funcionales satisfactorias** del módulo de operaciones.
 
-Las pruebas permitieron verificar el funcionamiento de la consulta de salidas, ocupación, generación y exportación de listas de pasajeros, inicio y finalización de salidas, control de cupo mínimo fuera del plazo y persistencia inicial.
+Las pruebas permitieron verificar el funcionamiento de la consulta de salidas con su ocupación, generación y exportación de listas de pasajeros, inicio y finalización de salidas, control de cupo mínimo y persistencia inicial.
 
 **Pruebas pendientes:**
 
-- Cancelación efectiva de una salida por incumplimiento del cupo mínimo.
 - Verificación de persistencia de la reserva y del estado finalizado después del último reinicio.
 
 **Conclusión:** las funcionalidades probadas respondieron de acuerdo con los resultados esperados. Quedan pendientes las pruebas indicadas para completar la cobertura funcional del módulo.

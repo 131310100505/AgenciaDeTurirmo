@@ -97,31 +97,6 @@ public class ControladorCatalogo {
         return tour;
     }
 
-    /**
-     * Modifica nombre, descripción, duración y cupos de un tour. La duración no puede
-     * quedar más corta que el último día que ya tiene actividades en el itinerario.
-     */
-    public void modificarTour(int codigo, String nombre, String descripcion,
-                              int duracionDias, int cupoMinimo, int cupoMaximo) {
-        Tour tour = obtenerTour(codigo);
-        if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del tour es obligatorio.");
-        }
-        if (cupoMinimo < 1 || cupoMaximo < cupoMinimo) {
-            throw new IllegalArgumentException("El cupo mínimo debe ser al menos 1 y no superar al máximo.");
-        }
-        for (Actividad actividad : tour.getActividades()) {
-            if (actividad.getDia() > duracionDias) {
-                throw new IllegalArgumentException("El itinerario tiene actividades en el día "
-                        + actividad.getDia() + ": la duración no puede ser menor.");
-            }
-        }
-        if (duracionDias < 1) {
-            throw new IllegalArgumentException("El tour debe durar al menos un día.");
-        }
-        tour.modificarDatos(nombre, descripcion, duracionDias, cupoMinimo, cupoMaximo);
-    }
-
     public Tour buscarTour(int codigo) {
         return tours.get(codigo);
     }

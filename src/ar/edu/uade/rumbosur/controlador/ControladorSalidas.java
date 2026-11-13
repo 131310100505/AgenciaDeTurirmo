@@ -68,7 +68,7 @@ public class ControladorSalidas {
         }
         vehiculos.clear();
         for (Vehiculo vehiculo : repositorio.listarVehiculos()) {
-            vehiculos.put(vehiculo.getPatente(), vehiculo);
+            vehiculos.put(vehiculo.getPatente().toUpperCase(), vehiculo);
         }
     }
 
@@ -105,24 +105,7 @@ public class ControladorSalidas {
         if (vehiculo == null) {
             throw new IllegalArgumentException("El vehiculo no puede ser nulo");
         }
-        vehiculos.put(vehiculo.getPatente(), vehiculo);
-    }
-
-    public Guia buscarGuia(int legajo) {
-        return guias.get(legajo);
-    }
-
-    public Vehiculo buscarVehiculo(String patente) {
-        if (patente == null) {
-            return null;
-        }
-        // La patente se busca sin importar mayusculas o espacios
-        for (Vehiculo vehiculo : vehiculos.values()) {
-            if (vehiculo.getPatente().equalsIgnoreCase(patente.trim())) {
-                return vehiculo;
-            }
-        }
-        return null;
+        vehiculos.put(vehiculo.getPatente().toUpperCase(), vehiculo);
     }
 
     public List<Guia> listarGuias() {
@@ -133,22 +116,22 @@ public class ControladorSalidas {
         return new ArrayList<>(vehiculos.values());
     }
 
-    // Asigna un guia buscandolo por legajo
+    // Asigna un guia, buscandolo por legajo. Salida valida categoria y superposicion.
     public void asignarGuia(int codigoSalida, int legajoGuia) {
-        Guia guia = buscarGuia(legajoGuia);
+        Guia guia = guias.get(legajoGuia);
         if (guia == null) {
             throw new IllegalArgumentException("No existe un guia con ese legajo");
         }
-        asignarGuia(codigoSalida, guia);
+        obtenerSalidaObligatoria(codigoSalida).asignarGuia(guia);
     }
 
-    // Asigna un vehiculo buscandolo por patente
+    // Asigna un vehiculo, buscandolo por patente. Salida valida la capacidad.
     public void asignarVehiculo(int codigoSalida, String patente) {
-        Vehiculo vehiculo = buscarVehiculo(patente);
+        Vehiculo vehiculo = patente == null ? null : vehiculos.get(patente.trim().toUpperCase());
         if (vehiculo == null) {
             throw new IllegalArgumentException("No existe un vehiculo con esa patente");
         }
-        asignarVehiculo(codigoSalida, vehiculo);
+        obtenerSalidaObligatoria(codigoSalida).asignarVehiculo(vehiculo);
     }
 
     // ---------- CU03: programar salida ----------
@@ -269,48 +252,6 @@ public class ControladorSalidas {
         return resultado;
     }
 
-    // Consulta la ocupacion actual de una salida
-    public int consultarOcupacion(int codigoSalida) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        return salida.calcularOcupacion();
-    }
-
-    // Verifica si una salida admite nuevos pasajeros
-    public boolean verificarCupo(int codigoSalida,
-                                 int cantidadPasajeros) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        return salida.verificarCupo(cantidadPasajeros);
-    }
-
-    // Actualiza el estado de una salida
-    public void actualizarEstado(int codigoSalida) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        salida.actualizarEstado();
-    }
-
-    // Asigna un guia a una salida
-    public void asignarGuia(int codigoSalida, Guia guia) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        salida.asignarGuia(guia);
-    }
-
-    // Asigna un vehiculo a una salida
-    public void asignarVehiculo(int codigoSalida,
-                                Vehiculo vehiculo) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        salida.asignarVehiculo(vehiculo);
-    }
-
     // Genera la lista de pasajeros de una salida
     public void generarListaPasajeros(int codigoSalida) {
 
@@ -376,14 +317,6 @@ public class ControladorSalidas {
         Salida salida = obtenerSalidaObligatoria(codigoSalida);
 
         salida.finalizarSalida();
-    }
-
-    // Cancela una salida manualmente
-    public void cancelarSalida(int codigoSalida) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        salida.cancelarSalida();
     }
 
     // Comprueba si corresponde cancelar por cupo minimo

@@ -188,21 +188,7 @@ El cliente no se representa como actor directo porque, según los supuestos del 
 
 ### CU10 — Modificar reserva
 
-**Actor principal:** Vendedor.
-
-**Precondiciones:** existe una reserva vigente.
-
-**Flujo principal:**
-1. El vendedor busca la reserva.
-2. Selecciona los datos o servicios que desea modificar.
-3. El sistema valida las restricciones y los cupos.
-4. Recalcula el importe cuando corresponda.
-5. Registra los cambios.
-
-**Flujos alternativos:**
-- Si una modificación supera los cupos, se rechaza.
-- Si la modificación afecta importes ya pagados, se registra el ajuste correspondiente.
-- Si la reserva está anulada o finalizada, no se permite una modificación operativa.
+*Etapa 2: este caso de uso se quitó para simplificar el sistema. Una reserva se modifica contratando servicios adicionales (CU07) o reemplazando un pasajero (CU11), y la consigna ("cancelar o modificar reservas") queda cubierta con esos casos de uso y CU12.*
 
 ### CU11 — Reemplazar pasajero
 
