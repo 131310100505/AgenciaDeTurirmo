@@ -1,4 +1,3 @@
-
 package ar.edu.uade.rumbosur;
 
 import ar.edu.uade.rumbosur.controlador.ControladorCatalogo;
@@ -19,138 +18,67 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Arranque de la aplicación:
- * crea los objetos, los conecta y abre el menú.
+ * Arranque de la aplicación: crea los objetos, los conecta y abre el menú.
  */
 public class Principal {
 
     public static void main(String[] args) {
-
         Repositorio repositorio = new Repositorio();
-
-        if (repositorio.cargarDatos()) {
+        boolean habiaDatos = repositorio.cargarDatos();
+        if (habiaDatos) {
             System.out.println("Datos cargados del archivo.");
         } else {
-            System.out.println("No había datos guardados.");
+            DatosIniciales.cargarEn(repositorio);
         }
 
-        // Carga solamente los datos iniciales que no existen.
-        DatosIniciales.cargarEn(repositorio);
+        // Promociones de los requisitos: jubilado 10 %, anticipada 15 %, grupo 10 %
+        List<Promocion> promociones = List.of(
+                new Promocion(1, "Jubilados", TipoPromocion.JUBILADO, 0.10),
+                new Promocion(2, "Reserva anticipada (más de 60 días)", TipoPromocion.ANTICIPADA, 0.15),
+                new Promocion(3, "Grupo de 6 o más pasajeros", TipoPromocion.GRUPO, 0.10));
 
-        List<ServicioAdicional> catalogoAdicionales =
-                crearCatalogoAdicionales();
+        // Servicios adicionales (precios de ejemplo). El primero es el seguro obligatorio de aventura.
+        List<ServicioAdicional> catalogoAdicionales = List.of(
+                new ServicioAdicional(1, "Seguro de aventura", 15000, TipoAdicional.SEGURO),
+                new ServicioAdicional(2, "Traslado aeropuerto - hotel", 12000, TipoAdicional.TRASLADO),
+                new ServicioAdicional(3, "Excursión opcional", 25000, TipoAdicional.EXCURSION));
 
         ControladorReservas controladorReservas =
-                new ControladorReservas(
-                        new CalculadoraPrecio(crearPromociones()),
-                        catalogoAdicionales.get(0)
-                );
+                new ControladorReservas(new CalculadoraPrecio(promociones), catalogoAdicionales.get(0));
+        ControladorSalidas controladorSalidas = new ControladorSalidas();
+        ControladorCatalogo controladorCatalogo = new ControladorCatalogo();
 
-        ControladorSalidas controladorSalidas =
-                new ControladorSalidas();
-
-        ControladorCatalogo controladorCatalogo =
-                new ControladorCatalogo();
-
-        // Recuperar datos guardados.
         controladorReservas.cargarDesde(repositorio);
         controladorSalidas.cargarDesde(repositorio);
         controladorCatalogo.cargarDesde(repositorio);
 
-        // Crear una sola vez la reserva de prueba de la salida 101.
-        DatosIniciales.cargarReservaPrueba(
-                repositorio,
-                controladorReservas
-        );
+        if (!habiaDatos) {
+            DatosIniciales.cargarReservaPrueba(repositorio, controladorReservas);
+        }
 
-        // CU13: controlar vencimientos al iniciar.
+        // CU13: anula las reservas con el saldo vencido
         controladorReservas.controlarVencimientos();
 
-        // Cupo minimo: se cancelan las salidas que a 7 dias o menos no lo alcanzan.
-        informarCancelacionesPorCupoMinimo(
-                controladorSalidas.controlarCupoMinimo(LocalDate.now()));
+        // Cupo mínimo: cancela las salidas que a 7 días o menos no lo alcanzan
+        Map<Integer, Map<Integer, Double>> canceladas = controladorSalidas.controlarCupoMinimo(LocalDate.now());
+        for (Integer codigoSalida : canceladas.keySet()) {
+            System.out.println("Salida " + codigoSalida + " cancelada por no alcanzar el cupo mínimo.");
+        }
 
-        EntradaConsola entrada =
-                new EntradaConsola(new Scanner(System.in));
-
-        MenuPrincipal menu = new MenuPrincipal(
-                entrada,
-                controladorReservas,
-                controladorSalidas,
-                controladorCatalogo,
-                repositorio.listarVendedores(),
-                catalogoAdicionales
-        );
-
+        EntradaConsola entrada = new EntradaConsola(new Scanner(System.in));
+        MenuPrincipal menu = new MenuPrincipal(entrada, controladorReservas, controladorSalidas,
+                controladorCatalogo, repositorio.listarVendedores(), catalogoAdicionales);
         try {
             menu.iniciar();
         } finally {
-
-            // Guardar los datos al terminar.
+            // Se guardan los datos aunque el programa termine por un error
             controladorReservas.guardarEn(repositorio);
             controladorSalidas.guardarEn(repositorio);
             controladorCatalogo.guardarEn(repositorio);
-
             repositorio.guardarDatos();
-
             entrada.cerrar();
-
             System.out.println("Datos guardados. ¡Hasta luego!");
-
             System.exit(0);
         }
-    }
-
-    private static void informarCancelacionesPorCupoMinimo(
-            Map<Integer, Map<Integer, Double>> canceladas) {
-
-        for (Map.Entry<Integer, Map<Integer, Double>> salida : canceladas.entrySet()) {
-            System.out.println("Salida " + salida.getKey()
-                    + " cancelada por no alcanzar el cupo minimo. Reservas a reintegrar (100 %): "
-                    + salida.getValue());
-        }
-    }
-
-    /**
-     * Promociones de los requisitos (S13 a S15).
-     */
-    private static List<Promocion> crearPromociones() {
-
-        return List.of(
-                new Promocion(
-                        1, "Jubilados",
-                        TipoPromocion.JUBILADO, 0.10
-                ),
-                new Promocion(
-                        2, "Reserva anticipada (más de 60 días)",
-                        TipoPromocion.ANTICIPADA, 0.15
-                ),
-                new Promocion(
-                        3, "Grupo de 6 o más pasajeros",
-                        TipoPromocion.GRUPO, 0.10
-                )
-        );
-    }
-
-    /**
-     * Servicios adicionales de la agencia.
-     * El primero es el seguro obligatorio de aventura.
-     */
-    private static List<ServicioAdicional> crearCatalogoAdicionales() {
-
-        return List.of(
-                new ServicioAdicional(
-                        1, "Seguro de aventura",
-                        15000, TipoAdicional.SEGURO
-                ),
-                new ServicioAdicional(
-                        2, "Traslado aeropuerto - hotel",
-                        12000, TipoAdicional.TRASLADO
-                ),
-                new ServicioAdicional(
-                        3, "Excursión opcional",
-                        25000, TipoAdicional.EXCURSION
-                )
-        );
     }
 }

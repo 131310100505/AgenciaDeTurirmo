@@ -185,10 +185,6 @@ public class Repositorio implements Serializable {
         pasajeros.put(pasajero.getDocumento(), pasajero);
     }
 
-    public Pasajero buscarPasajero(String documento) {
-        return pasajeros.get(documento);
-    }
-
     public List<Pasajero> listarPasajeros() {
         return new ArrayList<>(pasajeros.values());
     }
@@ -211,10 +207,6 @@ public class Repositorio implements Serializable {
 
     public void agregarGuia(Guia guia) {
         guias.put(guia.getLegajo(), guia);
-    }
-
-    public Guia buscarGuia(int legajo) {
-        return guias.get(legajo);
     }
 
     public List<Guia> listarGuias() {
@@ -241,10 +233,6 @@ public class Repositorio implements Serializable {
         vehiculos.put(vehiculo.getPatente(), vehiculo);
     }
 
-    public Vehiculo buscarVehiculo(String patente) {
-        return vehiculos.get(patente);
-    }
-
     public List<Vehiculo> listarVehiculos() {
         return new ArrayList<>(vehiculos.values());
     }
@@ -255,10 +243,6 @@ public class Repositorio implements Serializable {
         cancelaciones.put(cancelacion.getCodigo(), cancelacion);
     }
 
-    public Cancelacion buscarCancelacion(int codigo) {
-        return cancelaciones.get(codigo);
-    }
-
     public List<Cancelacion> listarCancelaciones() {
         return new ArrayList<>(cancelaciones.values());
     }
@@ -267,10 +251,6 @@ public class Repositorio implements Serializable {
 
     public void agregarLiquidacion(Liquidacion liquidacion) {
         liquidaciones.put(liquidacion.getCodigo(), liquidacion);
-    }
-
-    public Liquidacion buscarLiquidacion(int codigo) {
-        return liquidaciones.get(codigo);
     }
 
     public List<Liquidacion> listarLiquidaciones() {

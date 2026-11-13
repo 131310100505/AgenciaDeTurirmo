@@ -269,26 +269,6 @@ public class ControladorSalidas {
         return resultado;
     }
 
-    // Devuelve las salidas asociadas a un tour
-    public List<Salida> listarSalidasPorTour(Tour tour) {
-
-        if (tour == null) {
-            throw new IllegalArgumentException(
-                    "El tour no puede ser nulo");
-        }
-
-        List<Salida> resultado = new ArrayList<>();
-
-        for (Salida salida : salidas) {
-            if (salida.getTour() == tour) {
-                resultado.add(salida);
-            }
-        }
-
-        Collections.sort(resultado);
-        return resultado;
-    }
-
     // Consulta la ocupacion actual de una salida
     public int consultarOcupacion(int codigoSalida) {
 
@@ -404,14 +384,6 @@ public class ControladorSalidas {
         Salida salida = obtenerSalidaObligatoria(codigoSalida);
 
         salida.cancelarSalida();
-    }
-
-    // Consulta el estado actual de una salida
-    public EstadoSalida consultarEstado(int codigoSalida) {
-
-        Salida salida = obtenerSalidaObligatoria(codigoSalida);
-
-        return salida.getEstado();
     }
 
     // Comprueba si corresponde cancelar por cupo minimo

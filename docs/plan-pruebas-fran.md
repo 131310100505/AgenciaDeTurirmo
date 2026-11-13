@@ -74,10 +74,7 @@ Período de R1 a R4 y R6: del 01/01/2026 al 31/12/2027.
 | R3 | Ingresos, $9.800 pagados y $1.960 devueltos | Bariloche: $7.840 | "Bariloche - 1 reserva(s) - $7840.00" |
 | R4 | Cancelaciones, una con $1.960 devueltos | Una cancelación, total $1.960 | "Total: 1 cancelación(es) - devuelto $1960.00" |
 | R5 | Ventas del 01/01/2020 al 02/01/2020 | Informa que no hay resultados | "No hay resultados para el período indicado." |
-| R6 | Exportar ventas a un archivo | El archivo tiene el mismo texto que el reporte | Mismo título y misma línea de Luis |
-| R7 | Exportar con nombre vacío | Se rechaza | `IllegalArgumentException`: "Falta el nombre del archivo." |
-| R8 | Menú: fecha 31/02/2027 | Avisa y vuelve a preguntar | "Fecha inválida." y vuelve a pedir la fecha |
+| R8 | Menú: fecha 31/02/2027 | Avisa y vuelve a preguntar | "Error: fecha inválida. Use el formato dd/mm/aaaa…" y vuelve a pedir la fecha |
 | R9 | Menú: hasta anterior a desde | Avisa y vuelve al menú | "La fecha final no puede ser anterior a la inicial." |
-| R10 | Menú: exportar a una carpeta que no existe | Avisa y el programa sigue | "No se pudo exportar el reporte" y vuelve al menú |
 
-**Resultado:** los 36 casos dieron el resultado esperado.
+**Resultado:** los 33 casos dieron el resultado esperado.

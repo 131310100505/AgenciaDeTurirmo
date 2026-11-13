@@ -53,11 +53,6 @@ public class Cliente implements Serializable {
         return reserva;
     }
 
-    public void actualizarContacto(String telefono, String correo) {
-        this.telefono = telefono;
-        this.correo = correo;
-    }
-
     public int getCodigo() {
         return codigo;
     }

@@ -76,10 +76,9 @@ public class MenuPrincipal {
             System.out.println("0. Volver");
             opcion = entrada.leerOpcion("Opción: ", 0, 2);
             if (opcion == 1) {
-                // Usa el mismo Scanner de todo el programa (no se crea otro).
                 ControladorReportes controladorReportes =
                         new ControladorReportes(controladorReservas, controladorSalidas);
-                new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
+                new VistaAdministrador(controladorReportes, entrada).mostrarMenu();
             } else if (opcion == 2) {
                 new VistaCatalogo(entrada, controladorCatalogo).mostrarMenu();
             }
