@@ -54,34 +54,14 @@ public class MenuPrincipal {
                             .mostrarMenu();
                     break;
                 case 3:
-                    ingresarComoAdministrador();
+                    new VistaAdministrador(new ControladorReportes(controladorReservas, controladorSalidas),
+                            controladorCatalogo, entrada).mostrarMenu();
                     break;
                 case 4:
                     abrirVentanaReserva();
                     break;
                 default:
                     break; // 0: sale y Principal guarda los datos
-            }
-        } while (opcion != 0);
-    }
-
-    /** El administrador elige entre los reportes (CU18) y el catálogo de tours (CU01 y CU02). */
-    private void ingresarComoAdministrador() {
-        int opcion;
-        do {
-            System.out.println();
-            System.out.println("--- Administrador ---");
-            System.out.println("1. Reportes");
-            System.out.println("2. Catálogo de tours (tours, itinerarios y tarifas)");
-            System.out.println("0. Volver");
-            opcion = entrada.leerOpcion("Opción: ", 0, 2);
-            if (opcion == 1) {
-                // Usa el mismo Scanner de todo el programa (no se crea otro).
-                ControladorReportes controladorReportes =
-                        new ControladorReportes(controladorReservas, controladorSalidas);
-                new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
-            } else if (opcion == 2) {
-                new VistaCatalogo(entrada, controladorCatalogo).mostrarMenu();
             }
         } while (opcion != 0);
     }

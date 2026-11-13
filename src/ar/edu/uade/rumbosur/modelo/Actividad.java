@@ -17,6 +17,9 @@ public class Actividad implements Serializable {
     private String lugar;
     private TipoActividad tipo;
 
+    // Proveedor externo que presta la actividad (0..1): puede no tener
+    private Proveedor proveedor;
+
     // Constructor
     public Actividad(int codigo, int dia, int orden,
                      LocalTime horario, String descripcion,
@@ -58,5 +61,13 @@ public class Actividad implements Serializable {
 
     public TipoActividad getTipo() {
         return tipo;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void asignarProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 }

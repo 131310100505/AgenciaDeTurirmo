@@ -31,33 +31,29 @@ public class VistaCatalogo {
         do {
             System.out.println();
             System.out.println("--- Administrador: catálogo de tours ---");
-            System.out.println("1. Listar tours");
+            System.out.println("1. Ver tours (con itinerario y tarifas)");
             System.out.println("2. Registrar tour");
-            System.out.println("3. Ver itinerario y tarifas de un tour");
+            System.out.println("3. Modificar tour");
             System.out.println("4. Agregar actividad al itinerario");
             System.out.println("5. Agregar tarifa por temporada");
-            System.out.println("6. Modificar tour");
             System.out.println("0. Volver");
-            opcion = entrada.leerOpcion("Opción: ", 0, 6);
+            opcion = entrada.leerOpcion("Opción: ", 0, 5);
             try {
                 switch (opcion) {
                     case 1:
-                        listarTours();
+                        verTours();
                         break;
                     case 2:
                         registrarTour();
                         break;
                     case 3:
-                        verDetalle();
+                        modificarTour();
                         break;
                     case 4:
                         agregarActividad();
                         break;
                     case 5:
                         agregarTarifa();
-                        break;
-                    case 6:
-                        modificarTour();
                         break;
                     default:
                         break;
@@ -68,19 +64,38 @@ public class VistaCatalogo {
         } while (opcion != 0);
     }
 
+    /** Una línea por tour; se usa para elegir un tour. */
     private void listarTours() {
-        List<Tour> tours = controladorCatalogo.listarTours();
-        if (tours.isEmpty()) {
-            System.out.println("No hay tours cargados.");
-            return;
-        }
-        for (Tour tour : tours) {
+        for (Tour tour : controladorCatalogo.listarTours()) {
             System.out.println(tour.getCodigo() + ". " + tour.getNombre()
                     + " | " + tour.obtenerCategoria()
                     + " | " + tour.getDuracionDias() + " día(s)"
-                    + " | cupo " + tour.getCupoMinimo() + " a " + tour.getCupoMaximo()
-                    + " | " + tour.getActividades().size() + " actividad(es)"
-                    + " | " + tour.getTarifas().size() + " tarifa(s)");
+                    + " | cupo " + tour.getCupoMinimo() + " a " + tour.getCupoMaximo());
+        }
+    }
+
+    /** Cada tour con su itinerario (ordenado por día) y sus tarifas. */
+    private void verTours() {
+        List<Tour> tours = controladorCatalogo.listarTours();
+        if (tours.isEmpty()) {
+            System.out.println("No hay tours cargados.");
+        }
+        for (Tour tour : tours) {
+            System.out.println();
+            System.out.println(tour.getCodigo() + ". " + tour.getNombre() + " | " + tour.obtenerCategoria()
+                    + " | " + tour.getDuracionDias() + " día(s) | cupo " + tour.getCupoMinimo()
+                    + " a " + tour.getCupoMaximo());
+            for (Actividad actividad : controladorCatalogo.listarItinerario(tour.getCodigo())) {
+                System.out.println("   Día " + actividad.getDia() + " - " + actividad.getOrden() + ". "
+                        + actividad.getHorario() + " " + actividad.getDescripcion()
+                        + " (" + actividad.getTipo() + ", " + actividad.getLugar()
+                        + (actividad.getProveedor() == null ? "" : ", proveedor " + actividad.getProveedor().getNombre())
+                        + ")");
+            }
+            for (Tarifa tarifa : tour.getTarifas()) {
+                System.out.printf("   Tarifa %s: del %s al %s, $%.2f por pasajero%n", tarifa.getTemporada(),
+                        tarifa.getFechaInicioVigencia(), tarifa.getFechaFinVigencia(), tarifa.getPrecioBase());
+            }
         }
     }
 
@@ -118,30 +133,6 @@ public class VistaCatalogo {
                 descripcion.isEmpty() ? tour.getDescripcion() : descripcion,
                 duracion, cupoMinimo, cupoMaximo);
         System.out.println("Tour modificado. Las salidas ya programadas conservan sus fechas y cupos.");
-    }
-
-    private void verDetalle() {
-        int codigo = leerCodigoTour();
-        Tour tour = controladorCatalogo.buscarTour(codigo);
-        System.out.println(tour.getNombre() + " (" + tour.obtenerCategoria() + ")");
-        System.out.println("Itinerario:");
-        List<Actividad> itinerario = controladorCatalogo.listarItinerario(codigo);
-        if (itinerario.isEmpty()) {
-            System.out.println("  Sin actividades cargadas.");
-        }
-        for (Actividad actividad : itinerario) {
-            System.out.println("  Día " + actividad.getDia() + " - " + actividad.getOrden() + ". "
-                    + actividad.getHorario() + " " + actividad.getDescripcion()
-                    + " (" + actividad.getTipo() + ", " + actividad.getLugar() + ")");
-        }
-        System.out.println("Tarifas:");
-        if (tour.getTarifas().isEmpty()) {
-            System.out.println("  Sin tarifas cargadas.");
-        }
-        for (Tarifa tarifa : tour.getTarifas()) {
-            System.out.printf("  %s: del %s al %s, $%.2f por pasajero%n", tarifa.getTemporada(),
-                    tarifa.getFechaInicioVigencia(), tarifa.getFechaFinVigencia(), tarifa.getPrecioBase());
-        }
     }
 
     private void agregarActividad() {

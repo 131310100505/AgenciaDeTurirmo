@@ -3,6 +3,10 @@ package ar.edu.uade.rumbosur.modelo;
 
 import java.io.Serializable;
 
+/**
+ * Proveedor externo de servicios turísticos (transporte, gastronomía, excursiones).
+ * Se relaciona con las actividades del itinerario que presta.
+ */
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;

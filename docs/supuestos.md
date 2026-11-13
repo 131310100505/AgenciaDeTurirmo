@@ -76,7 +76,7 @@ Las reglas de negocio obligatorias se encuentran documentadas en `requisitos.md`
 
 **S29 — Honorarios:** la liquidación del guía se calculará mediante un importe fijo por día de servicio más el 5 % de las ventas de servicios adicionales correspondientes a la salida.
 
-**S30 — Historial de estados:** los cambios relevantes de estado de reservas y salidas deberán quedar registrados para facilitar el seguimiento y la auditoría.
+**S30 — Seguimiento de estados:** cada reserva y cada salida guardan su estado actual. El seguimiento de lo ocurrido queda en los registros que no se borran: pagos y ajustes (S23) y cancelaciones (S24). *(Etapa 2: se simplificó; ya no se guarda una lista de cambios por reserva.)*
 
 ## 7. Consideraciones finales
 

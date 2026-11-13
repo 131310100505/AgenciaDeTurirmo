@@ -88,9 +88,9 @@ Al iniciar el programa se muestra el menú principal:
 
 Cada opción permite acceder a las funcionalidades correspondientes al rol seleccionado.
 
-- **Vendedor:** clientes y pasajeros, reservas, adicionales, pagos, confirmación, modificaciones, reemplazos, cancelaciones y ajustes (CU04 a CU12 y CU19).
-- **Coordinador de operaciones:** salidas, ocupación, lista de pasajeros, inicio y fin de salidas, control de cupo mínimo, programación de salidas, asignación de guía y vehículo, y cierre de la salida con la liquidación del guía (CU03 y CU14 a CU17).
-- **Administrador:** reportes (CU18) y catálogo de tours, con sus itinerarios y tarifas por temporada (CU01 y CU02).
+- **Vendedor (7 opciones):** crear reserva (registra al cliente y a los pasajeros si hace falta), consultar reserva, contratar adicionales, registrar pago (la reserva se confirma sola al alcanzar la seña), reemplazar pasajero, cancelar reserva y registrar ajustes (CU04 a CU09, CU11, CU12 y CU19).
+- **Coordinador de operaciones (6 opciones):** listar salidas con su ocupación, programar salida, asignar guía y vehículo, emitir la lista de pasajeros (genera el archivo), iniciar salida, y finalizar salida y liquidar al guía (CU03 y CU14 a CU17).
+- **Administrador (5 opciones):** los cuatro reportes (CU18) y el catálogo de tours: ver, registrar y modificar tours, agregar actividades y tarifas por temporada (CU01 y CU02).
 
 Al iniciar, el sistema anula las reservas con el saldo vencido (CU13) y cancela las salidas que, faltando 7 días o menos, no alcanzaron el cupo mínimo, con devolución del 100 % de lo pagado.
 
@@ -117,6 +117,10 @@ El proyecto incluye la clase `DatosIniciales.java`, que prepara información de 
 | 103 | Historia de Bariloche | 2 | 25 |
 
 Las fechas se establecen al generar inicialmente los datos y se conservan mediante la persistencia.
+
+Cada tour tiene una actividad en su itinerario y una tarifa vigente por un año. La actividad del trekking la presta el proveedor externo *Patagonia Aventura*.
+
+Si el archivo `rumbosur.dat` está dañado, el programa guarda una copia (`rumbosur.dat.danado`) antes de seguir, así esa información no se pierde.
 
 #### Vendedores
 

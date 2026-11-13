@@ -43,10 +43,6 @@ public class Pasajero implements Serializable {
         return Period.between(fechaNacimiento, fecha).getYears();
     }
 
-    public boolean cumpleEdadMinima(int edadMinima, LocalDate fecha) {
-        return calcularEdad(fecha) >= edadMinima;
-    }
-
     public int getCodigo() {
         return codigo;
     }

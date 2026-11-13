@@ -9,10 +9,6 @@ import ar.edu.uade.rumbosur.modelo.TipoReporte;
 import ar.edu.uade.rumbosur.modelo.Tour;
 import ar.edu.uade.rumbosur.modelo.Vendedor;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,24 +55,6 @@ public class ControladorReportes {
                 return generarReporteCancelaciones(desde, hasta);
             default:
                 throw new IllegalArgumentException("Tipo de reporte desconocido: " + tipo);
-        }
-    }
-
-    /**
-     * Guarda el reporte en un archivo de texto. La IOException no se captura acá:
-     * la vista es la que le muestra el error al usuario.
-     */
-    public void exportarReporte(TipoReporte tipo, LocalDate desde, LocalDate hasta, String rutaArchivo)
-            throws IOException {
-        if (rutaArchivo == null || rutaArchivo.isBlank()) {
-            throw new IllegalArgumentException("Falta el nombre del archivo.");
-        }
-        String reporte = generarReporte(tipo, desde, hasta);
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaArchivo, StandardCharsets.UTF_8))) {
-            for (String linea : reporte.split("\n")) {
-                escritor.write(linea);
-                escritor.newLine();
-            }
         }
     }
 

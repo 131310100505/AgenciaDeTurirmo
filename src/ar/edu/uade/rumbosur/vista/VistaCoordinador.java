@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public class VistaCoordinador {
 
@@ -37,19 +36,14 @@ public class VistaCoordinador {
             System.out.println();
             System.out.println("===== COORDINADOR DE OPERACIONES =====");
             System.out.println("1. Listar salidas");
-            System.out.println("2. Consultar ocupacion");
-            System.out.println("3. Generar lista de pasajeros");
-            System.out.println("4. Exportar lista de pasajeros");
+            System.out.println("2. Programar salida");
+            System.out.println("3. Asignar guia y vehiculo");
+            System.out.println("4. Emitir lista de pasajeros (genera el archivo)");
             System.out.println("5. Iniciar salida");
-            System.out.println("6. Finalizar salida");
-            System.out.println("7. Controlar cupo minimo");
-            System.out.println("8. Programar salida");
-            System.out.println("9. Asignar guia");
-            System.out.println("10. Asignar vehiculo");
-            System.out.println("11. Cerrar salida y liquidar al guia");
+            System.out.println("6. Finalizar salida y liquidar al guia");
             System.out.println("0. Volver");
 
-            opcion = entrada.leerOpcion("Opcion: ", 0, 11);
+            opcion = entrada.leerOpcion("Opcion: ", 0, 6);
 
             try {
                 switch (opcion) {
@@ -57,46 +51,28 @@ public class VistaCoordinador {
                         listarSalidas();
                         break;
                     case 2:
-                        consultarOcupacion();
+                        programarSalida();
                         break;
                     case 3:
-                        generarLista();
+                        asignarGuiaYVehiculo();
                         break;
                     case 4:
-                        exportarLista();
+                        emitirLista();
                         break;
                     case 5:
                         iniciarSalida();
                         break;
                     case 6:
-                        finalizarSalida();
-                        break;
-                    case 7:
-                        controlarCupoMinimo();
-                        break;
-                    case 8:
-                        programarSalida();
-                        break;
-                    case 9:
-                        asignarGuia();
-                        break;
-                    case 10:
-                        asignarVehiculo();
-                        break;
-                    case 11:
-                        cerrarSalida();
+                        finalizarYLiquidar();
                         break;
                     default:
                         break;
                 }
-            } catch (IllegalArgumentException |
-                     IllegalStateException e) {
+            } catch (IllegalArgumentException | IllegalStateException
+                     | TransicionEstadoInvalidaException e) {
                 System.out.println("Error: " + e.getMessage());
             } catch (IOException e) {
-                System.out.println(
-                        "Error al exportar: " + e.getMessage());
-            } catch (TransicionEstadoInvalidaException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error al exportar: " + e.getMessage());
             }
 
         } while (opcion != 0);
@@ -131,31 +107,13 @@ public class VistaCoordinador {
                 "Codigo de salida: ", 1, Integer.MAX_VALUE);
     }
 
-    private void consultarOcupacion() {
+    // CU15: genera la lista de pasajeros y la exporta a un archivo de texto
+    private void emitirLista() throws IOException {
         int codigo = leerCodigoSalida();
-
-        System.out.println(
-                "Ocupacion actual: "
-                        + controladorSalidas.consultarOcupacion(codigo)
-        );
-    }
-
-    private void generarLista() {
-        int codigo = leerCodigoSalida();
-
         controladorSalidas.generarListaPasajeros(codigo);
-        System.out.println("Lista de pasajeros generada.");
-    }
-
-    private void exportarLista() throws IOException {
-        int codigo = leerCodigoSalida();
-
         String nombre = "pasajeros_salida_" + codigo + ".txt";
-
-        controladorSalidas.exportarListaPasajeros(
-                codigo, Path.of(nombre));
-
-        System.out.println("Archivo generado: " + nombre);
+        controladorSalidas.exportarListaPasajeros(codigo, Path.of(nombre));
+        System.out.println("Lista de pasajeros generada en el archivo " + nombre);
     }
 
     private void iniciarSalida() {
@@ -163,39 +121,6 @@ public class VistaCoordinador {
 
         controladorSalidas.iniciarSalida(codigo);
         System.out.println("Salida iniciada correctamente.");
-    }
-
-    private void finalizarSalida() {
-        int codigo = leerCodigoSalida();
-
-        controladorSalidas.finalizarSalida(codigo);
-        System.out.println("Salida finalizada correctamente.");
-    }
-
-    private void controlarCupoMinimo() {
-        Map<Integer, Map<Integer, Double>> resultado =
-                controladorSalidas.controlarCupoMinimo(
-                        LocalDate.now());
-
-        if (resultado.isEmpty()) {
-            System.out.println(
-                    "No hay salidas para cancelar por cupo minimo.");
-            return;
-        }
-
-        for (Map.Entry<Integer, Map<Integer, Double>> item
-                : resultado.entrySet()) {
-            System.out.println(
-                    "Salida cancelada: " + item.getKey());
-
-            for (Map.Entry<Integer, Double> devolucion
-                    : item.getValue().entrySet()) {
-                System.out.println(
-                        "Reserva " + devolucion.getKey()
-                                + " | Devolucion: $"
-                                + devolucion.getValue());
-            }
-        }
     }
 
     // CU03: programa una salida de un tour del catalogo
@@ -233,8 +158,13 @@ public class VistaCoordinador {
     }
 
     // CU14: asigna un guia habilitado y disponible
-    private void asignarGuia() {
+    private void asignarGuiaYVehiculo() {
         int codigo = leerCodigoSalida();
+        asignarGuia(codigo);
+        asignarVehiculo(codigo);
+    }
+
+    private void asignarGuia(int codigo) {
         List<Guia> guias = controladorSalidas.listarGuias();
         if (guias.isEmpty()) {
             System.out.println("No hay guias cargados.");
@@ -250,8 +180,7 @@ public class VistaCoordinador {
     }
 
     // CU14: asigna un vehiculo con capacidad suficiente
-    private void asignarVehiculo() {
-        int codigo = leerCodigoSalida();
+    private void asignarVehiculo(int codigo) {
         List<Vehiculo> vehiculos = controladorSalidas.listarVehiculos();
         if (vehiculos.isEmpty()) {
             System.out.println("No hay vehiculos cargados.");
@@ -266,9 +195,11 @@ public class VistaCoordinador {
         System.out.println("Vehiculo asignado a la salida " + codigo + ".");
     }
 
-    // CU17: cierra una salida finalizada y liquida los honorarios del guia
-    private void cerrarSalida() throws TransicionEstadoInvalidaException {
+    // CU16 y CU17: finaliza la salida y liquida los honorarios del guia
+    private void finalizarYLiquidar() throws TransicionEstadoInvalidaException {
         int codigo = leerCodigoSalida();
+        controladorSalidas.finalizarSalida(codigo);
+        System.out.println("Salida finalizada.");
         Liquidacion liquidacion = controladorSalidas.cerrarSalida(codigo);
         System.out.println("Liquidacion del guia " + liquidacion.getGuia().getNombre() + ":");
         System.out.printf("  Dias trabajados: %d%n", liquidacion.getDiasTrabajados());

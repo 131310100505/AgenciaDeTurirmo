@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,7 +17,9 @@ import java.util.Scanner;
  */
 public class EntradaConsola {
 
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // STRICT: rechaza fechas que no existen, como el 31/02
+    private static final DateTimeFormatter FORMATO_FECHA =
+            DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("H:mm");
 
     private Scanner teclado;
@@ -90,7 +93,7 @@ public class EntradaConsola {
             try {
                 return LocalDate.parse(texto, FORMATO_FECHA);
             } catch (DateTimeParseException e) {
-                System.out.println("  Error: la fecha debe tener el formato dd/mm/aaaa, por ejemplo 25/03/1990.");
+                System.out.println("  Error: fecha inválida. Use el formato dd/mm/aaaa, por ejemplo 25/03/1990.");
             }
         }
     }
@@ -119,14 +122,6 @@ public class EntradaConsola {
             }
             System.out.println("  Error: responda s o n.");
         }
-    }
-
-    /**
-     * El programa usa un único Scanner sobre System.in: si se crean dos y se cierra uno,
-     * el otro deja de leer. Las vistas que trabajan con Scanner directamente usan este.
-     */
-    public Scanner getScanner() {
-        return teclado;
     }
 
     public void cerrar() {

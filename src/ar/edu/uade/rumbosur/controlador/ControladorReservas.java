@@ -173,22 +173,6 @@ public class ControladorReservas {
         return reserva.confirmar();
     }
 
-    // ---------- CU10 Modificar reserva (agregar un pasajero) ----------
-
-    /** Valida cupo y restricciones del tour y recalcula el importe. Los adicionales se modifican con CU07. */
-    public void agregarPasajeroAReserva(Reserva reserva, Pasajero pasajero)
-            throws CupoInsuficienteException, PasajeroNoHabilitadoException {
-        validarVigente(reserva);
-        Salida salida = reserva.getSalida();
-        if (!salida.verificarCupo(1)) {
-            throw new CupoInsuficienteException("La salida no tiene lugar para otro pasajero.");
-        }
-        validarPasajero(salida, pasajero);
-        reserva.agregarPasajero(pasajero);
-        contratarSeguroSiCorresponde(reserva, pasajero);
-        recalcularTotal(reserva);
-    }
-
     // ---------- CU11 Reemplazar pasajero ----------
 
     public void reemplazarPasajero(Reserva reserva, Pasajero actual, Pasajero nuevo)

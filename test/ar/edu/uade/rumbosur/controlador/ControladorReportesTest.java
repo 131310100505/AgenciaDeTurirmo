@@ -23,14 +23,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -289,33 +285,5 @@ class ControladorReportesTest {
         assertThrows(IllegalArgumentException.class, () -> reporte(null, INICIO, INICIO));
         assertThrows(IllegalArgumentException.class, () -> reporte(TipoReporte.VENTAS, null, INICIO));
         assertThrows(IllegalArgumentException.class, () -> reporte(TipoReporte.VENTAS, INICIO, null));
-    }
-
-    // ---------- Exportar ----------
-
-    @Test
-    void exportaElReporteConSusAcentos() throws Exception {
-        crearSalida(1, INICIO, bariloche);
-        Path archivo = carpeta.resolve("ocupacion.txt");
-
-        reportes.exportarReporte(TipoReporte.OCUPACION, INICIO, INICIO, archivo.toString());
-
-        List<String> lineas = Files.readAllLines(archivo, StandardCharsets.UTF_8);
-        assertEquals(2, lineas.size());
-        assertTrue(lineas.get(0).startsWith("Ocupación por salida"), lineas.get(0));
-        assertTrue(lineas.get(1).contains("Salida 1"), lineas.get(1));
-    }
-
-    @Test
-    void exportarRechazaUnNombreVacio() {
-        assertThrows(IllegalArgumentException.class,
-                () -> reportes.exportarReporte(TipoReporte.VENTAS, INICIO, INICIO, " "));
-    }
-
-    @Test
-    void exportarInformaSiNoPuedeEscribir() {
-        String rutaInvalida = carpeta.resolve("no-existe").resolve("reporte.txt").toString();
-        assertThrows(IOException.class,
-                () -> reportes.exportarReporte(TipoReporte.VENTAS, INICIO, INICIO, rutaInvalida));
     }
 }
