@@ -1,5 +1,6 @@
 package ar.edu.uade.rumbosur.vista;
 
+import ar.edu.uade.rumbosur.controlador.ControladorCatalogo;
 import ar.edu.uade.rumbosur.controlador.ControladorReportes;
 import ar.edu.uade.rumbosur.controlador.ControladorReservas;
 import ar.edu.uade.rumbosur.controlador.ControladorSalidas;
@@ -18,15 +19,17 @@ public class MenuPrincipal {
     private EntradaConsola entrada;
     private ControladorReservas controladorReservas;
     private ControladorSalidas controladorSalidas;
+    private ControladorCatalogo controladorCatalogo;
     private List<Vendedor> vendedores;
     private List<ServicioAdicional> catalogoAdicionales;
 
     public MenuPrincipal(EntradaConsola entrada, ControladorReservas controladorReservas,
-                         ControladorSalidas controladorSalidas, List<Vendedor> vendedores,
-                         List<ServicioAdicional> catalogoAdicionales) {
+                         ControladorSalidas controladorSalidas, ControladorCatalogo controladorCatalogo,
+                         List<Vendedor> vendedores, List<ServicioAdicional> catalogoAdicionales) {
         this.entrada = entrada;
         this.controladorReservas = controladorReservas;
         this.controladorSalidas = controladorSalidas;
+        this.controladorCatalogo = controladorCatalogo;
         this.vendedores = new ArrayList<>(vendedores);
         this.catalogoAdicionales = new ArrayList<>(catalogoAdicionales);
     }
@@ -47,20 +50,38 @@ public class MenuPrincipal {
                     ingresarComoVendedor();
                     break;
                 case 2:
-                    new VistaCoordinador(entrada, controladorSalidas)
+                    new VistaCoordinador(entrada, controladorSalidas, controladorCatalogo)
                             .mostrarMenu();
                     break;
                 case 3:
-                    // Usa el mismo Scanner de todo el programa (no se crea otro).
-                    ControladorReportes controladorReportes =
-                            new ControladorReportes(controladorReservas, controladorSalidas);
-                    new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
+                    ingresarComoAdministrador();
                     break;
                 case 4:
                     abrirVentanaReserva();
                     break;
                 default:
                     break; // 0: sale y Principal guarda los datos
+            }
+        } while (opcion != 0);
+    }
+
+    /** El administrador elige entre los reportes (CU18) y el catálogo de tours (CU01 y CU02). */
+    private void ingresarComoAdministrador() {
+        int opcion;
+        do {
+            System.out.println();
+            System.out.println("--- Administrador ---");
+            System.out.println("1. Reportes");
+            System.out.println("2. Catálogo de tours (tours, itinerarios y tarifas)");
+            System.out.println("0. Volver");
+            opcion = entrada.leerOpcion("Opción: ", 0, 2);
+            if (opcion == 1) {
+                // Usa el mismo Scanner de todo el programa (no se crea otro).
+                ControladorReportes controladorReportes =
+                        new ControladorReportes(controladorReservas, controladorSalidas);
+                new VistaAdministrador(controladorReportes, entrada.getScanner()).mostrarMenu();
+            } else if (opcion == 2) {
+                new VistaCatalogo(entrada, controladorCatalogo).mostrarMenu();
             }
         } while (opcion != 0);
     }

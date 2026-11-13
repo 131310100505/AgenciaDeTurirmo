@@ -1,6 +1,7 @@
 package ar.edu.uade.rumbosur.vista;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -16,6 +17,7 @@ import java.util.Scanner;
 public class EntradaConsola {
 
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("H:mm");
 
     private Scanner teclado;
 
@@ -89,6 +91,18 @@ public class EntradaConsola {
                 return LocalDate.parse(texto, FORMATO_FECHA);
             } catch (DateTimeParseException e) {
                 System.out.println("  Error: la fecha debe tener el formato dd/mm/aaaa, por ejemplo 25/03/1990.");
+            }
+        }
+    }
+
+    /** Lee un horario con formato hh:mm, por ejemplo 9:30 o 14:00. */
+    public LocalTime leerHora(String mensaje) {
+        while (true) {
+            String texto = leerTexto(mensaje);
+            try {
+                return LocalTime.parse(texto, FORMATO_HORA);
+            } catch (DateTimeParseException e) {
+                System.out.println("  Error: el horario debe tener el formato hh:mm, por ejemplo 9:30.");
             }
         }
     }

@@ -90,3 +90,23 @@ Responsable: Valentín. Ejecutado el 10/11/2026 sobre `main`.
 **Caso C4:** al crear una reserva con un pasajero repetido, el sistema la rechazaba, pero la reserva ya había sido creada por `Cliente.crearReserva()` y quedaba en la lista del cliente. Esto pasaba porque el control de repetidos se hacía recién al agregar los pasajeros.
 
 **Corrección:** en `ControladorReservas.solicitarCrearReserva()` se controla antes de crear la reserva, junto con el cupo y la edad. Para eso se arma un `HashSet` con los pasajeros: como un `Set` no admite repetidos (usa `equals` y `hashCode` de `Pasajero`, por documento), si tiene menos elementos que la lista hay un pasajero repetido. Se agregó la prueba unitaria `unPasajeroRepetidoNoDejaUnaReservaAMedioArmar` y se volvió a ejecutar el caso con resultado correcto.
+
+## CU01, CU02, CU03, CU14 y CU17: casos de uso agregados al menú
+
+Ejecutado el 13/11/2026 desde los menús del administrador y del coordinador, con los datos iniciales. Estos casos de uso tenían la lógica pero no tenían opción en ningún menú; también se agregó el alta de tours, itinerarios y tarifas (`ControladorCatalogo` y `VistaCatalogo`).
+
+| Caso | Entrada | Resultado esperado | Resultado obtenido |
+|---|---|---|---|
+| T1 | Administrador > Catálogo: tour cultural *Bodegas de Mendoza*, 2 días, cupo de 2 a 15 | Se registra con el código siguiente | "Tour registrado con el código 4" |
+| T2 | Tarifa de temporada ALTA para el tour 4, de mañana a 200 días, $100.000 | Queda cargada | "Tarifa agregada"; el detalle la muestra con su vigencia |
+| T3 | Actividades del día 1: orden 1 a las 9:30 y orden 2 a las 13:00 | Se agregan y se muestran ordenadas por día y orden | Itinerario: "Día 1 - 1. 09:30 Bodega Norton" y "Día 1 - 2. 13:00 Almuerzo" |
+| T4 | Otra actividad en el día 1 con orden 2 | Se rechaza | "Error: Ya hay una actividad en el día 1 con el orden 2." |
+| S1 | Coordinador > Programar salida del tour 4, dentro de 40 días | Se crea con fin según la duración y los cupos del tour | "Salida 104 programada del 23/12/2026 al 24/12/2026 (estado PROGRAMADA)" |
+| S2 | Asignar a la salida 104 el guía 201 (habilitado solo para naturaleza) | Se rechaza por categoría | "Error: El guia no esta habilitado para este tour" |
+| S3 | Asignar a la salida 104 el guía 203 y el vehículo `ac456ef` (en minúsculas) | Se asignan | Guía Carlos Gómez y vehículo AC456EF en el listado de salidas |
+| S4 | Salir y volver a abrir el programa | Se conservan el tour, la tarifa, el itinerario y la salida 104 | Todo aparece igual al volver a entrar |
+| L1 | Salida 101 (3 días, guía de $45.000 por día): generar lista, iniciar, finalizar y cerrar | Liquida 3 × $45.000 más el 5 % de los adicionales ($0) | "Total a pagar: $135000.00"; la reserva 1 queda FINALIZADA |
+| L2 | Cerrar otra vez la salida 101 | Se rechaza | "Error: La salida 101 ya fue liquidada" |
+| L3 | Reporte de ocupación después de finalizar | La salida sigue mostrando sus pasajeros | "Salida 101 ... 2 de 20 lugares (10 %) - FINALIZADA" |
+
+**Cupo mínimo:** antes solo se cancelaba si el control se hacía exactamente 7 días antes de la salida. Ahora se cancela si faltan 7 días o menos, y el control también se hace al iniciar el programa. Lo cubren las pruebas unitarias `cancelaPorCupoMinimoAunqueFaltenMenosDeSieteDias` y `noCancelaSiFaltanMasDeSieteDias`.
