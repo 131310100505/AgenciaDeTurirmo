@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="ChatGPT">
   <diagram id="CU05" name="CU05 - Crear reserva">
-    <mxGraphModel dx="1236" dy="601" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1850" math="0" shadow="0">
+    <mxGraphModel dx="1236" dy="601" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1990" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,7 +13,7 @@
         <mxCell id="n3" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="90" y="116" as="sourcePoint" />
-            <mxPoint x="90" y="1725" as="targetPoint" />
+            <mxPoint x="90" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="controlador:ControladorReservas" vertex="1">
@@ -22,7 +22,7 @@
         <mxCell id="n5" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="285" y="116" as="sourcePoint" />
-            <mxPoint x="285" y="1725" as="targetPoint" />
+            <mxPoint x="285" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="salida:Salida" vertex="1">
@@ -31,7 +31,7 @@
         <mxCell id="n7" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="480" y="116" as="sourcePoint" />
-            <mxPoint x="480" y="1725" as="targetPoint" />
+            <mxPoint x="480" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="tour:Tour" vertex="1">
@@ -40,7 +40,7 @@
         <mxCell id="n9" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="675" y="116" as="sourcePoint" />
-            <mxPoint x="675" y="1725" as="targetPoint" />
+            <mxPoint x="675" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="cliente:Cliente" vertex="1">
@@ -49,7 +49,7 @@
         <mxCell id="n11" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="870" y="116" as="sourcePoint" />
-            <mxPoint x="870" y="1725" as="targetPoint" />
+            <mxPoint x="870" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="reserva:Reserva" vertex="1">
@@ -58,7 +58,7 @@
         <mxCell id="n13" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1065" y="116" as="sourcePoint" />
-            <mxPoint x="1065" y="1725" as="targetPoint" />
+            <mxPoint x="1065" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="calculadora:CalculadoraPrecio" vertex="1">
@@ -67,7 +67,7 @@
         <mxCell id="n15" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1260" y="116" as="sourcePoint" />
-            <mxPoint x="1260" y="1725" as="targetPoint" />
+            <mxPoint x="1260" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#7896B8;fontColor=#183153;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" value="promocion:Promocion" vertex="1">
@@ -76,14 +76,14 @@
         <mxCell id="n17" edge="1" parent="1" style="endArrow=none;dashed=1;dashPattern=4 4;strokeColor=#9CAFC0;strokeWidth=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1455" y="116" as="sourcePoint" />
-            <mxPoint x="1455" y="1725" as="targetPoint" />
+            <mxPoint x="1455" y="1865.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n18" parent="1" style="rounded=0;fillColor=#C7DBF0;strokeColor=#7595B8;" value="" vertex="1">
-          <mxGeometry height="1490" width="10" x="280" y="143" as="geometry" />
+          <mxGeometry height="1630.0" width="10" x="280" y="143" as="geometry" />
         </mxCell>
         <mxCell id="n19" parent="1" style="rounded=0;fillColor=#C7DBF0;strokeColor=#7595B8;" value="" vertex="1">
-          <mxGeometry height="365" width="10" x="1255" y="1115" as="geometry" />
+          <mxGeometry height="365" width="10" x="1255" y="1255.0" as="geometry" />
         </mxCell>
         <mxCell id="n20" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="1. solicitarCrearReserva(cliente, salida, vendedor, pasajeros)" vertex="1">
           <mxGeometry height="24" width="175" x="100" y="130" as="geometry" />
@@ -94,251 +94,269 @@
             <mxPoint x="285" y="158" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="v01" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
+          <mxGeometry height="125" width="1490" x="40" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="v02" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="alt — Validación de datos" vertex="1">
+          <mxGeometry height="26" width="355" x="40" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="v03" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#9A3838;" value="[faltan datos o hay un pasajero repetido] → lanzar IllegalArgumentException y terminar" vertex="1">
+          <mxGeometry height="26" width="800" x="60" y="214" as="geometry" />
+        </mxCell>
+        <mxCell id="v04" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#94A9BC;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="250" as="sourcePoint" />
+            <mxPoint x="1530" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v05" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#2D6A50;" value="[datos completos y sin repetidos] → continuar" vertex="1">
+          <mxGeometry height="24" width="700" x="64" y="264" as="geometry" />
+        </mxCell>
         <mxCell id="n22" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="2. verificarCupo(cantidadPasajeros)" vertex="1">
-          <mxGeometry height="24" width="175" x="295" y="187" as="geometry" />
+          <mxGeometry height="24" width="175" x="295" y="327.0" as="geometry" />
         </mxCell>
         <mxCell id="n23" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="215" as="sourcePoint" />
-            <mxPoint x="480" y="215" as="targetPoint" />
+            <mxPoint x="285" y="355.0" as="sourcePoint" />
+            <mxPoint x="480" y="355.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n24" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="3. cupoDisponible: boolean" vertex="1">
-          <mxGeometry height="24" width="175" x="295" y="232" as="geometry" />
+          <mxGeometry height="24" width="175" x="295" y="372.0" as="geometry" />
         </mxCell>
         <mxCell id="n25" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="480" y="260" as="sourcePoint" />
-            <mxPoint x="285" y="260" as="targetPoint" />
+            <mxPoint x="480" y="400.0" as="sourcePoint" />
+            <mxPoint x="285" y="400.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n26" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="155" width="1490" x="40" y="296" as="geometry" />
+          <mxGeometry height="155" width="1490" x="40" y="436.0" as="geometry" />
         </mxCell>
         <mxCell id="n27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="alt — Disponibilidad de cupo" vertex="1">
-          <mxGeometry height="26" width="355" x="40" y="296" as="geometry" />
+          <mxGeometry height="26" width="355" x="40" y="436.0" as="geometry" />
         </mxCell>
         <mxCell id="n28" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#9A3838;" value="[sin cupo] → lanzar CupoInsuficienteException y terminar" vertex="1">
-          <mxGeometry height="26" width="800" x="60" y="333" as="geometry" />
+          <mxGeometry height="26" width="800" x="60" y="473.0" as="geometry" />
         </mxCell>
         <mxCell id="n29" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#94A9BC;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="40" y="374" as="sourcePoint" />
-            <mxPoint x="1530" y="374" as="targetPoint" />
+            <mxPoint x="40" y="514.0" as="sourcePoint" />
+            <mxPoint x="1530" y="514.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n30" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#2D6A50;" value="[con cupo] → continuar" vertex="1">
-          <mxGeometry height="24" width="700" x="64" y="394" as="geometry" />
+          <mxGeometry height="24" width="700" x="64" y="534.0" as="geometry" />
         </mxCell>
         <mxCell id="n31" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="194" width="1490" x="40" y="474" as="geometry" />
+          <mxGeometry height="194" width="1490" x="40" y="614.0" as="geometry" />
         </mxCell>
         <mxCell id="n32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="loop — Por cada pasajero: validar condiciones" vertex="1">
-          <mxGeometry height="26" width="355" x="40" y="474" as="geometry" />
+          <mxGeometry height="26" width="355" x="40" y="614.0" as="geometry" />
         </mxCell>
-        <mxCell id="n33" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="4. validarPasajero(pasajero, salida)" vertex="1">
-          <mxGeometry height="24" width="175" x="290" y="519" as="geometry" />
+        <mxCell id="n33" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="4. validarPasajero(pasajero, fechaInicio)" vertex="1">
+          <mxGeometry height="24" width="370" x="290" y="659.0" as="geometry" />
         </mxCell>
         <mxCell id="n34" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="287" y="512" as="sourcePoint" />
-            <mxPoint x="482" y="512" as="targetPoint" />
+            <mxPoint x="287" y="652.0" as="sourcePoint" />
+            <mxPoint x="677" y="652.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n36" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="5. crearReserva(salida, vendedor)" vertex="1">
-          <mxGeometry height="24" width="565" x="295" y="689" as="geometry" />
+          <mxGeometry height="24" width="565" x="295" y="829.0" as="geometry" />
         </mxCell>
         <mxCell id="n37" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="717" as="sourcePoint" />
-            <mxPoint x="870" y="717" as="targetPoint" />
+            <mxPoint x="285" y="857.0" as="sourcePoint" />
+            <mxPoint x="870" y="857.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n38" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="6. «create» Reserva(cliente, salida, vendedor)" vertex="1">
-          <mxGeometry height="24" width="175" x="880" y="746" as="geometry" />
+          <mxGeometry height="24" width="175" x="880" y="886.0" as="geometry" />
         </mxCell>
         <mxCell id="n39" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="870" y="774" as="sourcePoint" />
-            <mxPoint x="1065" y="774" as="targetPoint" />
+            <mxPoint x="870" y="914.0" as="sourcePoint" />
+            <mxPoint x="1065" y="914.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n40" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="7. reserva creada" vertex="1">
-          <mxGeometry height="24" width="565" x="295" y="795" as="geometry" />
+          <mxGeometry height="24" width="565" x="295" y="935.0" as="geometry" />
         </mxCell>
         <mxCell id="n41" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="870" y="823" as="sourcePoint" />
-            <mxPoint x="285" y="823" as="targetPoint" />
+            <mxPoint x="870" y="963.0" as="sourcePoint" />
+            <mxPoint x="285" y="963.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n42" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="95" width="1490" x="40" y="862" as="geometry" />
+          <mxGeometry height="227.0" width="1490" x="40" y="1002.0" as="geometry" />
         </mxCell>
         <mxCell id="n43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="loop — Por cada pasajero" vertex="1">
-          <mxGeometry height="26" width="355" x="40" y="862" as="geometry" />
+          <mxGeometry height="26" width="355" x="40" y="1002.0" as="geometry" />
         </mxCell>
         <mxCell id="n44" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="8. agregarPasajero(pasajero)" vertex="1">
-          <mxGeometry height="24" width="760" x="295" y="902" as="geometry" />
+          <mxGeometry height="24" width="760" x="295" y="1042.0" as="geometry" />
         </mxCell>
         <mxCell id="n45" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="930" as="sourcePoint" />
-            <mxPoint x="1065" y="930" as="targetPoint" />
+            <mxPoint x="285" y="1070.0" as="sourcePoint" />
+            <mxPoint x="1065" y="1070.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n46" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="95" width="1490" x="40" y="982" as="geometry" />
+          <mxGeometry height="95" width="1450" x="60" y="1122.0" as="geometry" />
         </mxCell>
         <mxCell id="n47" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="opt — Tour de aventura" vertex="1">
-          <mxGeometry height="26" width="355" x="40" y="982" as="geometry" />
+          <mxGeometry height="26" width="355" x="60" y="1122.0" as="geometry" />
         </mxCell>
-        <mxCell id="n48" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="9. agregarServicioAdicional(seguroAventura)" vertex="1">
-          <mxGeometry height="24" width="760" x="295" y="1022" as="geometry" />
+        <mxCell id="n48" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="9. agregarAdicional(AdicionalContratado(seguroAventura, pasajero))" vertex="1">
+          <mxGeometry height="24" width="760" x="295" y="1162.0" as="geometry" />
         </mxCell>
         <mxCell id="n49" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="1050" as="sourcePoint" />
-            <mxPoint x="1065" y="1050" as="targetPoint" />
+            <mxPoint x="285" y="1190.0" as="sourcePoint" />
+            <mxPoint x="1065" y="1190.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n50" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="10. calcularTotal(reserva)" vertex="1">
-          <mxGeometry height="24" width="955" x="295" y="1106" as="geometry" />
+          <mxGeometry height="24" width="955" x="295" y="1246.0" as="geometry" />
         </mxCell>
         <mxCell id="n51" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="1134" as="sourcePoint" />
-            <mxPoint x="1260" y="1134" as="targetPoint" />
+            <mxPoint x="285" y="1274.0" as="sourcePoint" />
+            <mxPoint x="1260" y="1274.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n52" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="11. obtenerTarifaVigente(fechaInicio)" vertex="1">
-          <mxGeometry height="24" width="565" x="685" y="1167" as="geometry" />
+          <mxGeometry height="24" width="565" x="685" y="1307.0" as="geometry" />
         </mxCell>
         <mxCell id="n53" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1260" y="1195" as="sourcePoint" />
-            <mxPoint x="675" y="1195" as="targetPoint" />
+            <mxPoint x="1260" y="1335.0" as="sourcePoint" />
+            <mxPoint x="675" y="1335.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n54" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="12. tarifa vigente" vertex="1">
-          <mxGeometry height="24" width="565" x="685" y="1217" as="geometry" />
+          <mxGeometry height="24" width="565" x="685" y="1357.0" as="geometry" />
         </mxCell>
         <mxCell id="n55" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="675" y="1245" as="sourcePoint" />
-            <mxPoint x="1260" y="1245" as="targetPoint" />
+            <mxPoint x="675" y="1385.0" as="sourcePoint" />
+            <mxPoint x="1260" y="1385.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n56" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="212" width="1490" x="40" y="1280" as="geometry" />
+          <mxGeometry height="212" width="1490" x="40" y="1420.0" as="geometry" />
         </mxCell>
         <mxCell id="n57" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="loop — Por pasajero y promoción candidata" vertex="1">
-          <mxGeometry height="26" width="355" x="40" y="1280" as="geometry" />
+          <mxGeometry height="26" width="355" x="40" y="1420.0" as="geometry" />
         </mxCell>
         <mxCell id="n58" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="13. esAplicable(reserva, pasajero)" vertex="1">
-          <mxGeometry height="24" width="175" x="1270" y="1292" as="geometry" />
+          <mxGeometry height="24" width="175" x="1270" y="1432.0" as="geometry" />
         </mxCell>
         <mxCell id="n59" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1260" y="1326" as="sourcePoint" />
-            <mxPoint x="1455" y="1326" as="targetPoint" />
+            <mxPoint x="1260" y="1466.0" as="sourcePoint" />
+            <mxPoint x="1455" y="1466.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n60" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="14. aplicabilidad" vertex="1">
-          <mxGeometry height="24" width="175" x="1270" y="1341" as="geometry" />
+          <mxGeometry height="24" width="175" x="1270" y="1481.0" as="geometry" />
         </mxCell>
         <mxCell id="n61" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1455" y="1370" as="sourcePoint" />
-            <mxPoint x="1260" y="1370" as="targetPoint" />
+            <mxPoint x="1455" y="1510.0" as="sourcePoint" />
+            <mxPoint x="1260" y="1510.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n63" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="15. total (tarifa − mejor descuento + adicionales)" vertex="1">
-          <mxGeometry height="24" width="955" x="295" y="1497" as="geometry" />
+          <mxGeometry height="24" width="955" x="295" y="1637.0" as="geometry" />
         </mxCell>
         <mxCell id="n64" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1260" y="1525" as="sourcePoint" />
-            <mxPoint x="285" y="1525" as="targetPoint" />
+            <mxPoint x="1260" y="1665.0" as="sourcePoint" />
+            <mxPoint x="285" y="1665.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n65" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="16. setTotal(total)" vertex="1">
-          <mxGeometry height="24" width="760" x="295" y="1552" as="geometry" />
+          <mxGeometry height="24" width="760" x="295" y="1692.0" as="geometry" />
         </mxCell>
         <mxCell id="n66" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="1580" as="sourcePoint" />
-            <mxPoint x="1065" y="1580" as="targetPoint" />
+            <mxPoint x="285" y="1720.0" as="sourcePoint" />
+            <mxPoint x="1065" y="1720.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n67" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="17. agregarReserva(reserva)" vertex="1">
-          <mxGeometry height="24" width="175" x="295" y="1607" as="geometry" />
+          <mxGeometry height="24" width="175" x="295" y="1747.0" as="geometry" />
         </mxCell>
         <mxCell id="n68" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="1635" as="sourcePoint" />
-            <mxPoint x="480" y="1635" as="targetPoint" />
+            <mxPoint x="285" y="1775.0" as="sourcePoint" />
+            <mxPoint x="480" y="1775.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n69" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=bottom;fontSize=12;fontColor=#1C3448;" value="18. informar número, total y estado PENDIENTE" vertex="1">
-          <mxGeometry height="24" width="175" x="100" y="1662" as="geometry" />
+          <mxGeometry height="24" width="175" x="100" y="1802.0" as="geometry" />
         </mxCell>
         <mxCell id="n70" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="285" y="1690" as="sourcePoint" />
-            <mxPoint x="90" y="1690" as="targetPoint" />
+            <mxPoint x="285" y="1830.0" as="sourcePoint" />
+            <mxPoint x="90" y="1830.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="n71" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F6FA;strokeColor=#D2DCE6;fontSize=12;fontColor=#45586B;align=center;" value="REGLAS: se aplica solo el mayor descuento por pasajero (no acumulable). Los adicionales se suman después del descuento." vertex="1">
-          <mxGeometry height="40" width="1490" x="40" y="1755" as="geometry" />
+          <mxGeometry height="40" width="1490" x="40" y="1895.0" as="geometry" />
         </mxCell>
         <mxCell id="n72" parent="1" style="text;html=1;align=center;fontSize=12;fontColor=#52677D;" value="CU05 crea la reserva PENDIENTE. Confirmación y seña mínima: CU09." vertex="1">
-          <mxGeometry height="25" width="1490" x="40" y="1803" as="geometry" />
+          <mxGeometry height="25" width="1490" x="40" y="1943.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-3" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="101" width="332" x="195" y="543" as="geometry" />
+          <mxGeometry height="101" width="332" x="195" y="683.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="alt&amp;nbsp;" vertex="1">
-          <mxGeometry height="19" width="35" x="213" y="546" as="geometry" />
+          <mxGeometry height="19" width="35" x="213" y="686.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-5" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#9A3838;" value="[pasajero no habilitado] → lanzar excepción y terminar" vertex="1">
-          <mxGeometry height="26" width="800" x="219" y="565" as="geometry" />
+          <mxGeometry height="26" width="800" x="219" y="705.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-6" edge="1" parent="1" source="RWxWeAS1n4QYQawtoUkw-5" style="endArrow=none;dashed=1;strokeColor=#94A9BC;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.38;entryY=0.967;entryDx=0;entryDy=0;entryPerimeter=0;" target="RWxWeAS1n4QYQawtoUkw-5">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="338" y="600" as="sourcePoint" />
-            <mxPoint x="1828" y="600" as="targetPoint" />
+            <mxPoint x="338" y="740.0" as="sourcePoint" />
+            <mxPoint x="1828" y="740.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-7" parent="1" style="text;html=1;align=left;fontSize=12;fontColor=#2D6A50;" value="[pasajero habilitado] → continuar" vertex="1">
-          <mxGeometry height="24" width="700" x="219" y="608" as="geometry" />
+          <mxGeometry height="24" width="700" x="219" y="748.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-8" parent="1" style="rounded=0;fillColor=none;strokeColor=#547DA4;strokeWidth=1.5;" value="" vertex="1">
-          <mxGeometry height="102" width="414" x="1078" y="1383" as="geometry" />
+          <mxGeometry height="102" width="414" x="1078" y="1523.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-9" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1265" y="1430" as="sourcePoint" />
-            <mxPoint x="1460" y="1430" as="targetPoint" />
+            <mxPoint x="1265" y="1570.0" as="sourcePoint" />
+            <mxPoint x="1460" y="1570.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF2FC;strokeColor=#547DA4;fontColor=#183153;fontStyle=1;fontSize=12;align=left;spacingLeft=8;" value="Opt" vertex="1">
-          <mxGeometry height="26" width="40" x="1081" y="1386" as="geometry" />
+          <mxGeometry height="26" width="40" x="1081" y="1526.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="calcularDescuento(importeBase)" vertex="1">
-          <mxGeometry height="30" width="60" x="1327.5" y="1403" as="geometry" />
+          <mxGeometry height="30" width="60" x="1327.5" y="1543.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-12" edge="1" parent="1" style="endArrow=classic;endFill=1;strokeColor=#355D82;strokeWidth=1.5;dashed=1;dashPattern=5 4;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1458" y="1461" as="sourcePoint" />
-            <mxPoint x="1263" y="1461" as="targetPoint" />
+            <mxPoint x="1458" y="1601.0" as="sourcePoint" />
+            <mxPoint x="1263" y="1601.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="descuento" vertex="1">
-          <mxGeometry height="30" width="60" x="1327.5" y="1439" as="geometry" />
+          <mxGeometry height="30" width="60" x="1327.5" y="1579.0" as="geometry" />
         </mxCell>
         <mxCell id="RWxWeAS1n4QYQawtoUkw-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;&lt;code&gt;[promoción aplicable]&lt;/code&gt;.&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="123" x="1069" y="1401" as="geometry" />
+          <mxGeometry height="30" width="123" x="1069" y="1541.0" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

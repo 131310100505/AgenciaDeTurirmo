@@ -1,0 +1,184 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT" scale="1" border="0">
+  <diagram id="cu12final" name="CU12 - Cancelar reserva">
+    <mxGraphModel dx="1268" dy="1082" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1390" pageHeight="1170" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v1" parent="1" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontColor=#19385c;fontSize=24;fontStyle=1;" value="CU12 — CANCELAR RESERVA  |  Diagrama de secuencia · Etapa 2" vertex="1">
+          <mxGeometry height="45" width="1280" x="35" y="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e9f2fc;strokeColor=#8ca9ca;fontColor=#1b3655;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="Vendedor (actor)" vertex="1">
+          <mxGeometry height="42" width="190" x="10" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" parent="1" style="shape=line;direction=south;strokeColor=#a9c2db;strokeWidth=1.3;dashed=1;dashPattern=3 4;" value="" vertex="1">
+          <mxGeometry height="920" width="1" x="105" y="117" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e9f2fc;strokeColor=#8ca9ca;fontColor=#1b3655;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="controlador:ControladorReservas" vertex="1">
+          <mxGeometry height="42" width="235" x="242.5" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" parent="1" style="shape=line;direction=south;strokeColor=#a9c2db;strokeWidth=1.3;dashed=1;dashPattern=3 4;" value="" vertex="1">
+          <mxGeometry height="920" width="1" x="360" y="117" as="geometry" />
+        </mxCell>
+        <mxCell id="v6" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e9f2fc;strokeColor=#8ca9ca;fontColor=#1b3655;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="reserva:Reserva" vertex="1">
+          <mxGeometry height="42" width="185" x="532.5" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="v7" parent="1" style="shape=line;direction=south;strokeColor=#a9c2db;strokeWidth=1.3;dashed=1;dashPattern=3 4;" value="" vertex="1">
+          <mxGeometry height="920" width="1" x="625" y="117" as="geometry" />
+        </mxCell>
+        <mxCell id="v8" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e9f2fc;strokeColor=#8ca9ca;fontColor=#1b3655;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="politica:PoliticaCancelacion" vertex="1">
+          <mxGeometry height="42" width="225" x="1037.5" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="v9" parent="1" style="shape=line;direction=south;strokeColor=#a9c2db;strokeWidth=1.3;dashed=1;dashPattern=3 4;" value="" vertex="1">
+          <mxGeometry height="920" width="1" x="1150" y="117" as="geometry" />
+        </mxCell>
+        <mxCell id="v10" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="870" width="10" x="355" y="143" as="geometry" />
+        </mxCell>
+        <mxCell id="v11" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="55" width="10" x="620" y="201" as="geometry" />
+        </mxCell>
+        <mxCell id="v12" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="93" width="10" x="620" y="612" as="geometry" />
+        </mxCell>
+        <mxCell id="v13" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="45" width="10" x="620" y="791" as="geometry" />
+        </mxCell>
+        <mxCell id="v14" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="48" width="10" x="885" y="864" as="geometry" />
+        </mxCell>
+        <mxCell id="v15" parent="1" style="rounded=0;fillColor=#c9dff5;strokeColor=#759ac0;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="198" width="10" x="1145" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="105" y="150" as="sourcePoint" />
+            <mxPoint x="360" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v17" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="1. cancelarReserva(reserva, motivo, origen)" vertex="1">
+          <mxGeometry height="22" width="236" x="115" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="218" as="sourcePoint" />
+            <mxPoint x="625" y="218" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v19" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="2. getEstado()" vertex="1">
+          <mxGeometry height="23" width="185" x="405" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" style="endArrow=open;endFill=0;strokeColor=#35668f;strokeWidth=1.4;dashed=1;dashPattern=6 4;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="625" y="259" as="sourcePoint" />
+            <mxPoint x="360" y="259" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v21" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="3. estado" vertex="1">
+          <mxGeometry height="22" width="100" x="439" y="233" as="geometry" />
+        </mxCell>
+        <mxCell id="v22" parent="1" style="rounded=0;fillColor=none;strokeColor=#7095bd;strokeWidth=1.6;" value="" vertex="1">
+          <mxGeometry height="696" width="1245" x="50" y="302" as="geometry" />
+        </mxCell>
+        <mxCell id="v23" parent="1" style="rounded=0;fillColor=#e9f2fc;strokeColor=#7095bd;fontColor=#1b3655;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" value="alt — Validación de cancelación" vertex="1">
+          <mxGeometry height="29" width="320" x="50" y="302" as="geometry" />
+        </mxCell>
+        <mxCell id="v24" parent="1" style="shape=line;strokeColor=#8cabc9;dashed=1;dashPattern=4 4;" value="" vertex="1">
+          <mxGeometry height="1" width="1245" x="50" y="376" as="geometry" />
+        </mxCell>
+        <mxCell id="v25" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#ad3030;fontSize=13;fontStyle=0;spacing=0;" value="[reserva ANULADA / salida iniciada / no cancelable] → ReservaNoCancelableException; finalizar" vertex="1">
+          <mxGeometry height="24" width="900" x="72" y="339" as="geometry" />
+        </mxCell>
+        <mxCell id="v26" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#28764d;fontSize=13;fontStyle=0;spacing=0;" value="[reserva cancelable] → continuar" vertex="1">
+          <mxGeometry height="24" width="550" x="72" y="403" as="geometry" />
+        </mxCell>
+        <mxCell id="v27" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e9f2fc;strokeColor=#8ca9ca;fontColor=#1b3655;fontSize=13;fontStyle=1;align=center;" value="cancelacion:Cancelacion" vertex="1">
+          <mxGeometry height="42" width="215" x="782.5" y="489" as="geometry" />
+        </mxCell>
+        <mxCell id="v28" parent="1" style="shape=line;direction=south;strokeColor=#a9c2db;strokeWidth=1.3;dashed=1;dashPattern=3 4;" value="" vertex="1">
+          <mxGeometry height="507" width="1" x="890" y="531" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="514" as="sourcePoint" />
+            <mxPoint x="782" y="514" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v30" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="4. «create» Cancelacion(numeroReserva, fecha, motivo, origen)" vertex="1">
+          <mxGeometry height="23" width="400" x="375" y="484" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="571" as="sourcePoint" />
+            <mxPoint x="1150" y="571" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v32" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="5. calcularDevolucion(reserva, fechaCancelacion)" vertex="1">
+          <mxGeometry height="22" width="390" x="640" y="544" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="617" as="sourcePoint" />
+            <mxPoint x="625" y="617" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v34" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="6. calcularTotalPagado()" vertex="1">
+          <mxGeometry height="22" width="240" x="780" y="591" as="geometry" />
+        </mxCell>
+        <mxCell id="e35" edge="1" parent="1" style="endArrow=open;endFill=0;strokeColor=#35668f;strokeWidth=1.4;dashed=1;dashPattern=6 4;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="625" y="700" as="sourcePoint" />
+            <mxPoint x="1150" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v36" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="7. importePagado" vertex="1">
+          <mxGeometry height="24" width="200" x="800" y="672" as="geometry" />
+        </mxCell>
+        <mxCell id="e37" edge="1" parent="1" style="endArrow=open;endFill=0;strokeColor=#35668f;strokeWidth=1.4;dashed=1;dashPattern=6 4;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="751" as="sourcePoint" />
+            <mxPoint x="360" y="751" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v38" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="8. importeDevuelto" vertex="1">
+          <mxGeometry height="22" width="180" x="682" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="v39" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f2f6fc;strokeColor=#c5d5e8;fontColor=#27415e;fontSize=12;align=center;" value="La política se elige según el origen (CLIENTE o AGENCIA) y calcula la devolución por polimorfismo, a partir de lo pagado en la reserva." vertex="1">
+          <mxGeometry height="56" width="570" x="700" y="773" as="geometry" />
+        </mxCell>
+        <mxCell id="e40" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="844" as="sourcePoint" />
+            <mxPoint x="625" y="844" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v41" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="9. anular(motivo)" vertex="1">
+          <mxGeometry height="23" width="130" x="425" y="816" as="geometry" />
+        </mxCell>
+        <mxCell id="e42" edge="1" parent="1" style="endArrow=block;endFill=1;strokeColor=#35668f;strokeWidth=1.6;rounded=0;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="903" as="sourcePoint" />
+            <mxPoint x="890" y="903" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v43" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="10. registrarDevolucion(importeDevuelto)" vertex="1">
+          <mxGeometry height="23" width="330" x="505" y="876" as="geometry" />
+        </mxCell>
+        <mxCell id="e44" edge="1" parent="1" style="endArrow=open;endFill=0;strokeColor=#35668f;strokeWidth=1.4;dashed=1;dashPattern=6 4;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="979" as="sourcePoint" />
+            <mxPoint x="105" y="979" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v45" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#183653;fontSize=12;fontStyle=0;spacing=0;" value="11. informar cancelación e importe a devolver" vertex="1">
+          <mxGeometry height="27" width="245" x="106" y="947" as="geometry" />
+        </mxCell>
+        <mxCell id="v46" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf3fa;strokeColor=#c9d8e9;fontColor=#29425f;fontSize=12;align=center;" value="REGLAS: Cliente ≥30 días: 90 % · 29–15 días: 50 % · 14–7 días: 20 % · menos de 7 días: 0 % · Agencia: 100 %. Base: importe efectivamente pagado." vertex="1">
+          <mxGeometry height="42" width="1245" x="50" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="v47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#edf3fa;strokeColor=#c9d8e9;fontColor=#29425f;fontSize=12;align=center;" value="CU12: Reserva pasa a ANULADA y Cancelacion registra la devolución. Los pagos originales se conservan." vertex="1">
+          <mxGeometry height="30" width="1245" x="50" y="1107" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
