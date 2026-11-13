@@ -88,6 +88,12 @@ Al iniciar el programa se muestra el menú principal:
 
 Cada opción permite acceder a las funcionalidades correspondientes al rol seleccionado.
 
+- **Vendedor:** clientes y pasajeros, reservas, adicionales, pagos, confirmación, modificaciones, reemplazos, cancelaciones y ajustes (CU04 a CU12 y CU19).
+- **Coordinador de operaciones:** salidas, ocupación, lista de pasajeros, inicio y fin de salidas, control de cupo mínimo, programación de salidas, asignación de guía y vehículo, y cierre de la salida con la liquidación del guía (CU03 y CU14 a CU17).
+- **Administrador:** reportes (CU18) y catálogo de tours, con sus itinerarios y tarifas por temporada (CU01 y CU02).
+
+Al iniciar, el sistema anula las reservas con el saldo vencido (CU13) y cancela las salidas que, faltando 7 días o menos, no alcanzaron el cupo mínimo, con devolución del 100 % de lo pagado.
+
 Para finalizar correctamente, seleccionar la opción `0`, que permite guardar los datos antes de cerrar la aplicación.
 
 #### Persistencia de datos
@@ -191,7 +197,7 @@ Se verificaron las siguientes operaciones:
 
 Las pruebas funcionales mencionadas finalizaron satisfactoriamente.
 
-Queda pendiente verificar el caso positivo de cancelación automática por incumplimiento del cupo mínimo.
+El caso positivo de cancelación por cupo mínimo se verifica con las pruebas unitarias de `ControladorSalidasTest` y `ControladorSalidasOperacionTest`.
 
 ### 9. Organización del trabajo
 
