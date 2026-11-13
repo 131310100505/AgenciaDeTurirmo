@@ -10,6 +10,7 @@ import ar.edu.uade.rumbosur.modelo.AdicionalContratado;
 import ar.edu.uade.rumbosur.modelo.AjustePago;
 import ar.edu.uade.rumbosur.modelo.Cancelacion;
 import ar.edu.uade.rumbosur.modelo.Cliente;
+import ar.edu.uade.rumbosur.modelo.EstadoReserva;
 import ar.edu.uade.rumbosur.modelo.MedioPago;
 import ar.edu.uade.rumbosur.modelo.OrigenCancelacion;
 import ar.edu.uade.rumbosur.modelo.Pago;
@@ -56,19 +57,15 @@ public class VistaVendedor {
         do {
             System.out.println();
             System.out.println("===== MENÚ VENDEDOR - " + vendedor.getNombre() + " =====");
-            System.out.println(" 1. Registrar cliente");
-            System.out.println(" 2. Registrar pasajero");
-            System.out.println(" 3. Ver salidas");
-            System.out.println(" 4. Crear reserva");
-            System.out.println(" 5. Consultar reserva");
-            System.out.println(" 6. Contratar servicio adicional");
-            System.out.println(" 7. Registrar pago");
-            System.out.println(" 8. Confirmar reserva");
-            System.out.println(" 9. Reemplazar pasajero");
-            System.out.println("10. Cancelar reserva");
-            System.out.println("11. Registrar ajuste de un pago");
-            System.out.println(" 0. Volver al menú principal");
-            opcion = entrada.leerOpcion("Opción: ", 0, 11);
+            System.out.println("1. Crear reserva (registra cliente y pasajeros si hace falta)");
+            System.out.println("2. Consultar reserva");
+            System.out.println("3. Contratar servicio adicional");
+            System.out.println("4. Registrar pago (confirma la reserva al alcanzar la seña)");
+            System.out.println("5. Reemplazar pasajero");
+            System.out.println("6. Cancelar reserva");
+            System.out.println("7. Registrar ajuste de un pago");
+            System.out.println("0. Volver al menú principal");
+            opcion = entrada.leerOpcion("Opción: ", 0, 7);
             ejecutar(opcion);
         } while (opcion != 0);
     }
@@ -76,36 +73,24 @@ public class VistaVendedor {
     private void ejecutar(int opcion) {
         switch (opcion) {
             case 1:
-                registrarCliente();
-                break;
-            case 2:
-                registrarPasajero(entrada.leerTexto("Documento del pasajero: "));
-                break;
-            case 3:
-                mostrarSalidas();
-                break;
-            case 4:
                 crearReserva();
                 break;
-            case 5:
+            case 2:
                 consultarReserva();
                 break;
-            case 6:
+            case 3:
                 contratarAdicional();
                 break;
-            case 7:
+            case 4:
                 registrarPago();
                 break;
-            case 8:
-                confirmarReserva();
-                break;
-            case 9:
+            case 5:
                 reemplazarPasajero();
                 break;
-            case 10:
+            case 6:
                 cancelarReserva();
                 break;
-            case 11:
+            case 7:
                 registrarAjuste();
                 break;
             default:
@@ -115,12 +100,8 @@ public class VistaVendedor {
 
     // ---------- CU04 Registrar cliente y pasajero ----------
 
-    private void registrarCliente() {
-        String documento = entrada.leerTexto("Documento: ");
-        if (controladorReservas.buscarCliente(documento) != null) {
-            System.out.println("Ya existe un cliente con ese documento.");
-            return;
-        }
+    /** Registra un cliente y lo devuelve; devuelve null si no se pudo. */
+    private Cliente registrarCliente(String documento) {
         String nombre = entrada.leerTexto("Nombre: ");
         String apellido = entrada.leerTexto("Apellido: ");
         String telefono = entrada.leerTexto("Teléfono: ");
@@ -131,8 +112,10 @@ public class VistaVendedor {
             Cliente cliente = new Cliente(codigo, nombre, apellido, documento, telefono, correo, pais);
             controladorReservas.registrarCliente(cliente);
             System.out.println("Cliente registrado: " + cliente);
+            return cliente;
         } catch (IllegalArgumentException e) {
             System.out.println("No se pudo registrar: " + e.getMessage());
+            return null;
         }
     }
 
@@ -304,6 +287,13 @@ public class VistaVendedor {
             }
             System.out.println("Pagado: " + importe(reserva.calcularTotalPagado())
                     + " | Saldo: " + importe(reserva.calcularSaldo()));
+            // CU09: la reserva se confirma al pagar la seña del 30 %
+            if (controladorReservas.confirmarReserva(reserva)) {
+                System.out.println("Se alcanzó la seña: reserva " + reserva.getNumero() + " CONFIRMADA.");
+            } else if (reserva.getEstado() == EstadoReserva.PENDIENTE) {
+                System.out.println("Falta para la seña mínima de " + importe(reserva.calcularSenaMinima())
+                        + ": la reserva sigue PENDIENTE.");
+            }
         } catch (PagoInvalidoException e) {
             System.out.println("No se pudo registrar el pago: " + e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -317,22 +307,6 @@ public class VistaVendedor {
             System.out.println((i + 1) + ". " + medios[i]);
         }
         return medios[entrada.leerOpcion("Medio de pago: ", 1, medios.length) - 1];
-    }
-
-    // ---------- CU09 Confirmar reserva ----------
-
-    private void confirmarReserva() {
-        Reserva reserva = pedirReserva();
-        if (reserva == null) {
-            return;
-        }
-        if (controladorReservas.confirmarReserva(reserva)) {
-            System.out.println("Reserva " + reserva.getNumero() + " CONFIRMADA.");
-        } else {
-            System.out.println("No se pudo confirmar. Estado actual: " + reserva.getEstado()
-                    + ". Pagado: " + importe(reserva.calcularTotalPagado())
-                    + " | Seña mínima: " + importe(reserva.calcularSenaMinima()));
-        }
     }
 
     // ---------- CU11 Reemplazar pasajero ----------
@@ -417,10 +391,14 @@ public class VistaVendedor {
     private Cliente pedirCliente() {
         String documento = entrada.leerTexto("Documento del cliente: ");
         Cliente cliente = controladorReservas.buscarCliente(documento);
-        if (cliente == null) {
-            System.out.println("No existe un cliente con ese documento. Regístrelo con la opción 1.");
+        if (cliente != null) {
+            System.out.println("  " + cliente);
+            return cliente;
         }
-        return cliente;
+        if (entrada.confirmar("  El cliente no está registrado. ¿Registrarlo ahora?")) {
+            return registrarCliente(documento);
+        }
+        return null;
     }
 
     private Salida pedirSalida() {

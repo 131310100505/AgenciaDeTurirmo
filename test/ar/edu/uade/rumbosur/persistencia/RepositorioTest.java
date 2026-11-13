@@ -103,6 +103,20 @@ class RepositorioTest {
     }
 
     @Test
+    void unArchivoDanadoSeCopiaAntesDeSobrescribirlo() throws IOException {
+        String contenido = "esto no es un archivo serializado";
+        Files.writeString(carpeta.resolve("datos.dat"), contenido);
+        Repositorio repositorio = new Repositorio(ruta);
+        repositorio.cargarDatos();
+
+        // Al salir se guarda un archivo nuevo, pero el dañado queda copiado
+        repositorio.guardarDatos();
+
+        assertEquals(contenido, Files.readString(carpeta.resolve("datos.dat.danado")));
+        assertTrue(new Repositorio(ruta).cargarDatos());
+    }
+
+    @Test
     void guardaYCargaLosDatos() throws Exception {
         Reserva reserva = crearReserva();
         Pago pago = new Pago(1, INICIO_SALIDA.minusDays(60), 1000, MedioPago.TARJETA, 3);

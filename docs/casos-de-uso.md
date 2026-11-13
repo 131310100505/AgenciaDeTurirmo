@@ -79,6 +79,8 @@ El cliente no se representa como actor directo porque, según los supuestos del 
 
 ### CU04 — Registrar cliente y pasajero
 
+*Etapa 2: desde el menú, el cliente y los pasajeros que no existen se registran durante la creación de la reserva (CU05).*
+
 **Actor principal:** Vendedor.
 
 **Precondiciones:** el vendedor tiene acceso al sistema.
@@ -170,6 +172,8 @@ El cliente no se representa como actor directo porque, según los supuestos del 
 - Si el pago es con tarjeta en cuotas, se aplica el recargo del 7 % sobre el importe abonado mediante esa modalidad.
 
 ### CU09 — Confirmar reserva
+
+*Etapa 2: desde el menú, la confirmación se hace sola al registrar un pago (CU08) que alcanza la seña del 30 %.*
 
 **Actor principal:** Vendedor.
 

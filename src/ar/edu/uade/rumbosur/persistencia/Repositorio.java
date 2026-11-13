@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,11 +82,21 @@ public class Repositorio implements Serializable {
 
     // ---------- Archivo ----------
 
-    /** Guarda todos los datos en el archivo. try-with-resources lo cierra aunque falle. */
+    /**
+     * Guarda todos los datos. Primero escribe un archivo temporal y, si salió bien,
+     * reemplaza al anterior: si algo falla a mitad de camino, el archivo guardado no se pierde.
+     */
     public void guardarDatos() {
-        try (FileOutputStream archivo = new FileOutputStream(rutaArchivo);
+        File temporal = new File(rutaArchivo + ".tmp");
+        try (FileOutputStream archivo = new FileOutputStream(temporal);
              ObjectOutputStream archivoSalida = new ObjectOutputStream(archivo)) {
             archivoSalida.writeObject(this);
+        } catch (IOException e) {
+            System.out.println("No se pudieron guardar los datos: " + e.getMessage());
+            return;
+        }
+        try {
+            Files.move(temporal.toPath(), Path.of(rutaArchivo), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             System.out.println("No se pudieron guardar los datos: " + e.getMessage());
         }
@@ -106,7 +119,22 @@ public class Repositorio implements Serializable {
             return true;
         } catch (IOException | ClassNotFoundException e) { // multi-catch: mismo tratamiento para las dos
             System.out.println("No se pudieron cargar los datos: " + e.getMessage());
+            guardarCopiaDelArchivoDanado();
             return false;
+        }
+    }
+
+    /**
+     * Si el archivo está dañado, se guarda una copia antes de seguir: al salir del
+     * programa se escribe un archivo nuevo, y así la información anterior no se pierde.
+     */
+    private void guardarCopiaDelArchivoDanado() {
+        Path copia = Path.of(rutaArchivo + ".danado");
+        try {
+            Files.copy(Path.of(rutaArchivo), copia, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Se guardó una copia del archivo dañado en " + copia + ".");
+        } catch (IOException e) {
+            System.out.println("No se pudo copiar el archivo dañado: " + e.getMessage());
         }
     }
 

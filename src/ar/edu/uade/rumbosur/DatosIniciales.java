@@ -5,6 +5,7 @@ import ar.edu.uade.rumbosur.modelo.*;
 import ar.edu.uade.rumbosur.persistencia.Repositorio;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,16 @@ public class DatosIniciales {
         lagos.agregarTarifa(new Tarifa(1, Temporada.MEDIA, hoy, hoy.plusDays(365), 150000));
         trekking.agregarTarifa(new Tarifa(1, Temporada.MEDIA, hoy, hoy.plusDays(365), 200000));
         historia.agregarTarifa(new Tarifa(1, Temporada.MEDIA, hoy, hoy.plusDays(365), 80000));
+        // Itinerario: una actividad por tour; la del trekking la presta un proveedor externo
+        Proveedor patagonia = new Proveedor(1, "Patagonia Aventura", "30-71234567-8", "2944000100", "Excursiones");
+        Actividad ascenso = new Actividad(1, 1, 1, LocalTime.of(8, 0), "Ascenso a Laguna Torre",
+                "El Chaltén", TipoActividad.EXCURSION);
+        ascenso.asignarProveedor(patagonia);
+        trekking.agregarActividad(ascenso);
+        lagos.agregarActividad(new Actividad(1, 1, 1, LocalTime.of(9, 0), "Navegación por el lago Nahuel Huapi",
+                "Puerto Pañuelo", TipoActividad.EXCURSION));
+        historia.agregarActividad(new Actividad(1, 1, 1, LocalTime.of(10, 0), "Visita al Centro Cívico",
+                "Bariloche", TipoActividad.EXCURSION));
         repositorio.agregarTour(lagos);
         repositorio.agregarTour(trekking);
         repositorio.agregarTour(historia);

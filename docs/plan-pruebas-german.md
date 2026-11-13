@@ -33,34 +33,30 @@ Se creó una reserva con dos pasajeros, se registró un pago mediante transferen
 | S1 | Seleccionar opción 1 del coordinador | Mostrar las salidas registradas | Se mostraron las salidas 101, 102 y 103 |
 | S2 | Consultar salidas con guía y vehículo asignados | Mostrar las salidas disponibles | Se listaron correctamente las salidas registradas |
 
-## 2. Generar lista de pasajeros
+## 2. Emitir lista de pasajeros
+
+Desde el menú, la opción "Emitir lista de pasajeros" genera la lista y la exporta al archivo en un solo paso.
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
-| P1 | Generar lista de salida 101 sin confirmar | Rechazar la operación | `Error: La salida debe estar confirmada` |
-| P2 | Generar lista de salida 101 con reserva confirmada y condiciones cumplidas | Generar lista correctamente | `Lista de pasajeros generada.` |
-
-## 3. Exportar lista de pasajeros
-
-| **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
-|---|---|---|---|
-| E1 | Exportar lista sin haberla generado | Rechazar la exportación | `Error: Primero debe generarse la lista de pasajeros` |
-| E2 | Exportar lista generada de salida 101 | Crear archivo de texto | `Archivo generado: pasajeros_salida_101.txt` |
+| P1 | Emitir lista de salida 101 sin confirmar | Rechazar la operación | `Error: La salida debe estar confirmada` |
+| P2 | Emitir lista de salida 101 con reserva confirmada y condiciones cumplidas | Generar la lista y el archivo de texto | `Lista de pasajeros generada en el archivo pasajeros_salida_101.txt` |
+| E1 | Exportar lista sin haberla generado | Rechazar la exportación | Ya no se puede hacer desde el menú; lo verifica la prueba unitaria de `ControladorSalidasExportacionTest` |
 | E3 | Abrir el archivo exportado | Mostrar los datos de la salida y sus pasajeros | Se verificaron los datos de Juan Pérez y Lucía Gómez, documentos y contactos de emergencia |
 
-## 4. Iniciar salida
+## 3. Iniciar salida
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
 | I1 | Iniciar salida 101 con guía, vehículo y lista generada | Iniciar la salida correctamente | `Salida iniciada correctamente.` |
 
-## 5. Finalizar salida
+## 4. Finalizar salida y liquidar al guía
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
-| F1 | Finalizar salida 101 previamente iniciada | Finalizar la salida correctamente | `Salida finalizada correctamente.` |
+| F1 | Finalizar salida 101 previamente iniciada | Finalizar la salida y liquidar al guía | `Salida finalizada.` y la liquidación: "Total a pagar: $135000.00" |
 
-## 6. Control de cupo mínimo
+## 5. Control de cupo mínimo
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
@@ -69,7 +65,7 @@ Se creó una reserva con dos pasajeros, se registró un pago mediante transferen
 
 El control de cupo mínimo se hace automáticamente al iniciar el programa (ya no es una opción del menú).
 
-## 7. Persistencia de datos
+## 6. Persistencia de datos
 
 | **Caso** | **Entrada** | **Resultado esperado** | **Resultado obtenido** |
 |---|---|---|---|
@@ -79,7 +75,7 @@ El control de cupo mínimo se hace automáticamente al iniciar el programa (ya n
 
 ## Resultado general
 
-Se realizaron **13 comprobaciones funcionales satisfactorias** del módulo de operaciones.
+Se realizaron **12 comprobaciones funcionales satisfactorias** del módulo de operaciones.
 
 Las pruebas permitieron verificar el funcionamiento de la consulta de salidas con su ocupación, generación y exportación de listas de pasajeros, inicio y finalización de salidas, control de cupo mínimo y persistencia inicial.
 

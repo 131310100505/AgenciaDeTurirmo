@@ -74,6 +74,17 @@ public abstract class Tour implements Serializable {
         return Collections.unmodifiableList(tarifas);
     }
 
+    // CU01: modifica los datos del tour. El codigo y la categoria no cambian.
+    // Las validaciones las hace ControladorCatalogo antes de llamarlo.
+    public void modificarDatos(String nombre, String descripcion,
+                               int duracionDias, int cupoMinimo, int cupoMaximo) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.duracionDias = duracionDias;
+        this.cupoMinimo = cupoMinimo;
+        this.cupoMaximo = cupoMaximo;
+    }
+
     // Cada tipo de tour define su categoria
     public abstract CategoriaTour obtenerCategoria();
 

@@ -37,16 +37,13 @@ public class VistaCoordinador {
             System.out.println("===== COORDINADOR DE OPERACIONES =====");
             System.out.println("1. Listar salidas");
             System.out.println("2. Programar salida");
-            System.out.println("3. Asignar guia");
-            System.out.println("4. Asignar vehiculo");
-            System.out.println("5. Generar lista de pasajeros");
-            System.out.println("6. Exportar lista de pasajeros");
-            System.out.println("7. Iniciar salida");
-            System.out.println("8. Finalizar salida");
-            System.out.println("9. Cerrar salida y liquidar al guia");
+            System.out.println("3. Asignar guia y vehiculo");
+            System.out.println("4. Emitir lista de pasajeros (genera el archivo)");
+            System.out.println("5. Iniciar salida");
+            System.out.println("6. Finalizar salida y liquidar al guia");
             System.out.println("0. Volver");
 
-            opcion = entrada.leerOpcion("Opcion: ", 0, 9);
+            opcion = entrada.leerOpcion("Opcion: ", 0, 6);
 
             try {
                 switch (opcion) {
@@ -57,25 +54,16 @@ public class VistaCoordinador {
                         programarSalida();
                         break;
                     case 3:
-                        asignarGuia();
+                        asignarGuiaYVehiculo();
                         break;
                     case 4:
-                        asignarVehiculo();
+                        emitirLista();
                         break;
                     case 5:
-                        generarLista();
-                        break;
-                    case 6:
-                        exportarLista();
-                        break;
-                    case 7:
                         iniciarSalida();
                         break;
-                    case 8:
-                        finalizarSalida();
-                        break;
-                    case 9:
-                        cerrarSalida();
+                    case 6:
+                        finalizarYLiquidar();
                         break;
                     default:
                         break;
@@ -119,22 +107,13 @@ public class VistaCoordinador {
                 "Codigo de salida: ", 1, Integer.MAX_VALUE);
     }
 
-    private void generarLista() {
+    // CU15: genera la lista de pasajeros y la exporta a un archivo de texto
+    private void emitirLista() throws IOException {
         int codigo = leerCodigoSalida();
-
         controladorSalidas.generarListaPasajeros(codigo);
-        System.out.println("Lista de pasajeros generada.");
-    }
-
-    private void exportarLista() throws IOException {
-        int codigo = leerCodigoSalida();
-
         String nombre = "pasajeros_salida_" + codigo + ".txt";
-
-        controladorSalidas.exportarListaPasajeros(
-                codigo, Path.of(nombre));
-
-        System.out.println("Archivo generado: " + nombre);
+        controladorSalidas.exportarListaPasajeros(codigo, Path.of(nombre));
+        System.out.println("Lista de pasajeros generada en el archivo " + nombre);
     }
 
     private void iniciarSalida() {
@@ -142,13 +121,6 @@ public class VistaCoordinador {
 
         controladorSalidas.iniciarSalida(codigo);
         System.out.println("Salida iniciada correctamente.");
-    }
-
-    private void finalizarSalida() {
-        int codigo = leerCodigoSalida();
-
-        controladorSalidas.finalizarSalida(codigo);
-        System.out.println("Salida finalizada correctamente.");
     }
 
     // CU03: programa una salida de un tour del catalogo
@@ -186,8 +158,13 @@ public class VistaCoordinador {
     }
 
     // CU14: asigna un guia habilitado y disponible
-    private void asignarGuia() {
+    private void asignarGuiaYVehiculo() {
         int codigo = leerCodigoSalida();
+        asignarGuia(codigo);
+        asignarVehiculo(codigo);
+    }
+
+    private void asignarGuia(int codigo) {
         List<Guia> guias = controladorSalidas.listarGuias();
         if (guias.isEmpty()) {
             System.out.println("No hay guias cargados.");
@@ -203,8 +180,7 @@ public class VistaCoordinador {
     }
 
     // CU14: asigna un vehiculo con capacidad suficiente
-    private void asignarVehiculo() {
-        int codigo = leerCodigoSalida();
+    private void asignarVehiculo(int codigo) {
         List<Vehiculo> vehiculos = controladorSalidas.listarVehiculos();
         if (vehiculos.isEmpty()) {
             System.out.println("No hay vehiculos cargados.");
@@ -219,9 +195,11 @@ public class VistaCoordinador {
         System.out.println("Vehiculo asignado a la salida " + codigo + ".");
     }
 
-    // CU17: cierra una salida finalizada y liquida los honorarios del guia
-    private void cerrarSalida() throws TransicionEstadoInvalidaException {
+    // CU16 y CU17: finaliza la salida y liquida los honorarios del guia
+    private void finalizarYLiquidar() throws TransicionEstadoInvalidaException {
         int codigo = leerCodigoSalida();
+        controladorSalidas.finalizarSalida(codigo);
+        System.out.println("Salida finalizada.");
         Liquidacion liquidacion = controladorSalidas.cerrarSalida(codigo);
         System.out.println("Liquidacion del guia " + liquidacion.getGuia().getNombre() + ":");
         System.out.printf("  Dias trabajados: %d%n", liquidacion.getDiasTrabajados());
