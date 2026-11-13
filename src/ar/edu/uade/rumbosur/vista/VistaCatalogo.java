@@ -36,8 +36,9 @@ public class VistaCatalogo {
             System.out.println("3. Ver itinerario y tarifas de un tour");
             System.out.println("4. Agregar actividad al itinerario");
             System.out.println("5. Agregar tarifa por temporada");
+            System.out.println("6. Modificar tour");
             System.out.println("0. Volver");
-            opcion = entrada.leerOpcion("Opción: ", 0, 5);
+            opcion = entrada.leerOpcion("Opción: ", 0, 6);
             try {
                 switch (opcion) {
                     case 1:
@@ -54,6 +55,9 @@ public class VistaCatalogo {
                         break;
                     case 5:
                         agregarTarifa();
+                        break;
+                    case 6:
+                        modificarTour();
                         break;
                     default:
                         break;
@@ -98,6 +102,22 @@ public class VistaCatalogo {
                 duracion, cupoMinimo, cupoMaximo, edadMinima, dificultad);
         System.out.println("Tour registrado con el código " + tour.getCodigo()
                 + ". Recuerde cargarle al menos una tarifa antes de programar salidas.");
+    }
+
+    private void modificarTour() {
+        int codigo = leerCodigoTour();
+        Tour tour = controladorCatalogo.buscarTour(codigo);
+        System.out.println("Enter deja el nombre o la descripción como están.");
+        String nombre = entrada.leerTextoOpcional("Nombre (" + tour.getNombre() + "): ");
+        String descripcion = entrada.leerTextoOpcional("Descripción (" + tour.getDescripcion() + "): ");
+        int duracion = entrada.leerOpcion("Duración en días (" + tour.getDuracionDias() + "): ", 1, 60);
+        int cupoMinimo = entrada.leerOpcion("Cupo mínimo (" + tour.getCupoMinimo() + "): ", 1, 500);
+        int cupoMaximo = entrada.leerOpcion("Cupo máximo (" + tour.getCupoMaximo() + "): ", 1, 500);
+        controladorCatalogo.modificarTour(codigo,
+                nombre.isEmpty() ? tour.getNombre() : nombre,
+                descripcion.isEmpty() ? tour.getDescripcion() : descripcion,
+                duracion, cupoMinimo, cupoMaximo);
+        System.out.println("Tour modificado. Las salidas ya programadas conservan sus fechas y cupos.");
     }
 
     private void verDetalle() {
