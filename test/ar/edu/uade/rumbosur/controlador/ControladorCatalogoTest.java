@@ -112,6 +112,32 @@ class ControladorCatalogoTest {
     }
 
     @Test
+    void modificarTourCambiaSusDatosPeroNoElCodigo() {
+        controlador.modificarTour(tour.getCodigo(), "Bodegas y olivares", "Nueva visita", 4, 3, 25);
+
+        assertEquals("Bodegas y olivares", tour.getNombre());
+        assertEquals(4, tour.getDuracionDias());
+        assertEquals(25, tour.getCupoMaximo());
+        assertSame(tour, controlador.buscarTour(tour.getCodigo()));
+    }
+
+    @Test
+    void modificarConDatosInvalidosNoCambiaNada() {
+        controlador.agregarActividad(tour.getCodigo(), 3, 1, LocalTime.of(9, 0), "Bodega",
+                "Luján de Cuyo", TipoActividad.EXCURSION);
+
+        // Tiene una actividad el día 3: no se puede acortar a 2 días.
+        assertThrows(IllegalArgumentException.class,
+                () -> controlador.modificarTour(tour.getCodigo(), "Bodegas", "", 2, 2, 20));
+        assertThrows(IllegalArgumentException.class,
+                () -> controlador.modificarTour(tour.getCodigo(), " ", "", 3, 2, 20));
+        assertThrows(IllegalArgumentException.class,
+                () -> controlador.modificarTour(tour.getCodigo(), "Bodegas", "", 3, 10, 5));
+        assertEquals("Bodegas de Mendoza", tour.getNombre());
+        assertEquals(3, tour.getDuracionDias());
+    }
+
+    @Test
     void rechazaOperacionesSobreUnTourInexistente() {
         assertThrows(IllegalArgumentException.class, () -> controlador.agregarTarifa(99, Temporada.ALTA,
                 DESDE, HASTA, 1000));
