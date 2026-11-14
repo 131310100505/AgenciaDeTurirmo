@@ -254,7 +254,7 @@ Se implementaron las funcionalidades principales del sistema y se realizaron pru
 
 El módulo de operaciones se encuentra integrado con el menú principal y permite gestionar las salidas programadas.
 
-Se continúa trabajando en la integración final de los módulos, la actualización de los diagramas UML y la documentación de la entrega.
+Se completó la integración de los módulos, la actualización de los diagramas UML y la documentación correspondiente a la Etapa 2.
 
 ### 12. Objetivo académico
 
